@@ -24,7 +24,7 @@ extern "C" {  // for export C function in C++ source code
 #include "ExportDefs.h"
 
 #define ITCmm_MAJOR_VERSION                     // compared with MAJOR_VERSION in 0acqGlobal.h
-#define ITC_CURRENT_DRIVER_VERSION  (ITCmm_MAJOR_VERSION << 23) | 3
+#define ITC_CURRENT_DRIVER_VERSION  (ITCmm_MAJOR_VERSION << 21) | 3
 
 #define USB16_CURRENT_FIRMWARE		(6 << 16) | 4
 #define USB18_CURRENT_FIRMWARE		(6 << 16) | 3
@@ -707,7 +707,7 @@ ITCLimitedAcquire;
 
 //Channel manipulation commands
 
-//All commands without EX are absolite 
+//All commands without EX are obsolete 
 /*
 #define RESET_FIFO_COMMAND			0x00010000
 #define PRELOAD_FIFO_COMMAND		0x00020000
@@ -995,16 +995,6 @@ ITC_Export DWORD ITC_SingleScan(	HANDLE DeviceHandle,
 ITC_Export DWORD ITC_AsyncIO(	HANDLE DeviceHandle,
 								DWORD NumberOfChannels,
 								ITCChannelDataEx* sParam) ITC_Import;
-
-//HA 3/12/2012
-ITC_Export DWORD ITC_GetScaling(
-   void* ITCData,
-   long InternalScaling,
-   long DacChannelNumber,
-   long AdcChannelNumber,
-   double** DacUnitsPerVolt,
-   double** AdcUnitsPerVolt
-) ITC_Import;
 
 //***************************************************************************
 

@@ -1,0 +1,24 @@
+#include "ITC_StandardHeaders.h"
+
+// Operation template:
+// ITCGetDevices2/Z[=number:displayErrors]/DTN=number:deviceTypeNumeric/DTS=string:deviceTypeString
+
+extern "C" int ExecuteITCGetDevices2(ITCGetDevices2RuntimeParamsPtr p)
+{
+  BEGIN_OUTER_CATCH
+  // Before we call the function, set V_Value to the error value.
+  // The value will be updated later.
+  SetOperationNumVar(RETURN_VARIABLE, -1);
+
+  // Get the device type from the DTN or DTS flag
+  ITCDeviceTypeEnum DeviceType = GetDeviceTypeFromParameters(p);
+
+  // Get the device list
+  DWORD numDevices;
+  ITCDLL::ITC_Devices(DeviceType, &numDevices);
+
+  // Update the output value
+  SetOperationNumVar(RETURN_VARIABLE, (double) numDevices);
+
+  END_OUTER_CATCH
+}

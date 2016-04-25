@@ -1,0 +1,96 @@
+/*	XOP-specific resources for itcXOP2 on Windows
+
+	This file is compiled by the resource compiler and creates XOP-specific
+	resources that IGOR looks for in an XOP module.
+*/
+
+#include "XOPResources.h"			// Defines XOP-specific symbols.
+
+// Custom error messages
+1100 STR#
+BEGIN
+    "itcXOP2 requires at least Igor Pro 6.30 (32bit) or Igor Pro 7.0 (64bit).\0"     // OLD_IGOR
+	"Unhandled C++ Exception\0"                                                      // UNHANDLED_CPP_EXCEPTION
+
+	"DeviceID is locked to another thread.\0"                                        // SLOT_LOCKED_TO_OTHER_THREAD
+	"Tried to access an unused DeviceID.\0"                                          // SLOT_EMPTY EXIT_FAILURE
+	"No DeviceIDs available to use.\0"                                               // COULDNT_FIND_EMPTY_SLOT
+	"Problem with ITC DLL.\0"                                                        // ITC_DLL_ERROR
+
+	"Invalid numeric device type (/DTN).\0"                                          // INVALID_DEVICETYPE_NUMERIC
+	"Invalid string device type (/DTS).\0"                                           // INVALID_DEVICETYPE_STRING
+	"The device types specified by /DTN and /DTS do not agree.\0"                    // DTN_DTS_DISAGREE
+
+	"Invalid numeric channel type (/CHN).\0"                                         // INVALID_CHANNELTYPE_NUMERIC
+	"Invalid string channel type (/CHS).\0"                                          // INVALID_CHANNELTYPE_STRING
+	"The channel types specified by /CHN and /CHS do not agree.\0"                   // CHN_CHS_DISAGREE
+	"Must specify /CHN or /CHS.\0"                                                   // MUST_SPECIFY_CHN_OR_CHS
+
+	"Invalid value for /S flag.\0"                                                   // ITCCONFIGCHANNEL2_BAD_S
+	"Invalid value for /M flag.\0"                                                   // ITCCONFIGCHANNEL2_BAD_M
+	"Invalid value for /A flag.\0"                                                   // ITCCONFIGCHANNEL2_BAD_A
+	"Invalid value for /O flag.\0"                                                   // ITCCONFIGCHANNEL2_BAD_O
+	"Invalid value for /U flag.\0"                                                   // ITCCONFIGCHANNEL2_BAD_U
+
+	"Wave does not have the minumum number of rows required\0"                       // NEED_MIN_ROWS
+
+	"The /F flag requires an ITC18, ITC18USB or ITC1600\0"                           // F_FLAG_REQUIRES_ITC18_ITC18USB_ITC1600
+	"The /D flag requires an ITC1600\0"                                              // D_FLAG_REQUIRES_ITC1600
+	"The /H flag requires an ITC1600\0"                                              // H_FLAG_REQUIRES_ITC1600
+	"The /R flag requires an ITC1600\0"                                              // R_FLAG_REQUIRES_ITC1600
+
+	"Tried to access the default device, but the default device has not been set.\0" // THREAD_DEVICE_ID_NOT_SET
+
+	"\0"							// NOTE: NULL required to terminate the resource.
+END
+
+// No menu items
+
+1100 XOPI							// XOPI - Describes general XOP properties to IGOR. 
+BEGIN
+	XOP_VERSION,					// Version number of host XOP system.
+	DEV_SYS_CODE,					// Code for development system used to make XOP.
+	0,								// Obsolete - set to zero.
+	0,								// Obsolete - set to zero.
+	XOP_TOOLKIT_VERSION				// XOP Toolkit version.
+END
+
+1100 XOPC							// Describes operations that the XOP adds to IGOR.
+BEGIN
+
+    "ITCCloseAll2\0"             , utilOp | XOPOp | compilableOp | threadSafeOp,
+    "ITCCloseDevice2\0"          , utilOp | XOPOp | compilableOp | threadSafeOp,
+    "ITCConfigChannelReset2\0"   , utilOp | XOPOp | compilableOp | threadSafeOp,
+    "ITCConfigChannelUpload2\0"  , utilOp | XOPOp | compilableOp | threadSafeOp,
+    "ITCConfigAllChannels2\0"    , utilOp | XOPOp | compilableOp | threadSafeOp,
+    "ITCConfigChannel2\0"        , utilOp | XOPOp | compilableOp | threadSafeOp,
+    "ITCFIFOAvailable2\0"        , utilOp | XOPOp | compilableOp | threadSafeOp,
+    "ITCFIFOAvailableAll2\0"     , utilOp | XOPOp | compilableOp | threadSafeOp,
+    "ITCGetAllChannelsConfig2\0" , utilOp | XOPOp | compilableOp | threadSafeOp,
+    "ITCGetChannelConfig2\0"     , utilOp | XOPOp | compilableOp | threadSafeOp,
+    "ITCGetCurrentDevice2\0"     , utilOp | XOPOp | compilableOp | threadSafeOp,
+    "ITCGetDeviceInfo2\0"        , utilOp | XOPOp | compilableOp | threadSafeOp,
+    "ITCGetDevices2\0"           , utilOp | XOPOp | compilableOp | threadSafeOp,
+    "ITCGetErrorString2\0"       , utilOp | XOPOp | compilableOp | threadSafeOp,
+    //  "ITCGetLastError2\0"     , utilOp | XOPOp | compilableOp | threadSafeOp,
+    "ITCGetSerialNumber2\0"      , utilOp | XOPOp | compilableOp | threadSafeOp,
+    "ITCGetState2\0"             , utilOp | XOPOp | compilableOp | threadSafeOp,
+    "ITCGetVersions2\0"          , utilOp | XOPOp | compilableOp | threadSafeOp,
+    "ITCInitialize2\0"           , utilOp | XOPOp | compilableOp | threadSafeOp,
+    "ITCOpenDevice2\0"           , utilOp | XOPOp | compilableOp | threadSafeOp,
+    "ITCReadADC2\0"              , utilOp | XOPOp | compilableOp | threadSafeOp,
+    "ITCReadDigital2\0"          , utilOp | XOPOp | compilableOp | threadSafeOp,
+    "ITCReadTimer2\0"            , utilOp | XOPOp | compilableOp | threadSafeOp,
+    "ITCSelectDevice2\0"         , utilOp | XOPOp | compilableOp | threadSafeOp,
+    "ITCSetDAC2\0"               , utilOp | XOPOp | compilableOp | threadSafeOp,
+    "ITCSetGlobals2\0"           , utilOp | XOPOp | compilableOp | threadSafeOp,
+    "ITCSetModes2\0"             , utilOp | XOPOp | compilableOp | threadSafeOp,
+    "ITCSetState2\0"             , utilOp | XOPOp | compilableOp | threadSafeOp,
+    //  "ITCShortAcquisition2\0" , utilOp | XOPOp | compilableOp | threadSafeOp,
+    "ITCStartAcq2\0"             , utilOp | XOPOp | compilableOp | threadSafeOp,
+    "ITCStopAcq2\0"              , utilOp | XOPOp | compilableOp | threadSafeOp,
+    "ITCUpdateFIFOPosition2\0"   , utilOp | XOPOp | compilableOp | threadSafeOp,
+    "ITCUpdateFIFOPositionAll2\0", utilOp | XOPOp | compilableOp | threadSafeOp,
+    "ITCWriteDigital2\0"         , utilOp | XOPOp | compilableOp | threadSafeOp,
+    "\0"							// NOTE: NULL required to terminate the resource.
+END
