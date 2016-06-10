@@ -157,6 +157,9 @@
     <ClCompile Include="..\ITCConfigChannelReset2.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\ConcurrentXOPNotice.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="..\fmt\format.cc">
       <Filter>fmt</Filter>
     </ClCompile>
@@ -205,6 +208,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\HelperFunctions_DAC.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ConcurrentQueue.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ConcurrentXOPNotice.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\fmt\format.h">

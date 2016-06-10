@@ -287,6 +287,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\ChannelSelection.cpp" />
+    <ClCompile Include="..\ConcurrentXOPNotice.cpp" />
     <ClCompile Include="..\CustomExceptions.cpp" />
     <ClCompile Include="..\DeviceIDHelper.cpp" />
     <ClCompile Include="..\ErrorDisplayClass.cpp" />
@@ -373,6 +374,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\ChannelSelection.h" />
+    <ClInclude Include="..\ConcurrentQueue.h" />
+    <ClInclude Include="..\ConcurrentXOPNotice.h" />
     <ClInclude Include="..\CustomExceptions.h" />
     <ClInclude Include="..\DeviceIDHelper.h" />
     <ClInclude Include="..\ErrorDisplayClass.h" />
