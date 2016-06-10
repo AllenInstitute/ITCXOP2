@@ -13,6 +13,9 @@
       <UniqueIdentifier>{53844223-65be-4e7f-9e5a-2af877e54648}</UniqueIdentifier>
       <Extensions>ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe</Extensions>
     </Filter>
+    <Filter Include="fmt">
+      <UniqueIdentifier>{057ba53e-24e4-4d29-a2d5-9909b1e189e7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\itcXOP2.rc">
@@ -154,6 +157,15 @@
     <ClCompile Include="..\ITCConfigChannelReset2.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\fmt\format.cc">
+      <Filter>fmt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\fmt\ostream.cc">
+      <Filter>fmt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\fmt\posix.cc">
+      <Filter>fmt</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\itcXOP2.h">
@@ -194,6 +206,24 @@
     </ClInclude>
     <ClInclude Include="..\HelperFunctions_DAC.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\fmt\format.h">
+      <Filter>fmt</Filter>
+    </ClInclude>
+    <ClInclude Include="..\fmt\ostream.h">
+      <Filter>fmt</Filter>
+    </ClInclude>
+    <ClInclude Include="..\fmt\posix.h">
+      <Filter>fmt</Filter>
+    </ClInclude>
+    <ClInclude Include="..\fmt\printf.h">
+      <Filter>fmt</Filter>
+    </ClInclude>
+    <ClInclude Include="..\fmt\string.h">
+      <Filter>fmt</Filter>
+    </ClInclude>
+    <ClInclude Include="..\fmt\time.h">
+      <Filter>fmt</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

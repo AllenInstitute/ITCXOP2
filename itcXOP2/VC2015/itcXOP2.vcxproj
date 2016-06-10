@@ -94,7 +94,7 @@
     </Midl>
     <ClCompile>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
-      <AdditionalIncludeDirectories>..\..\XOPSupport;..\..\Headers;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..;..\..\XOPSupport;..\..\Headers;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>false</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
@@ -143,7 +143,7 @@
     </Midl>
     <ClCompile>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
-      <AdditionalIncludeDirectories>..\..\XOPSupport;..\..\Headers;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..;..\..\XOPSupport;..\..\Headers;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>false</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
@@ -193,7 +193,7 @@
     </Midl>
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\..\XOPSupport;..\..\Headers;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..;..\..\XOPSupport;..\..\Headers;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -244,7 +244,7 @@
     </Midl>
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\..\XOPSupport;..\..\Headers;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..;..\..\XOPSupport;..\..\Headers;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -290,6 +290,9 @@
     <ClCompile Include="..\CustomExceptions.cpp" />
     <ClCompile Include="..\DeviceIDHelper.cpp" />
     <ClCompile Include="..\ErrorDisplayClass.cpp" />
+    <ClCompile Include="..\fmt\format.cc" />
+    <ClCompile Include="..\fmt\ostream.cc" />
+    <ClCompile Include="..\fmt\posix.cc" />
     <ClCompile Include="..\HelperFunctions.cpp" />
     <ClCompile Include="..\ITCChannelTypeEnum.cpp" />
     <ClCompile Include="..\ITCCloseAll2.cpp" />
@@ -374,6 +377,12 @@
     <ClInclude Include="..\DeviceIDHelper.h" />
     <ClInclude Include="..\ErrorDisplayClass.h" />
     <ClInclude Include="..\DeviceIDClass.h" />
+    <ClInclude Include="..\fmt\format.h" />
+    <ClInclude Include="..\fmt\ostream.h" />
+    <ClInclude Include="..\fmt\posix.h" />
+    <ClInclude Include="..\fmt\printf.h" />
+    <ClInclude Include="..\fmt\string.h" />
+    <ClInclude Include="..\fmt\time.h" />
     <ClInclude Include="..\HelperFunctions.h" />
     <ClInclude Include="..\HelperFunctions_DAC.h" />
     <ClInclude Include="..\ITCChannelTypeEnum.h" />
