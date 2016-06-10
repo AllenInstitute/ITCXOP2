@@ -5,237 +5,261 @@
 #include "CustomExceptions.h"
 #include "Shlwapi.h"
 
-/*
-Utility functions which are xop specific
-*/
+#include "fmt/format.h"
+#include "fmt/ostream.h"
+#include "ConcurrentXOPNotice.h"
 
-// Accepts multiple arguments like printf and prints them to the history
-// Custom prefixes can be also inserted, see DEBUGPRINT
-// Copies only ARRAY_SIZE-2 characters in _snprintf, because we want to have
-// space for the terminating \0 (1) and for the CR (1)
-// Checking the return value of _snprintf is not done on purpose, we just always
-// append a \0 to be safe
-// @param A prints only if A evaluates to true
-// @param B uses silent printing (does not mark the experiment as changed) if
-// true
-#define PRINT_TO_HISTORY(A, B, ...)                                            \
-  if(RunningInMainThread() && A)                                               \
-  {                                                                            \
-    constexpr size_t ARRAY_SIZE = 1024;                                        \
-    char buf[ARRAY_SIZE];                                                      \
-    _snprintf(buf, ARRAY_SIZE - 2, __VA_ARGS__);                               \
-    buf[ARRAY_SIZE - 2] = '\0';                                                \
-    strcat(buf, CR_STR);                                                       \
-    if(!B)                                                                     \
-    {                                                                          \
-      XOPNotice(buf);                                                          \
-    }                                                                          \
-    else                                                                       \
-    {                                                                          \
-      XOPNotice2(buf, 0);                                                      \
-    }                                                                          \
-  }
-
-// Convenience wrapper using silent debug print
-#define DEBUGPRINT_SILENT(...)                                                 \
-  PRINT_TO_HISTORY(debuggingEnabled, true, "DEBUG: "__VA_ARGS__)
-
-// Convenience wrapper using debug print
-#define DEBUGPRINT(...)                                                        \
-  PRINT_TO_HISTORY(debuggingEnabled, false, "DEBUG: "__VA_ARGS__)
-
-// Convenience wrapper for printing
-#define HISTPRINT(...) PRINT_TO_HISTORY(true, false, __VA_ARGS__)
-
-// Convenience wrapper for silent printing
-#define HISTPRINT_SILENT(...) PRINT_TO_HISTORY(true, true, __VA_ARGS__)
-
-#define DEBUGPRINT_SIZEOF(A) DEBUGPRINT("sizeof(" #A ")=%zd", sizeof(A));
+#define DEBUGPRINT_SIZEOF(A) fprintf(xd.sstr, "sizeof(" #A ")=%d\r", sizeof(A));
 
 namespace
 {
+class XOPNoticeOnDestruct
+{
+public:
+  XOPNoticeOnDestruct()
+  {
+    if(RunningInMainThread())
+    {
+      fmt::fprintf(sstr, "(main thread)\r");
+    }
+    else
+    {
+      fmt::fprintf(sstr, "(thread %d)\r", GetCurrentThreadId());
+    }
+  }
+
+  ~XOPNoticeOnDestruct()
+  {
+    if(debuggingEnabled)
+    {
+      XOPNotice_ts(sstr.str());
+    }
+  }
+
+  std::stringstream sstr;
+};
 
 void DebugOut(std::string caller, std::vector<ITCChannelInfo> chanInfo)
 {
+  using namespace fmt;
+
   if(!debuggingEnabled)
     return;
 
-  DEBUGPRINT("Caller %s", caller.c_str());
+  XOPNoticeOnDestruct xd;
+  fprintf(xd.sstr, "Caller %s\r", caller);
   DEBUGPRINT_SIZEOF(ITCChannelInfo);
 
   for(size_t i = 0; i < chanInfo.size(); i++)
   {
-    DEBUGPRINT("ChanInfo[%zd].ModeNumberOfPoints=%d", i,
-               chanInfo[i].ModeNumberOfPoints);
-    DEBUGPRINT("ChanInfo[%zd].ChannelType=%d", i, chanInfo[i].ChannelType);
-    DEBUGPRINT("ChanInfo[%zd].ChannelNumber=%d", i, chanInfo[i].ChannelNumber);
-    DEBUGPRINT("ChanInfo[%zd].ChannelMode=%d", i, chanInfo[i].ChannelMode);
-    DEBUGPRINT("ChanInfo[%zd].ErrorMode=%d", i, chanInfo[i].ErrorMode);
-    DEBUGPRINT("ChanInfo[%zd].ErrorState=%d", i, chanInfo[i].ErrorState);
-    DEBUGPRINT("ChanInfo[%zd].FIFOPointer=%Id", i,
-               (UINT_PTR) chanInfo[i].FIFOPointer);
-    DEBUGPRINT("ChanInfo[%zd].FIFONumberOfPoints=%d", i,
-               chanInfo[i].FIFONumberOfPoints);
-    DEBUGPRINT("ChanInfo[%zd].ModeOfOperation=%d", i,
-               chanInfo[i].ModeOfOperation);
-    DEBUGPRINT("ChanInfo[%zd].SizeOfModeParameters=%d", i,
-               chanInfo[i].SizeOfModeParameters);
-    DEBUGPRINT("ChanInfo[%zd].ModeParameters=%Id", i,
-               (UINT_PTR) chanInfo[i].ModeParameters);
-    DEBUGPRINT("ChanInfo[%zd].SamplingIntervalFlag=%d", i,
-               chanInfo[i].SamplingIntervalFlag);
-    DEBUGPRINT("ChanInfo[%zd].SamplingRate=%g", i, chanInfo[i].SamplingRate);
-    DEBUGPRINT("ChanInfo[%zd].StartOffset=%g", i, chanInfo[i].StartOffset);
-    DEBUGPRINT("ChanInfo[%zd].Gain=%g", i, chanInfo[i].Gain);
-    DEBUGPRINT("ChanInfo[%zd].Offset=%g", i, chanInfo[i].Offset);
-    DEBUGPRINT("ChanInfo[%zd].ExternalDecimation=%d", i,
-               chanInfo[i].ExternalDecimation);
-    DEBUGPRINT("ChanInfo[%zd].HardwareUnderrunValue=%d", i,
-               chanInfo[i].HardwareUnderrunValue);
+    fprintf(xd.sstr, "ChanInfo[%d].ModeNumberOfPoints=%d\r", i,
+            chanInfo[i].ModeNumberOfPoints);
+    fprintf(xd.sstr, "ChanInfo[%d].ChannelType=%d\r", i,
+            chanInfo[i].ChannelType);
+    fprintf(xd.sstr, "ChanInfo[%d].ChannelNumber=%d\r", i,
+            chanInfo[i].ChannelNumber);
+    fprintf(xd.sstr, "ChanInfo[%d].ChannelMode=%d\r", i,
+            chanInfo[i].ChannelMode);
+    fprintf(xd.sstr, "ChanInfo[%d].ErrorMode=%d\r", i, chanInfo[i].ErrorMode);
+    fprintf(xd.sstr, "ChanInfo[%d].ErrorState=%d\r", i, chanInfo[i].ErrorState);
+    fprintf(xd.sstr, "ChanInfo[%d].FIFOPointer=%#x\r", i,
+            (UINT_PTR) chanInfo[i].FIFOPointer);
+    fprintf(xd.sstr, "ChanInfo[%d].FIFONumberOfPoints=%d\r", i,
+            chanInfo[i].FIFONumberOfPoints);
+    fprintf(xd.sstr, "ChanInfo[%d].ModeOfOperation=%d\r", i,
+            chanInfo[i].ModeOfOperation);
+    fprintf(xd.sstr, "ChanInfo[%d].SizeOfModeParameters=%d\r", i,
+            chanInfo[i].SizeOfModeParameters);
+    fprintf(xd.sstr, "ChanInfo[%d].ModeParameters=%#x\r", i,
+            (UINT_PTR) chanInfo[i].ModeParameters);
+    fprintf(xd.sstr, "ChanInfo[%d].SamplingIntervalFlag=%d\r", i,
+            chanInfo[i].SamplingIntervalFlag);
+    fprintf(xd.sstr, "ChanInfo[%d].SamplingRate=%g\r", i,
+            chanInfo[i].SamplingRate);
+    fprintf(xd.sstr, "ChanInfo[%d].StartOffset=%g\r", i,
+            chanInfo[i].StartOffset);
+    fprintf(xd.sstr, "ChanInfo[%d].Gain=%g\r", i, chanInfo[i].Gain);
+    fprintf(xd.sstr, "ChanInfo[%d].Offset=%g\r", i, chanInfo[i].Offset);
+    fprintf(xd.sstr, "ChanInfo[%d].ExternalDecimation=%d\r", i,
+            chanInfo[i].ExternalDecimation);
+    fprintf(xd.sstr, "ChanInfo[%d].HardwareUnderrunValue=%d\r", i,
+            chanInfo[i].HardwareUnderrunValue);
   }
 }
 
 void DebugOut(std::string caller, std::vector<ITCChannelDataEx> chanDataEx)
 {
+  using namespace fmt;
+
   if(!debuggingEnabled)
     return;
 
-  DEBUGPRINT("Caller %s", caller.c_str());
+  XOPNoticeOnDestruct xd;
+  fprintf(xd.sstr, "Caller %s\r", caller);
   DEBUGPRINT_SIZEOF(ITCChannelDataEx);
 
   for(size_t i = 0; i < chanDataEx.size(); i++)
   {
-    DEBUGPRINT("chanDataEx[%zd].ChannelType=%d", i, chanDataEx[i].ChannelType);
-    DEBUGPRINT("chanDataEx[%zd].Command=%d", i, chanDataEx[i].Command);
-    DEBUGPRINT("chanDataEx[%zd].ChannelNumber=%d", i,
-               chanDataEx[i].ChannelNumber);
-    DEBUGPRINT("chanDataEx[%zd].Status=%d", i, chanDataEx[i].Status);
-    DEBUGPRINT("chanDataEx[%zd].Value=%d", i, chanDataEx[i].Value);
-    DEBUGPRINT("chanDataEx[%zd].DataPointer=%Id", i,
-               (UINT_PTR) chanDataEx[i].DataPointer);
+    fprintf(xd.sstr, "chanDataEx[%d].ChannelType=%d\r", i,
+            chanDataEx[i].ChannelType);
+    fprintf(xd.sstr, "chanDataEx[%d].Command=%d\r", i, chanDataEx[i].Command);
+    fprintf(xd.sstr, "chanDataEx[%d].ChannelNumber=%d\r", i,
+            chanDataEx[i].ChannelNumber);
+    fprintf(xd.sstr, "chanDataEx[%d].Status=%d\r", i, chanDataEx[i].Status);
+    fprintf(xd.sstr, "chanDataEx[%d].Value=%d\r", i, chanDataEx[i].Value);
+    fprintf(xd.sstr, "chanDataEx[%d].DataPointer=%#x\r", i,
+            (UINT_PTR) chanDataEx[i].DataPointer);
   }
 }
 
 void DebugOut(std::string caller, ITCPublicConfig config)
 {
+  using namespace fmt;
+
   if(!debuggingEnabled)
     return;
 
-  DEBUGPRINT("Caller %s", caller.c_str());
+  XOPNoticeOnDestruct xd;
+
+  fprintf(xd.sstr, "Caller %s\r", caller);
   DEBUGPRINT_SIZEOF(ITCPublicConfig);
 
-  DEBUGPRINT("config.DigitalInputModed=[%d]", config.DigitalInputMode);
-  DEBUGPRINT("config.ExternalTriggerModed=[%d]", config.ExternalTriggerMode);
-  DEBUGPRINT("config.ExternalTriggerd=[%d]", config.ExternalTrigger);
-  DEBUGPRINT("config.EnableExternalClockd=[%d]", config.EnableExternalClock);
-  DEBUGPRINT("config.DACShiftValued=[%d]", config.DACShiftValue);
-  DEBUGPRINT("config.InputRanged=[%d]", config.InputRange);
-  DEBUGPRINT("config.TriggerOutPositiond=[%d]", config.TriggerOutPosition);
-  DEBUGPRINT("config.OutputEnabled=[%d]", config.OutputEnable);
-  DEBUGPRINT("config.SequenceLengthd=[%d]", config.SequenceLength);
-  DEBUGPRINT("config.Sequenced=[%zd]", (UINT_PTR) config.Sequence);
-  DEBUGPRINT("config.SequenceLengthInd=[%d]", config.SequenceLengthIn);
-  DEBUGPRINT("config.SequenceInd=[%zd]", (UINT_PTR) config.SequenceIn);
-  DEBUGPRINT("config.ResetFIFOFlagd=[%d]", config.ResetFIFOFlag);
-  DEBUGPRINT("config.ControlLightd=[%d]", config.ControlLight);
-  DEBUGPRINT("config.SamplingIntervald=[%g]", config.SamplingInterval);
+  fprintf(xd.sstr, "config.DigitalInputModed=[%d]\r", config.DigitalInputMode);
+  fprintf(xd.sstr, "config.ExternalTriggerModed=[%d]\r",
+          config.ExternalTriggerMode);
+  fprintf(xd.sstr, "config.ExternalTriggerd=[%d]\r", config.ExternalTrigger);
+  fprintf(xd.sstr, "config.EnableExternalClockd=[%d]\r",
+          config.EnableExternalClock);
+  fprintf(xd.sstr, "config.DACShiftValued=[%d]\r", config.DACShiftValue);
+  fprintf(xd.sstr, "config.InputRanged=[%d]\r", config.InputRange);
+  fprintf(xd.sstr, "config.TriggerOutPositiond=[%d]\r",
+          config.TriggerOutPosition);
+  fprintf(xd.sstr, "config.OutputEnabled=[%d]\r", config.OutputEnable);
+  fprintf(xd.sstr, "config.SequenceLengthd=[%d]\r", config.SequenceLength);
+  fprintf(xd.sstr, "config.Sequenced=[%d]\r", (UINT_PTR) config.Sequence);
+  fprintf(xd.sstr, "config.SequenceLengthInd=[%d]\r", config.SequenceLengthIn);
+  fprintf(xd.sstr, "config.SequenceInd=[%d]\r", (UINT_PTR) config.SequenceIn);
+  fprintf(xd.sstr, "config.ResetFIFOFlagd=[%d]\r", config.ResetFIFOFlag);
+  fprintf(xd.sstr, "config.ControlLightd=[%d]\r", config.ControlLight);
+  fprintf(xd.sstr, "config.SamplingIntervald=[%g]\r", config.SamplingInterval);
 }
 
 void DebugOut(std::string caller, GlobalDeviceInfo deviceInfo)
 {
+  using namespace fmt;
+
   if(!debuggingEnabled)
     return;
 
-  DEBUGPRINT("Caller %s", caller.c_str());
+  XOPNoticeOnDestruct xd;
+  fprintf(xd.sstr, "Caller %s\r", caller);
   DEBUGPRINT_SIZEOF(GlobalDeviceInfo);
 
-  DEBUGPRINT("deviceInfo.DeviceType=[%d]", deviceInfo.DeviceType)
-  DEBUGPRINT("deviceInfo.DeviceNumber=[%d]", deviceInfo.DeviceNumber)
-  DEBUGPRINT("deviceInfo.PrimaryFIFOSize=[%d]", deviceInfo.PrimaryFIFOSize)
-  DEBUGPRINT("deviceInfo.SecondaryFIFOSize=[%d]", deviceInfo.SecondaryFIFOSize)
+  fprintf(xd.sstr, "deviceInfo.DeviceType=[%d]\r", deviceInfo.DeviceType);
+  fprintf(xd.sstr, "deviceInfo.DeviceNumber=[%d]\r", deviceInfo.DeviceNumber);
+  fprintf(xd.sstr, "deviceInfo.PrimaryFIFOSize=[%d]\r",
+          deviceInfo.PrimaryFIFOSize);
+  fprintf(xd.sstr, "deviceInfo.SecondaryFIFOSize=[%d]\r",
+          deviceInfo.SecondaryFIFOSize);
 
-  DEBUGPRINT("deviceInfo.LoadedFunction=[%d]", deviceInfo.LoadedFunction)
-  DEBUGPRINT("deviceInfo.SoftKey=[%d]", deviceInfo.SoftKey)
-  DEBUGPRINT("deviceInfo.Mode=[%d]", deviceInfo.Mode)
-  DEBUGPRINT("deviceInfo.MasterSerialNumber=[%d]",
-             deviceInfo.MasterSerialNumber)
+  fprintf(xd.sstr, "deviceInfo.LoadedFunction=[%d]\r",
+          deviceInfo.LoadedFunction);
+  fprintf(xd.sstr, "deviceInfo.SoftKey=[%d]\r", deviceInfo.SoftKey);
+  fprintf(xd.sstr, "deviceInfo.Mode=[%d]\r", deviceInfo.Mode);
+  fprintf(xd.sstr, "deviceInfo.MasterSerialNumber=[%d]\r",
+          deviceInfo.MasterSerialNumber);
 
-  DEBUGPRINT("deviceInfo.SecondarySerialNumber=[%d]",
-             deviceInfo.SecondarySerialNumber)
-  DEBUGPRINT("deviceInfo.HostSerialNumber=[%d]", deviceInfo.HostSerialNumber)
-  DEBUGPRINT("deviceInfo.NumberOfDACs=[%d]", deviceInfo.NumberOfDACs)
-  DEBUGPRINT("deviceInfo.NumberOfADCs=[%d]", deviceInfo.NumberOfADCs)
+  fprintf(xd.sstr, "deviceInfo.SecondarySerialNumber=[%d]\r",
+          deviceInfo.SecondarySerialNumber);
+  fprintf(xd.sstr, "deviceInfo.HostSerialNumber=[%d]\r",
+          deviceInfo.HostSerialNumber);
+  fprintf(xd.sstr, "deviceInfo.NumberOfDACs=[%d]\r", deviceInfo.NumberOfDACs);
+  fprintf(xd.sstr, "deviceInfo.NumberOfADCs=[%d]\r", deviceInfo.NumberOfADCs);
 
-  DEBUGPRINT("deviceInfo.NumberOfDOs=[%d]", deviceInfo.NumberOfDOs)
-  DEBUGPRINT("deviceInfo.NumberOfDIs=[%d]", deviceInfo.NumberOfDIs)
-  DEBUGPRINT("deviceInfo.NumberOfAUXOs=[%d]", deviceInfo.NumberOfAUXOs)
-  DEBUGPRINT("deviceInfo.NumberOfAUXIs=[%d]", deviceInfo.NumberOfAUXIs)
+  fprintf(xd.sstr, "deviceInfo.NumberOfDOs=[%d]\r", deviceInfo.NumberOfDOs);
+  fprintf(xd.sstr, "deviceInfo.NumberOfDIs=[%d]\r", deviceInfo.NumberOfDIs);
+  fprintf(xd.sstr, "deviceInfo.NumberOfAUXOs=[%d]\r", deviceInfo.NumberOfAUXOs);
+  fprintf(xd.sstr, "deviceInfo.NumberOfAUXIs=[%d]\r", deviceInfo.NumberOfAUXIs);
 
-  DEBUGPRINT("deviceInfo.MinimumSamplingInterval=[%d]",
-             deviceInfo.MinimumSamplingInterval)
-  DEBUGPRINT("deviceInfo.MinimumSamplingStep=[%d]",
-             deviceInfo.MinimumSamplingStep)
-  DEBUGPRINT("deviceInfo.FirmwareVersion0=[%d]", deviceInfo.FirmwareVersion0)
-  DEBUGPRINT("deviceInfo.Reserved1=[%d]", deviceInfo.Reserved1)
+  fprintf(xd.sstr, "deviceInfo.MinimumSamplingInterval=[%d]\r",
+          deviceInfo.MinimumSamplingInterval);
+  fprintf(xd.sstr, "deviceInfo.MinimumSamplingStep=[%d]\r",
+          deviceInfo.MinimumSamplingStep);
+  fprintf(xd.sstr, "deviceInfo.FirmwareVersion0=[%d]\r",
+          deviceInfo.FirmwareVersion0);
+  fprintf(xd.sstr, "deviceInfo.Reserved1=[%d]\r", deviceInfo.Reserved1);
 }
 
 void DebugOut(std::string caller, ITCStatus status)
 {
+  using namespace fmt;
+
   if(!debuggingEnabled)
     return;
 
-  DEBUGPRINT("Caller %s", caller.c_str());
+  XOPNoticeOnDestruct xd;
+  fprintf(xd.sstr, "Caller %s\r", caller);
   DEBUGPRINT_SIZEOF(ITCStatus);
 
-  DEBUGPRINT("status.CommandStatus=[%d]", status.CommandStatus);
-  DEBUGPRINT("status.RunningMode=[%d]", status.RunningMode);
-  DEBUGPRINT("status.Overflow=[%d]", status.Overflow);
-  DEBUGPRINT("status.Clipping=[%d]", status.Clipping);
-  DEBUGPRINT("status.State=[%d]", status.State);
-  DEBUGPRINT("status.Reserved0=[%d]", status.Reserved0);
-  DEBUGPRINT("status.Reserved1=[%d]", status.Reserved1);
-  DEBUGPRINT("status.Reserved2=[%d]", status.Reserved2);
-  DEBUGPRINT("status.TotalSeconds=[%g]", status.TotalSeconds);
-  DEBUGPRINT("status.RunSeconds=[%g]", status.RunSeconds);
+  fprintf(xd.sstr, "status.CommandStatus=[%d]\r", status.CommandStatus);
+  fprintf(xd.sstr, "status.RunningMode=[%d]\r", status.RunningMode);
+  fprintf(xd.sstr, "status.Overflow=[%d]\r", status.Overflow);
+  fprintf(xd.sstr, "status.Clipping=[%d]\r", status.Clipping);
+  fprintf(xd.sstr, "status.State=[%d]\r", status.State);
+  fprintf(xd.sstr, "status.Reserved0=[%d]\r", status.Reserved0);
+  fprintf(xd.sstr, "status.Reserved1=[%d]\r", status.Reserved1);
+  fprintf(xd.sstr, "status.Reserved2=[%d]\r", status.Reserved2);
+  fprintf(xd.sstr, "status.TotalSeconds=[%g]\r", status.TotalSeconds);
+  fprintf(xd.sstr, "status.RunSeconds=[%g]\r", status.RunSeconds);
 }
 
 void DebugOut(std::string caller, ITCGlobalConfig config)
 {
+  using namespace fmt;
+
   if(!debuggingEnabled)
     return;
 
-  DEBUGPRINT("Caller %s", caller.c_str());
+  XOPNoticeOnDestruct xd;
+  fprintf(xd.sstr, "Caller %s\r", caller);
   DEBUGPRINT_SIZEOF(ITCGlobalConfig);
 
-  DEBUGPRINT("config.SoftwareFIFOSize=[%d]", config.SoftwareFIFOSize);
-  DEBUGPRINT("config.HardwareFIFOSize_A=[%d]", config.HardwareFIFOSize_A);
-  DEBUGPRINT("config.HardwareFIFOSize_B=[%d]", config.HardwareFIFOSize_B);
-  DEBUGPRINT("config.TransferSizeLimitation=[%d]",
-             config.TransferSizeLimitation);
-  DEBUGPRINT("config.Reserved0=[%d]", config.Reserved0);
-  DEBUGPRINT("config.Reserved1=[%d]", config.Reserved1);
-  DEBUGPRINT("config.Reserved2=[%d]", config.Reserved2);
-  DEBUGPRINT("config.Reserved3=[%d]", config.Reserved3);
+  fprintf(xd.sstr, "config.SoftwareFIFOSize=[%d]\r", config.SoftwareFIFOSize);
+  fprintf(xd.sstr, "config.HardwareFIFOSize_A=[%d]\r",
+          config.HardwareFIFOSize_A);
+  fprintf(xd.sstr, "config.HardwareFIFOSize_B=[%d]\r",
+          config.HardwareFIFOSize_B);
+  fprintf(xd.sstr, "config.TransferSizeLimitation=[%d]\r",
+          config.TransferSizeLimitation);
+  fprintf(xd.sstr, "config.Reserved0=[%d]\r", config.Reserved0);
+  fprintf(xd.sstr, "config.Reserved1=[%d]\r", config.Reserved1);
+  fprintf(xd.sstr, "config.Reserved2=[%d]\r", config.Reserved2);
+  fprintf(xd.sstr, "config.Reserved3=[%d]\r", config.Reserved3);
 }
 
 void DebugOut(std::string caller, ITCStartInfo config)
 {
+  using namespace fmt;
+
   if(!debuggingEnabled)
     return;
 
-  DEBUGPRINT("Caller %s", caller.c_str());
+  XOPNoticeOnDestruct xd;
+
+  fprintf(xd.sstr, "Caller %s\r", caller);
   DEBUGPRINT_SIZEOF(ITCStartInfo);
 
-  DEBUGPRINT("config.ExternalTrigger=[%d]", config.ExternalTrigger);
-  DEBUGPRINT("config.OutputEnable=[%d]", config.OutputEnable);
-  DEBUGPRINT("config.StopOnOverflow=[%d]", config.StopOnOverflow);
-  DEBUGPRINT("config.StopOnUnderrun=[%d]", config.StopOnUnderrun);
-  DEBUGPRINT("config.RunningOption=[%d]", config.RunningOption);
-  DEBUGPRINT("config.ResetFIFOs=[%d]", config.ResetFIFOs);
-  DEBUGPRINT("config.NumberOf640usToRun=[%d]", config.NumberOf640usToRun);
-  DEBUGPRINT("config.Reserved3=[%d]", config.Reserved3);
-  DEBUGPRINT("config.StartTime=[%g]", config.StartTime);
-  DEBUGPRINT("config.StopTime=[%g]", config.StopTime);
+  fprintf(xd.sstr, "config.ExternalTrigger=[%d]\r", config.ExternalTrigger);
+  fprintf(xd.sstr, "config.OutputEnable=[%d]\r", config.OutputEnable);
+  fprintf(xd.sstr, "config.StopOnOverflow=[%d]\r", config.StopOnOverflow);
+  fprintf(xd.sstr, "config.StopOnUnderrun=[%d]\r", config.StopOnUnderrun);
+  fprintf(xd.sstr, "config.RunningOption=[%d]\r", config.RunningOption);
+  fprintf(xd.sstr, "config.ResetFIFOs=[%d]\r", config.ResetFIFOs);
+  fprintf(xd.sstr, "config.NumberOf640usToRun=[%d]\r",
+          config.NumberOf640usToRun);
+  fprintf(xd.sstr, "config.Reserved3=[%d]\r", config.Reserved3);
+  fprintf(xd.sstr, "config.StartTime=[%g]\r", config.StartTime);
+  fprintf(xd.sstr, "config.StopTime=[%g]\r", config.StopTime);
 }
 
 } // anonymous namespace

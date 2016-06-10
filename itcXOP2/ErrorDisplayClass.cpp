@@ -1,4 +1,6 @@
 #include "ErrorDisplayClass.h"
+
+#include "ConcurrentXOPNotice.h"
 #include "XOPStandardHeaders.h" // Include ANSI headers, Mac headers, IgorXOP.h, XOP.h and XOPSupport.h
 
 thread_local bool ErrorDisplayClass::gDisplayErrors = true;
@@ -34,6 +36,6 @@ void ErrorDisplayClass::WriteToCommandWindow(const std::string &message)
 {
   if(shouldShowError())
   {
-    XOPNotice((message + "\n").c_str());
+    XOPNotice_ts((message + "\n"));
   }
 }

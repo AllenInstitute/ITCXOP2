@@ -3,6 +3,7 @@
 #include "itcXOP2.h"
 #include "DeviceIDClass.h"
 #include "RegisterOperations.h"
+#include "ConcurrentXOPNotice.h"
 
 /*	XOPEntry()
 
@@ -20,6 +21,9 @@ extern "C" void XOPEntry(void)
     // Close all devices when opening a new experiment, or when closing an
     // experiment.
     CloseAllDevices();
+    break;
+  case IDLE:
+    OutputQueuedNotices();
     break;
   }
   SetXOPResult(result);
@@ -43,6 +47,7 @@ HOST_IMPORT int XOPMain(IORecHandle ioRecHandle) // The use of XOPMain rather
 
   XOPInit(ioRecHandle);  // Do standard XOP initialization.
   SetXOPEntry(XOPEntry); // Set entry point for future calls.
+  SetXOPType(RESIDENT | IDLES);
 
   if(igorVersion < MIN_IGOR_VERSION)
   {                         // Check Igor version
