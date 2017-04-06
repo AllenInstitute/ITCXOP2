@@ -19,8 +19,8 @@ bool ReadConvertVoltageFlag(T *p)
   }
 
   // No flag encountered
-  // -> Do not convert value
-  return false;
+  // -> Convert value
+  return true;
 }
 
 template <typename T>
