@@ -110,7 +110,6 @@ extern "C" int ExecuteITCInitialize2(ITCInitialize2RuntimeParamsPtr p)
     // Check device type
     if(DeviceType != ITCDeviceTypeEnum::ITC1600)
     {
-      // TODO: Custom error code:
       throw IgorException(R_FLAG_REQUIRES_ITC1600);
     }
 
