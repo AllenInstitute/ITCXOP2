@@ -43,14 +43,12 @@ extern "C" int ExecuteITCInitialize2(ITCInitialize2RuntimeParamsPtr p)
     lHWFunction.Mode = 0;
   }
 
+  std::string file;
   if(p->UFlagEncountered)
   {
     // Parameter: p->file
-    std::string file = getStringFromHandle(p->file);
-    // Copy the string to a (mutable) buffer
-    char buffer[256] = {};
-    std::copy(file.begin(), file.end(), buffer);
-    lHWFunction.U2F_File = buffer;
+    file = getStringFromHandle(p->file);
+    lHWFunction.U2F_File = const_cast<char*>(file.c_str());
   }
   else
   {
