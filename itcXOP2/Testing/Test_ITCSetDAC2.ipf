@@ -156,7 +156,7 @@ Static Function testVoltage()
 		// Test without flag
 		//
 		Try
-			ITCSetDAC2 defaultChannel, currVal_DACUnits; AbortOnRTE
+			ITCSetDAC2 defaultChannel, currVal_V; AbortOnRTE
 			// If we expected an error, but didn't get one, FAIL()
 			If( expectedITCError != 0 || expectedITCXOPError != 0 )
 				FAIL()
