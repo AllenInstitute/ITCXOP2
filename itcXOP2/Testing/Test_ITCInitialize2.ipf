@@ -125,9 +125,9 @@ End
 static Function testUnsupportedFlags()
 	Variable error
 
-	Variable D_FLAG_REQUIRES_ITC1600 = 10024
-	Variable H_FLAG_REQUIRES_ITC1600 = 10025
-	Variable R_FLAG_REQUIRES_ITC1600 = 10026
+	Variable D_FLAG_REQUIRES_ITC1600 = 10021
+	Variable H_FLAG_REQUIRES_ITC1600 = 10022
+	Variable R_FLAG_REQUIRES_ITC1600 = 10023
 
 	Try
 		ITCInitialize2 /D=0; AbortOnRTE
