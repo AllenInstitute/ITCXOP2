@@ -47,8 +47,8 @@ extern "C" int ExecuteITCInitialize2(ITCInitialize2RuntimeParamsPtr p)
   if(p->UFlagEncountered)
   {
     // Parameter: p->file
-    file = getStringFromHandle(p->file);
-    lHWFunction.U2F_File = const_cast<char*>(file.c_str());
+    file                 = getStringFromHandle(p->file);
+    lHWFunction.U2F_File = const_cast<char *>(file.c_str());
   }
   else
   {
