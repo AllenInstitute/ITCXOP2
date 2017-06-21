@@ -29,8 +29,8 @@ Required additional software:
 
 Steps to compile:
 
-- Extract the XOPSupport Toolkit into the folder `XOPSupport`
-- Extract the fmt library into folder `fmt`
+- Extract the XOPSupport Toolkit into the folder `src/XOPSupport`
+- Extract the fmt library into folder `src/fmt`
 - Open VC2015/itcXOP2.sln and compile
 
 Steps to execute the test suite:
