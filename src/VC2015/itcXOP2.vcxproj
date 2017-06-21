@@ -345,31 +345,31 @@
     <None Include="..\itcXOP2WinCustom.rc" />
   </ItemGroup>
   <ItemGroup>
-    <Library Include="..\..\XOPSupport\IGOR.lib">
+    <Library Include="..\XOPSupport\IGOR.lib">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
       <FileType>Document</FileType>
     </Library>
-    <Library Include="..\..\XOPSupport\IGOR64.lib">
+    <Library Include="..\XOPSupport\IGOR64.lib">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <FileType>Document</FileType>
     </Library>
-    <Library Include="..\..\XOPSupport\VC\XOPSupport.lib">
+    <Library Include="..\XOPSupport\VC\XOPSupport.lib">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
       <FileType>Document</FileType>
     </Library>
-    <Library Include="..\..\XOPSupport\VC\XOPSupport64.lib">
+    <Library Include="..\XOPSupport\VC\XOPSupport64.lib">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <FileType>Document</FileType>
     </Library>
-    <Library Include="..\ITCMM32.lib">
+    <Library Include="..\..\itcmm\ITCMM32.lib">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </Library>
-    <Library Include="..\ITCMM64.lib">
+    <Library Include="..\..\itcmm\ITCMM64.lib">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </Library>
