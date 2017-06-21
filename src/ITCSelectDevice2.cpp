@@ -1,6 +1,8 @@
 #include "ITC_StandardHeaders.h"
 #include "DeviceIDClass.h"
 
+// This file is part of the `ITCXOP2` project and licensed under BSD-3-Clause.
+
 // Operation template: ITCSelectDevice2/Z[=number:displayErrors] number:deviceID
 extern "C" int ExecuteITCSelectDevice2(ITCSelectDevice2RuntimeParamsPtr p)
 {

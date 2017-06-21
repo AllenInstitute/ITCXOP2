@@ -1,5 +1,7 @@
 #!/bin/sh
 
+# This file is part of the `ITCXOP2` project and licensed under BSD-3-Clause.
+
 set -e
 
 cp VC2015/itcXOP2.xop    ../../../XOPs-IP7/

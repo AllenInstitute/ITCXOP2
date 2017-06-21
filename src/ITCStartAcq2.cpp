@@ -1,5 +1,7 @@
 #include "ITC_StandardHeaders.h"
 
+// This file is part of the `ITCXOP2` project and licensed under BSD-3-Clause.
+
 // Operation template:
 // ITCStartAcq2/Z[=number:displayErrors]/DEV=number:deviceID/R[=number:resetFIFOs]/F[=number:fastPointerUpdate]/OE=number:outputEnable/EXT=number:externalTrigger/STPO=number:stopOnOverflow/STPU=number:stopOnUnderrun/STRT=number:startTime/STOP=number:stopTime
 

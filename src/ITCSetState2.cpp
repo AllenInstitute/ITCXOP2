@@ -1,5 +1,7 @@
 #include "ITC_StandardHeaders.h"
 
+// This file is part of the `ITCXOP2` project and licensed under BSD-3-Clause.
+
 // Operation template:
 // ITCSetState2/Z[=number:displayErrors]/S=number:switchCommand/DEV=number:deviceID
 

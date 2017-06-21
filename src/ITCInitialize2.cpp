@@ -1,5 +1,7 @@
 #include "ITC_StandardHeaders.h"
 
+// This file is part of the `ITCXOP2` project and licensed under BSD-3-Clause.
+
 // Operation template: ITCInitialize2/Z[=number:displayErrors]
 // /DEV=number:deviceID/M=number:mode/U=string:file/F=number:fFunc/D=number:dFunc/H=number:hFunc/R=number:rFunc
 

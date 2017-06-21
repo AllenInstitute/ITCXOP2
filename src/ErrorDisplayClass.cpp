@@ -1,5 +1,7 @@
 #include "ErrorDisplayClass.h"
 
+// This file is part of the `ITCXOP2` project and licensed under BSD-3-Clause.
+
 #include "ConcurrentXOPNotice.h"
 #include "XOPStandardHeaders.h" // Include ANSI headers, Mac headers, IgorXOP.h, XOP.h and XOPSupport.h
 

@@ -2,6 +2,8 @@
 
 #include <string>
 
+// This file is part of the `ITCXOP2` project and licensed under BSD-3-Clause.
+
 /// Thread safe version of XOPNotice, even for private threads
 ///
 /// Remarks:

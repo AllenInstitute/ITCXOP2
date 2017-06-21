@@ -1,6 +1,8 @@
 #include "ITC_StandardHeaders.h"
 #include "ITCDeviceTypeEnum.h"
 
+// This file is part of the `ITCXOP2` project and licensed under BSD-3-Clause.
+
 ITCDeviceTypeEnum MakeITCDeviceEnum(DWORD DeviceTypeInt)
 {
   switch(DeviceTypeInt)

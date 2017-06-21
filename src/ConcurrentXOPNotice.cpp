@@ -1,6 +1,8 @@
 #include "ConcurrentQueue.h"
 #include "XOPStandardHeaders.h"
 
+// This file is part of the `ITCXOP2` project and licensed under BSD-3-Clause.
+
 ConcurrentQueue<std::string> queue;
 
 void XOPNotice_ts(std::string str)

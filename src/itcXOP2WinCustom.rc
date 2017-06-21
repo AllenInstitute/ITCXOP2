@@ -6,6 +6,8 @@
 
 #include "XOPResources.h"			// Defines XOP-specific symbols.
 
+// This file is part of the `ITCXOP2` project and licensed under BSD-3-Clause.
+
 // Custom error messages
 1100 STR#
 BEGIN

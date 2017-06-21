@@ -1,5 +1,7 @@
 #pragma once
 
+// This file is part of the `ITCXOP2` project and licensed under BSD-3-Clause.
+
 template <typename T>
 bool ReadConvertVoltageFlag(T *p)
 {

@@ -4,6 +4,8 @@
 #include <Windows.h>
 #include "itcmm.h"
 
+// This file is part of the `ITCXOP2` project and licensed under BSD-3-Clause.
+
 enum class ITCDeviceTypeEnum : DWORD
 {
   ITC16    = ITC16_ID,

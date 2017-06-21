@@ -1,7 +1,6 @@
 #pragma once
-/*
-  itcXOP2.h -- equates for itcXOP2 XOP
-*/
+
+// This file is part of the `ITCXOP2` project and licensed under BSD-3-Clause.
 
 // Required Igor versions
 #ifdef _WIN64

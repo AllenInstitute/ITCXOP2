@@ -1,5 +1,7 @@
 #include "ITC_StandardHeaders.h"
 
+// This file is part of the `ITCXOP2` project and licensed under BSD-3-Clause.
+
 // Operation template: ITCGetChannelConfig2/Z[=number:displayErrors]
 // /DEV=number:deviceID/CHN=number:channelTypeNumeric/CHS=string:channelTypeString/O/FREE
 // number:channelNumber, DataFolderAndName:{dest,real}

@@ -9,6 +9,8 @@
 #include "fmt/ostream.h"
 #include "ConcurrentXOPNotice.h"
 
+// This file is part of the `ITCXOP2` project and licensed under BSD-3-Clause.
+
 #define DEBUGPRINT_SIZEOF(A) fprintf(xd.sstr, "sizeof(" #A ")=%d\r", sizeof(A));
 
 namespace

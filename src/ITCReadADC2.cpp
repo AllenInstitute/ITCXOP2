@@ -1,6 +1,8 @@
 #include "ITC_StandardHeaders.h"
 #include "HelperFunctions_DAC.h"
 
+// This file is part of the `ITCXOP2` project and licensed under BSD-3-Clause.
+
 // Operation template:
 // ITCReadADC2/Z[=number:displayErrors]/DEV=number:deviceID/V[=number:voltageOn]/C[=number:calibrateOn]
 // number:channelNumber

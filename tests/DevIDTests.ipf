@@ -1,6 +1,8 @@
 #pragma rtGlobals=3		// Use modern global access method and strict wave access.
 #pragma ModuleName=DevIDTests
 
+// This file is part of the `ITCXOP2` project and licensed under BSD-3-Clause.
+
 StrConstant lastDevIDVariableName = root:lastDevNum
 
 Function DevIDTests_devID_Prototype(devID)

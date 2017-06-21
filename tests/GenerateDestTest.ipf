@@ -2,6 +2,8 @@
 #pragma rtGlobals=3		// Use modern global access method and strict wave access.
 #pragma ModuleName=GenerateDestTest
 
+// This file is part of the `ITCXOP2` project and licensed under BSD-3-Clause.
+
 // ASSUMPTIONS
 // - The destination wave is the final parameter
 // - The command acceps /O and /FREE

@@ -1,6 +1,8 @@
 #include "ITC_StandardHeaders.h"
 #include <algorithm>
 
+// This file is part of the `ITCXOP2` project and licensed under BSD-3-Clause.
+
 namespace
 {
 

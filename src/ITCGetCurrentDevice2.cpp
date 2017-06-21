@@ -1,4 +1,7 @@
 #include "ITC_StandardHeaders.h"
+
+// This file is part of the `ITCXOP2` project and licensed under BSD-3-Clause.
+
 // Operation template: ITCGetCurrentDevice2/Z[=number:displayErrors]
 
 extern "C" int

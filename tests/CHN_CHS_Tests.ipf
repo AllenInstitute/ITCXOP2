@@ -1,7 +1,10 @@
 #pragma rtGlobals=3		// Use modern global access method and strict wave access.
 #pragma ModuleName=CHN_CHS_Tests
 
+// This file is part of the `ITCXOP2` project and licensed under BSD-3-Clause.
+
 /// Check all valid combinations of CHN and channelNumber do not produce an error
+
 /// Check invalid values for CHN, invalid values for CHS do produce an error.
 
 

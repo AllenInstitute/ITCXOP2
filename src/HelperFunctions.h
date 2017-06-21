@@ -12,6 +12,8 @@
 #undef min
 #undef max
 
+// This file is part of the `ITCXOP2` project and licensed under BSD-3-Clause.
+
 extern thread_local bool debuggingEnabled;
 
 template <class T>

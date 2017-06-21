@@ -1,5 +1,7 @@
 #pragma rtGlobals=3		// Use modern global access method and strict wave access.
 
+// This file is part of the `ITCXOP2` project and licensed under BSD-3-Clause.
+
 Function Run()
 	RunTest(WinList("Test_*.ipf", ";", "WIN:128"))
 End

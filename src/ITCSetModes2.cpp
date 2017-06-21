@@ -1,5 +1,7 @@
 #include "ITC_StandardHeaders.h"
 
+// This file is part of the `ITCXOP2` project and licensed under BSD-3-Clause.
+
 // Operation template:
 // ITCSetModes2/Z[=number:displayErrors]/DEV=number:deviceID/I=number:DigitalInputMode/E=number:ExternalTriggerMode/T=number:ExternalTrigger/C[=number:EnableExternalClock]/D=number:DACShiftValue/R=number:InputRange/P=number:TriggerOutPosition/O[=number:OutputEnable]/F[=number:ResetFIFOFlag]/L=number:ControlLight/S=number:SamplingInterval
 extern "C" int ExecuteITCSetModes2(ITCSetModes2RuntimeParamsPtr p)

@@ -2,6 +2,8 @@
 #pragma rtGlobals=3		          // Use modern global access method and strict wave access.
 #pragma ModuleName=Test_ITCWriteDigital2
 
+// This file is part of the `ITCXOP2` project and licensed under BSD-3-Clause.
+
 // available from https://github.com/t-b/igor-unit-testing-framework
 #include "unit-testing"
 

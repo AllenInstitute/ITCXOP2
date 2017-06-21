@@ -1,7 +1,10 @@
 #pragma TextEncoding = "UTF-8"		// For details execute DisplayHelpTopic "The TextEncoding Pragma"
 #pragma rtGlobals=3		// Use modern global access method and strict wave access.
 
+// This file is part of the `ITCXOP2` project and licensed under BSD-3-Clause.
+
 #include ":CheckDimLabels"
+
 #include ":CHN_CHS_Tests"
 #include ":DevIDTests"
 #include ":FlagValuesTests"

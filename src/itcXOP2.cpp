@@ -5,6 +5,8 @@
 #include "RegisterOperations.h"
 #include "ConcurrentXOPNotice.h"
 
+// This file is part of the `ITCXOP2` project and licensed under BSD-3-Clause.
+
 /*	XOPEntry()
 
   This is the entry point from the host application to the XOP for all

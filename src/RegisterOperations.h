@@ -3,6 +3,8 @@
 #include "XOPStandardHeaders.h"
 #include "CustomExceptions.h"
 
+// This file is part of the `ITCXOP2` project and licensed under BSD-3-Clause.
+
 #pragma pack(2) // All structures passed to Igor are two-byte aligned.
 
 struct ITCCloseAll2RuntimeParams

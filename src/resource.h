@@ -1,7 +1,8 @@
 //{{NO_DEPENDENCIES}}
 // Microsoft Developer Studio generated include file.
 // Used by itcXOP2.rc
-//
+
+// This file is part of the `ITCXOP2` project and licensed under BSD-3-Clause.
 
 // Next default values for new objects
 //

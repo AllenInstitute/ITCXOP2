@@ -1,6 +1,8 @@
 #include "ITC_StandardHeaders.h"
 #include <numeric>
 
+// This file is part of the `ITCXOP2` project and licensed under BSD-3-Clause.
+
 // Operation template:
 // ITCGetVersions2/Z[=number:displayErrors]/DEV=number:deviceID /O /FREE
 // DataFolderAndName:{dest,text}

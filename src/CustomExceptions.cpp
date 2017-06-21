@@ -1,6 +1,8 @@
 #include "CustomExceptions.h"
 #include "itcXOP2.h"
 
+// This file is part of the `ITCXOP2` project and licensed under BSD-3-Clause.
+
 #include "itcdll.h"
 #include <sstream>
 
