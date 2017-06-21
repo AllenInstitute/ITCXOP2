@@ -4,7 +4,7 @@
 	resources that IGOR looks for in an XOP module.
 */
 
-#include "XOPResources.h"			// Defines XOP-specific symbols.
+#include "XOPSupport/XOPResources.h"			// Defines XOP-specific symbols.
 
 // This file is part of the `ITCXOP2` project and licensed under BSD-3-Clause.
 

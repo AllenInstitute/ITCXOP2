@@ -23,12 +23,12 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <Library Include="..\..\XOPSupport\IGOR.lib" />
-    <Library Include="..\..\XOPSupport\IGOR64.lib" />
-    <Library Include="..\..\XOPSupport\VC\XOPSupport.lib" />
-    <Library Include="..\..\XOPSupport\VC\XOPSupport64.lib" />
-    <Library Include="..\ITCMM32.lib" />
-    <Library Include="..\ITCMM64.lib" />
+    <Library Include="..\XOPSupport\IGOR.lib" />
+    <Library Include="..\XOPSupport\IGOR64.lib" />
+    <Library Include="..\XOPSupport\VC\XOPSupport.lib" />
+    <Library Include="..\XOPSupport\VC\XOPSupport64.lib" />
+    <Library Include="..\..\itcmm\ITCMM32.lib" />
+    <Library Include="..\..\itcmm\ITCMM64.lib" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\itcXOP2.cpp">
@@ -160,13 +160,13 @@
     <ClCompile Include="..\ConcurrentXOPNotice.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\fmt\format.cc">
+    <ClCompile Include="..\fmt\fmt\format.cc">
       <Filter>fmt</Filter>
     </ClCompile>
-    <ClCompile Include="..\fmt\ostream.cc">
+    <ClCompile Include="..\fmt\fmt\ostream.cc">
       <Filter>fmt</Filter>
     </ClCompile>
-    <ClCompile Include="..\fmt\posix.cc">
+    <ClCompile Include="..\fmt\fmt\posix.cc">
       <Filter>fmt</Filter>
     </ClCompile>
   </ItemGroup>
@@ -216,22 +216,22 @@
     <ClInclude Include="..\ConcurrentXOPNotice.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\fmt\format.h">
+    <ClInclude Include="..\fmt\fmt\format.h">
       <Filter>fmt</Filter>
     </ClInclude>
-    <ClInclude Include="..\fmt\ostream.h">
+    <ClInclude Include="..\fmt\fmt\ostream.h">
       <Filter>fmt</Filter>
     </ClInclude>
-    <ClInclude Include="..\fmt\posix.h">
+    <ClInclude Include="..\fmt\fmt\posix.h">
       <Filter>fmt</Filter>
     </ClInclude>
-    <ClInclude Include="..\fmt\printf.h">
+    <ClInclude Include="..\fmt\fmt\printf.h">
       <Filter>fmt</Filter>
     </ClInclude>
-    <ClInclude Include="..\fmt\string.h">
+    <ClInclude Include="..\fmt\fmt\string.h">
       <Filter>fmt</Filter>
     </ClInclude>
-    <ClInclude Include="..\fmt\time.h">
+    <ClInclude Include="..\fmt\fmt\time.h">
       <Filter>fmt</Filter>
     </ClInclude>
   </ItemGroup>
