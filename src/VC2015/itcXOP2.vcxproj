@@ -63,16 +63,16 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\XOP\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(Configuration)\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\..\XOP\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(Platform)\$(Configuration)\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\XOP\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(Configuration)\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\..\XOP\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(Platform)\$(Configuration)\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</LinkIncremental>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">itcXOP2</TargetName>
@@ -121,10 +121,10 @@
     </ResourceCompile>
     <Link>
       <AdditionalDependencies>version.lib;shlwapi.lib;%(AdditionalDependencies);legacy_stdio_definitions.lib</AdditionalDependencies>
-      <OutputFile>itcXOP2.xop</OutputFile>
+      <OutputFile>..\..\XOP\itcXOP2.xop</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
-      <ProgramDatabaseFile>$(IntDir)$(TargetName).pdb</ProgramDatabaseFile>
+      <ProgramDatabaseFile>../../PDB/$(TargetName).pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <LargeAddressAware>true</LargeAddressAware>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
@@ -173,10 +173,10 @@
     </ResourceCompile>
     <Link>
       <AdditionalDependencies>version.lib;shlwapi.lib;%(AdditionalDependencies);legacy_stdio_definitions.lib; Lz32.lib;Winmm.lib</AdditionalDependencies>
-      <OutputFile>itcXOP2-64.xop</OutputFile>
+      <OutputFile>..\..\XOP\itcXOP2-64.xop</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
-      <ProgramDatabaseFile>$(IntDir)$(TargetName).pdb</ProgramDatabaseFile>
+      <ProgramDatabaseFile>../../PDB/$(TargetName).pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <LargeAddressAware>true</LargeAddressAware>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
@@ -225,11 +225,11 @@
     </ResourceCompile>
     <Link>
       <AdditionalDependencies>version.lib;shlwapi.lib;%(AdditionalDependencies);legacy_stdio_definitions.lib; Lz32.lib;Winmm.lib</AdditionalDependencies>
-      <OutputFile>itcXOP2.xop</OutputFile>
+      <OutputFile>..\..\XOP\itcXOP2.xop</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>$(IntDir)$(TargetName).pdb</ProgramDatabaseFile>
+      <ProgramDatabaseFile>../../PDB/$(TargetName).pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <LargeAddressAware>true</LargeAddressAware>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
@@ -277,11 +277,11 @@
     </ResourceCompile>
     <Link>
       <AdditionalDependencies>version.lib;shlwapi.lib;%(AdditionalDependencies);legacy_stdio_definitions.lib; Lz32.lib;Winmm.lib</AdditionalDependencies>
-      <OutputFile>itcXOP2-64.xop</OutputFile>
+      <OutputFile>..\..\XOP\itcXOP2-64.xop</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>$(IntDir)$(TargetName).pdb</ProgramDatabaseFile>
+      <ProgramDatabaseFile>../../PDB/$(TargetName).pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <LargeAddressAware>true</LargeAddressAware>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
