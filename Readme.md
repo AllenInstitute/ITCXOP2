@@ -1,5 +1,7 @@
 # ITC XOP2
 
+## Overview
+
 This Igor Pro extension ("XOP") is a complete rewrite of the original ITC XOP
 from [HEKA](http://heka.com/downloads/downloads_main.html#down_xops).
 
@@ -15,6 +17,17 @@ Compared to the original ITC XOP it has the following enhancements:
     per channel
   - Updated and enhanced documentation
   - Test suite using the [Igor Unit Testing Framework](http://www.igorexchange.com/project/unitTesting)
+
+## Installation
+
+- Quit Igor Pro
+- Install the vcredist packages in "vcredist"
+- Create the following shortcuts in "$HOME\\Documents\\WaveMetrics\\Igor Pro 7 User Files"
+
+  - In "Igor Extensions" a shortcut pointing to "XOP\itcXOP2.xop"
+  - In "Igor Extensions (64-bit)" a shortcut pointing to "XOP\itcXOP2-64.xop"
+
+- Start Igor Pro
 
 ## Running requirements
 Minimum Igor Pro versions are 6.3 for 32bit and 7.0 for 64bit.
