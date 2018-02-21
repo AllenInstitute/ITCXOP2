@@ -63,16 +63,16 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\XOP\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(Configuration)\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\..\XOP\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(Platform)\$(Configuration)\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\XOP\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(Configuration)\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\..\XOP\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(Platform)\$(Configuration)\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</LinkIncremental>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">itcXOP2</TargetName>
@@ -94,10 +94,10 @@
     </Midl>
     <ClCompile>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
-      <AdditionalIncludeDirectories>..\fmt;..;..\XOPSupport;..\..\itcmm\Headers;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\fmt\include;..;..\XOPSupport;..\..\itcmm\Headers;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>false</StringPooling>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>false</FunctionLevelLinking>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>
@@ -113,6 +113,7 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <CompileAs>Default</CompileAs>
       <DisableSpecificWarnings>4312;</DisableSpecificWarnings>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <ResourceCompile>
       <Culture>0x0409</Culture>
@@ -120,10 +121,10 @@
     </ResourceCompile>
     <Link>
       <AdditionalDependencies>version.lib;shlwapi.lib;%(AdditionalDependencies);legacy_stdio_definitions.lib</AdditionalDependencies>
-      <OutputFile>itcXOP2.xop</OutputFile>
+      <OutputFile>..\..\XOP\itcXOP2.xop</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
-      <ProgramDatabaseFile>$(IntDir)$(TargetName).pdb</ProgramDatabaseFile>
+      <ProgramDatabaseFile>../../PDB/$(TargetName).pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <LargeAddressAware>true</LargeAddressAware>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
@@ -144,10 +145,10 @@
     </Midl>
     <ClCompile>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
-      <AdditionalIncludeDirectories>..\fmt;..;..\XOPSupport;..\..\itcmm\Headers;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\fmt\include;..;..\XOPSupport;..\..\itcmm\Headers;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>false</StringPooling>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>
@@ -164,6 +165,7 @@
       <CompileAs>Default</CompileAs>
       <DisableSpecificWarnings>4312;</DisableSpecificWarnings>
       <BufferSecurityCheck>false</BufferSecurityCheck>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <ResourceCompile>
       <Culture>0x0409</Culture>
@@ -171,10 +173,10 @@
     </ResourceCompile>
     <Link>
       <AdditionalDependencies>version.lib;shlwapi.lib;%(AdditionalDependencies);legacy_stdio_definitions.lib; Lz32.lib;Winmm.lib</AdditionalDependencies>
-      <OutputFile>itcXOP2-64.xop</OutputFile>
+      <OutputFile>..\..\XOP\itcXOP2-64.xop</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
-      <ProgramDatabaseFile>$(IntDir)$(TargetName).pdb</ProgramDatabaseFile>
+      <ProgramDatabaseFile>../../PDB/$(TargetName).pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <LargeAddressAware>true</LargeAddressAware>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
@@ -195,10 +197,10 @@
     </Midl>
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\fmt;..;..\XOPSupport;..\..\itcmm\Headers;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\fmt\include;..;..\XOPSupport;..\..\itcmm\Headers;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <StructMemberAlignment>Default</StructMemberAlignment>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>
@@ -215,6 +217,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <CompileAs>Default</CompileAs>
       <DisableSpecificWarnings>4312;</DisableSpecificWarnings>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <ResourceCompile>
       <Culture>0x0409</Culture>
@@ -222,11 +225,11 @@
     </ResourceCompile>
     <Link>
       <AdditionalDependencies>version.lib;shlwapi.lib;%(AdditionalDependencies);legacy_stdio_definitions.lib; Lz32.lib;Winmm.lib</AdditionalDependencies>
-      <OutputFile>itcXOP2.xop</OutputFile>
+      <OutputFile>..\..\XOP\itcXOP2.xop</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>$(IntDir)$(TargetName).pdb</ProgramDatabaseFile>
+      <ProgramDatabaseFile>../../PDB/$(TargetName).pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <LargeAddressAware>true</LargeAddressAware>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
@@ -246,10 +249,10 @@
     </Midl>
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\fmt;..;..\XOPSupport;..\..\itcmm\Headers;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\fmt\include;..;..\XOPSupport;..\..\itcmm\Headers;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <StructMemberAlignment>Default</StructMemberAlignment>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>
@@ -266,6 +269,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <CompileAs>Default</CompileAs>
       <DisableSpecificWarnings>4312;</DisableSpecificWarnings>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <ResourceCompile>
       <Culture>0x0409</Culture>
@@ -273,11 +277,11 @@
     </ResourceCompile>
     <Link>
       <AdditionalDependencies>version.lib;shlwapi.lib;%(AdditionalDependencies);legacy_stdio_definitions.lib; Lz32.lib;Winmm.lib</AdditionalDependencies>
-      <OutputFile>itcXOP2-64.xop</OutputFile>
+      <OutputFile>..\..\XOP\itcXOP2-64.xop</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>$(IntDir)$(TargetName).pdb</ProgramDatabaseFile>
+      <ProgramDatabaseFile>../../PDB/$(TargetName).pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <LargeAddressAware>true</LargeAddressAware>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
@@ -293,9 +297,8 @@
     <ClCompile Include="..\CustomExceptions.cpp" />
     <ClCompile Include="..\DeviceIDHelper.cpp" />
     <ClCompile Include="..\ErrorDisplayClass.cpp" />
-    <ClCompile Include="..\fmt\fmt\format.cc" />
-    <ClCompile Include="..\fmt\fmt\ostream.cc" />
-    <ClCompile Include="..\fmt\fmt\posix.cc" />
+    <ClCompile Include="..\fmt\include\fmt\format.cc" />
+    <ClCompile Include="..\fmt\include\fmt\posix.cc" />
     <ClCompile Include="..\HelperFunctions.cpp" />
     <ClCompile Include="..\ITCChannelTypeEnum.cpp" />
     <ClCompile Include="..\ITCCloseAll2.cpp" />
@@ -382,12 +385,13 @@
     <ClInclude Include="..\DeviceIDHelper.h" />
     <ClInclude Include="..\ErrorDisplayClass.h" />
     <ClInclude Include="..\DeviceIDClass.h" />
-    <ClInclude Include="..\fmt\fmt\format.h" />
-    <ClInclude Include="..\fmt\fmt\ostream.h" />
-    <ClInclude Include="..\fmt\fmt\posix.h" />
-    <ClInclude Include="..\fmt\fmt\printf.h" />
-    <ClInclude Include="..\fmt\fmt\string.h" />
-    <ClInclude Include="..\fmt\fmt\time.h" />
+    <ClInclude Include="..\fmt\include\fmt\core.h" />
+    <ClInclude Include="..\fmt\include\fmt\format.h" />
+    <ClInclude Include="..\fmt\include\fmt\locale.h" />
+    <ClInclude Include="..\fmt\include\fmt\ostream.h" />
+    <ClInclude Include="..\fmt\include\fmt\posix.h" />
+    <ClInclude Include="..\fmt\include\fmt\printf.h" />
+    <ClInclude Include="..\fmt\include\fmt\time.h" />
     <ClInclude Include="..\HelperFunctions.h" />
     <ClInclude Include="..\HelperFunctions_DAC.h" />
     <ClInclude Include="..\ITCChannelTypeEnum.h" />
