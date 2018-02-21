@@ -1,6 +1,7 @@
 # ITC XOP2
 
-This Igor Pro extension ("XOP") is a complete rewrite of the original ITC XOP from [HEKA](http://heka.com/downloads/downloads_main.html#down_xops).
+This Igor Pro extension ("XOP") is a complete rewrite of the original ITC XOP
+from [HEKA](http://heka.com/downloads/downloads_main.html#down_xops).
 
 Compared to the original ITC XOP it has the following enhancements:
 
