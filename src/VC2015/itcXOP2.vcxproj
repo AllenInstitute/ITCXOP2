@@ -94,7 +94,7 @@
     </Midl>
     <ClCompile>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
-      <AdditionalIncludeDirectories>..\fmt;..;..\XOPSupport;..\..\itcmm\Headers;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\fmt\include;..;..\XOPSupport;..\..\itcmm\Headers;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>false</StringPooling>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
@@ -145,7 +145,7 @@
     </Midl>
     <ClCompile>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
-      <AdditionalIncludeDirectories>..\fmt;..;..\XOPSupport;..\..\itcmm\Headers;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\fmt\include;..;..\XOPSupport;..\..\itcmm\Headers;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>false</StringPooling>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
@@ -197,7 +197,7 @@
     </Midl>
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\fmt;..;..\XOPSupport;..\..\itcmm\Headers;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\fmt\include;..;..\XOPSupport;..\..\itcmm\Headers;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -249,7 +249,7 @@
     </Midl>
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\fmt;..;..\XOPSupport;..\..\itcmm\Headers;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\fmt\include;..;..\XOPSupport;..\..\itcmm\Headers;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -297,9 +297,8 @@
     <ClCompile Include="..\CustomExceptions.cpp" />
     <ClCompile Include="..\DeviceIDHelper.cpp" />
     <ClCompile Include="..\ErrorDisplayClass.cpp" />
-    <ClCompile Include="..\fmt\fmt\format.cc" />
-    <ClCompile Include="..\fmt\fmt\ostream.cc" />
-    <ClCompile Include="..\fmt\fmt\posix.cc" />
+    <ClCompile Include="..\fmt\include\fmt\format.cc" />
+    <ClCompile Include="..\fmt\include\fmt\posix.cc" />
     <ClCompile Include="..\HelperFunctions.cpp" />
     <ClCompile Include="..\ITCChannelTypeEnum.cpp" />
     <ClCompile Include="..\ITCCloseAll2.cpp" />
@@ -386,12 +385,13 @@
     <ClInclude Include="..\DeviceIDHelper.h" />
     <ClInclude Include="..\ErrorDisplayClass.h" />
     <ClInclude Include="..\DeviceIDClass.h" />
-    <ClInclude Include="..\fmt\fmt\format.h" />
-    <ClInclude Include="..\fmt\fmt\ostream.h" />
-    <ClInclude Include="..\fmt\fmt\posix.h" />
-    <ClInclude Include="..\fmt\fmt\printf.h" />
-    <ClInclude Include="..\fmt\fmt\string.h" />
-    <ClInclude Include="..\fmt\fmt\time.h" />
+    <ClInclude Include="..\fmt\include\fmt\core.h" />
+    <ClInclude Include="..\fmt\include\fmt\format.h" />
+    <ClInclude Include="..\fmt\include\fmt\locale.h" />
+    <ClInclude Include="..\fmt\include\fmt\ostream.h" />
+    <ClInclude Include="..\fmt\include\fmt\posix.h" />
+    <ClInclude Include="..\fmt\include\fmt\printf.h" />
+    <ClInclude Include="..\fmt\include\fmt\time.h" />
     <ClInclude Include="..\HelperFunctions.h" />
     <ClInclude Include="..\HelperFunctions_DAC.h" />
     <ClInclude Include="..\ITCChannelTypeEnum.h" />

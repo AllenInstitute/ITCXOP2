@@ -160,13 +160,10 @@
     <ClCompile Include="..\ConcurrentXOPNotice.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\fmt\fmt\format.cc">
+    <ClCompile Include="..\fmt\include\fmt\posix.cc">
       <Filter>fmt</Filter>
     </ClCompile>
-    <ClCompile Include="..\fmt\fmt\ostream.cc">
-      <Filter>fmt</Filter>
-    </ClCompile>
-    <ClCompile Include="..\fmt\fmt\posix.cc">
+    <ClCompile Include="..\fmt\include\fmt\format.cc">
       <Filter>fmt</Filter>
     </ClCompile>
   </ItemGroup>
@@ -216,22 +213,25 @@
     <ClInclude Include="..\ConcurrentXOPNotice.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\fmt\fmt\format.h">
+    <ClInclude Include="..\fmt\include\fmt\locale.h">
       <Filter>fmt</Filter>
     </ClInclude>
-    <ClInclude Include="..\fmt\fmt\ostream.h">
+    <ClInclude Include="..\fmt\include\fmt\ostream.h">
       <Filter>fmt</Filter>
     </ClInclude>
-    <ClInclude Include="..\fmt\fmt\posix.h">
+    <ClInclude Include="..\fmt\include\fmt\posix.h">
       <Filter>fmt</Filter>
     </ClInclude>
-    <ClInclude Include="..\fmt\fmt\printf.h">
+    <ClInclude Include="..\fmt\include\fmt\printf.h">
       <Filter>fmt</Filter>
     </ClInclude>
-    <ClInclude Include="..\fmt\fmt\string.h">
+    <ClInclude Include="..\fmt\include\fmt\time.h">
       <Filter>fmt</Filter>
     </ClInclude>
-    <ClInclude Include="..\fmt\fmt\time.h">
+    <ClInclude Include="..\fmt\include\fmt\core.h">
+      <Filter>fmt</Filter>
+    </ClInclude>
+    <ClInclude Include="..\fmt\include\fmt\format.h">
       <Filter>fmt</Filter>
     </ClInclude>
   </ItemGroup>
