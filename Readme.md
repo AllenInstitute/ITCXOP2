@@ -24,13 +24,11 @@ Required additional software:
 
 - Visual Studio 2015
 - [XOPSupport Toolkit 7](https://www.wavemetrics.com/products/xoptoolkit/xoptoolkit.htm)
-- [fmt library](https://github.com/fmtlib/fmt) in version 72d51e0b1e79afb5243ec66a4a1feb79894027c7
 - [Igor Unit Testing Framework](http://www.igorexchange.com/project/unitTesting)
 
 Steps to compile:
 
 - Extract the XOPSupport Toolkit into the folder `src/XOPSupport`
-- Extract the fmt library into folder `src/fmt`
 - Open VC2015/itcXOP2.sln and compile
 
 Steps to execute the test suite:
