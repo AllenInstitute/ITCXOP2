@@ -61,6 +61,8 @@ public:
   static void
   ITC_UpdateFIFOPosition(const DeviceIDHelper &DeviceID,
                          std::vector<ITCChannelDataEx> channelDataEx);
+  static void ITC_ReadWriteFIFO(const DeviceIDHelper &DeviceID,
+                                std::vector<ITCChannelDataEx> channelDataExVec);
 };
 
 #endif // ITCDLL_H
