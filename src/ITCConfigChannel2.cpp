@@ -292,7 +292,6 @@ extern "C" int ExecuteITCConfigChannel2(ITCConfigChannel2RuntimeParamsPtr p)
   // offset flag
   DWORD offset = ReadOFFFlagOptions(p);
 
-  // NB -- treating FIFO wave as 1D wave.
   DWORD NumberOfPoints = To<DWORD>(WavePoints(waveHandle));
 
   if(offset >= NumberOfPoints)
