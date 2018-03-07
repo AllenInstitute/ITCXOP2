@@ -298,7 +298,7 @@ extern "C" int ExecuteITCConfigChannel2(ITCConfigChannel2RuntimeParamsPtr p)
   // and also send the OBJ_INUSE message if igor wants to alter/delete the wave
   // FIFOPointer is pointing too
   lITCChannelInfo.FIFONumberOfPoints = NumberOfPoints;
-  lITCChannelInfo.FIFOPointer        = (void *) (UINT_PTR) WaveData(waveHandle);
+  lITCChannelInfo.FIFOPointer        = WaveData(waveHandle);
 
   std::vector<ITCChannelInfo> ITCChannelVec(1, lITCChannelInfo);
   ITCDLL::ITC_SetChannels(DeviceID, ITCChannelVec);
