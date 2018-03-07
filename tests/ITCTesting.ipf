@@ -61,6 +61,8 @@ Function RunPassingTests()
 	PassingTests += "Test_ITCStartAcq2.ipf;"
 	PassingTests += "Test_ITCStopAcq2.ipf;"
 	PassingTests += "Test_ITCWriteDigital2.ipf;"
+	PassingTests += "Test_ITCUpdateFIFOPosition2.ipf;"
+	PassingTests += "Test_ITCUpdateFIFOPositionAll2.ipf;"
 
 	RunTest(PassingTests)
 End
