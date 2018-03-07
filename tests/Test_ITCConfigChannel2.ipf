@@ -468,6 +468,18 @@ Static Function testFIFO()
 		CHECK_EQUAL_VAR(V_ITCError, 0)
 	EndTry
 
+#if defined(IGOR64)
+	// too large
+	Make /FREE /W /N=(2^32 + 1) largeWave
+	try
+		ITCConfigChannel2 /CHN=(defaultCHN) defaultChannel, defaultSamplingInterval, largeWave; AbortOnRTE
+		FAIL()
+	catch
+		error = GetRTError(1)
+		CHECK_EQUAL_VAR(V_ITCXOPError, 15)
+		CHECK_EQUAL_VAR(V_ITCError, 0)
+	EndTry
+#endif
 
 	// Try free wave
 	Make /W /FREE freeWave
