@@ -18,10 +18,10 @@
 threadsafe Function /WAVE makeConfigAllWave(numChannels)
 	Variable numChannels
 
-	Make /D /FREE /N=(4, numChannels) confWave
+	Make /D /FREE /N=(5, numChannels) confWave
 
 	Variable dimension = 0
-	Make /FREE /T labelWave = {"ChannelType","ChannelNumber","SamplingInterval","Decimate"}
+	Make /FREE /T labelWave = {"ChannelType","ChannelNumber","SamplingInterval","Decimate", "Offset"}
 
 	setDimLabels(confWave, labelWave, dimension)
 

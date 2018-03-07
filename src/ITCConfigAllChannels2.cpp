@@ -1,5 +1,6 @@
 #include "ITC_StandardHeaders.h"
 #include <algorithm>
+#include "HelperFunctions.h"
 
 // This file is part of the `ITCXOP2` project and licensed under BSD-3-Clause.
 
@@ -9,13 +10,13 @@ namespace
 std::vector<ITCChannelInfo>
 readConfigWaves(ITCConfigAllChannels2RuntimeParamsPtr p)
 {
-  // The config wave is a wave with at least 4 rows.
-  // At least 4 rows in the config wave:
+  // The config wave is a wave with at least 5 rows:
   // [0] - Channel Type
   // [1] - Channel Number
   // [2] - Sampling Interval (us)
   // [3] - Decimation mode
-  std::vector<size_t> configDimSizes = checkWave_2D(p->config, NT_FP64, 4);
+  // [4] - Offset into data wave
+  std::vector<size_t> configDimSizes = checkWave_2D(p->config, NT_FP64, 5);
 
   // Each column in the config wave refers to one channel
   const size_t numChannels = configDimSizes[COLUMNS];
@@ -55,9 +56,18 @@ readConfigWaves(ITCConfigAllChannels2RuntimeParamsPtr p)
     ChannelInfo[currChannel].ExternalDecimation =
         (DWORD) configPtr[getOffset_2D(3, currChannel, configDimSizes)];
 
+    const auto offset = lockToIntegerRange<DWORD>(
+        configPtr[getOffset_2D(4, currChannel, configDimSizes)]);
+
+    if(offset >= NumberOfPoints)
+    {
+      throw IgorException(INCOMPATIBLE_DIMENSIONING);
+    }
+
     ChannelInfo[currChannel].FIFOPointer =
-        (void *) (dataPtr + getOffset_2D(0, currChannel, dataDimSizes));
-    ChannelInfo[currChannel].FIFONumberOfPoints = NumberOfPoints;
+        (void *) (dataPtr + getOffset_2D(0, currChannel, dataDimSizes) +
+                  offset);
+    ChannelInfo[currChannel].FIFONumberOfPoints = NumberOfPoints - offset;
   }
 
   // Return the vector

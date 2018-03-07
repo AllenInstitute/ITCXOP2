@@ -133,6 +133,11 @@ struct ITCConfigChannel2RuntimeParams
   double deviceID;
   int DEVFlagParamsSet[1];
 
+  // Parameters for /OFF flag group.
+  int OFFFlagEncountered;
+  double offset;
+  int OFFFlagParamsSet[1];
+
   // Parameters for /CHN flag group.
   int CHNFlagEncountered;
   double channelTypeNumeric;
