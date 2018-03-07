@@ -81,10 +81,10 @@ End
 threadsafe Function /WAVE makeFIFOPositionWave(numChannels)
 	Variable numChannels
 
-	Make /FREE /D /N=(4, numChannels) fifoPositionWave
+	Make /FREE /D /N=(3, numChannels) fifoPositionWave
 
 	Variable dimension = 0
-	Make /FREE /T labelWave = {"ChannelType","ChannelNumber", "Value", ""}
+	Make /FREE /T labelWave = {"ChannelType","ChannelNumber", "Value"}
 
 	setDimLabels(fifoPositionWave, labelWave, dimension)
 
