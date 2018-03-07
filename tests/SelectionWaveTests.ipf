@@ -27,9 +27,6 @@ Function testSelectionWave(testFn_1ch, testFn_2ch, validSelectionWave_1ch, valid
 	FUNCREF SelectionWaveTest_Prototype testFn_1ch, testFn_2ch
 	WAVE validSelectionWave_1ch, validSelectionWave_2ch
 
-	variable error
-
-
 	Variable NT_INCOMPATIBLE = 16
 	Variable NEED_MIN_ROWS = 10019
 	Variable EXPECT_MATRIX = 408
