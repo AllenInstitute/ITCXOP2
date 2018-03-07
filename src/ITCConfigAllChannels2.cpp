@@ -39,6 +39,8 @@ readConfigWaves(ITCConfigAllChannels2RuntimeParamsPtr p)
   double *configPtr = (double *) WaveData(p->config);
   int16_t *dataPtr  = (int16_t *) WaveData(p->data);
 
+  const DWORD NumberOfPoints = To<DWORD>(dataDimSizes[ROWS]);
+
   // Fill the vector
   for(size_t currChannel = 0; currChannel < numChannels; currChannel++)
   {
@@ -55,7 +57,7 @@ readConfigWaves(ITCConfigAllChannels2RuntimeParamsPtr p)
 
     ChannelInfo[currChannel].FIFOPointer =
         (void *) (dataPtr + getOffset_2D(0, currChannel, dataDimSizes));
-    ChannelInfo[currChannel].FIFONumberOfPoints = (DWORD) dataDimSizes[ROWS];
+    ChannelInfo[currChannel].FIFONumberOfPoints = NumberOfPoints;
   }
 
   // Return the vector
