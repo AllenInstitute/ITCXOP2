@@ -176,7 +176,7 @@ Function GenerateITCOperationCode()
 	VerifyTemplate(ITCConfigAllChannels2Template, "", "")
 
 	String ITCConfigChannel2Template  = "ITCConfigChannel2/Z[=number:displayErrors]/S=number:scale/M=number:mode/A[=number:adjustRate]/O=number:overflow/U=number:underrun"
-	ITCConfigChannel2Template += "/D=number:decimate /DEV=number:deviceID"
+	ITCConfigChannel2Template += "/D=number:decimate /DEV=number:deviceID/OFF=number:offset"
 	ITCConfigChannel2Template += "/CHN=number:channelTypeNumeric/CHS=string:channelTypeString number:channelNumber, number:samplingInterval, wave:data"
 	ParseOperationTemplate/C=6/S=1/T/TS ITCConfigChannel2Template
 	AbortOnValue V_flag, 0

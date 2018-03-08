@@ -544,3 +544,21 @@ void ITCDLL::ITC_UpdateFIFOPosition(
 
   DebugOut("ITC_UpdateFIFOPosition", channelDataExVec);
 }
+
+void ITCDLL::ITC_ReadWriteFIFO(const DeviceIDHelper &DeviceID,
+                               std::vector<ITCChannelDataEx> channelDataExVec)
+{
+  if(channelDataExVec.empty())
+  {
+    throw IgorException();
+  }
+
+  if(DWORD ErrorCode = ::ITC_ReadWriteFIFO(DeviceID.getHandle(),
+                                           (DWORD) channelDataExVec.size(),
+                                           channelDataExVec.data()))
+  {
+    throw ITCException(ErrorCode, DeviceID.getHandle(), "ITC_ReadWriteFIFO");
+  }
+
+  DebugOut("ITC_ReadWriteFIFO", channelDataExVec);
+}

@@ -1,3 +1,4 @@
+#include "ConcurrentXOPNotice.h"
 #include "ConcurrentQueue.h"
 #include "XOPStandardHeaders.h"
 
@@ -7,6 +8,13 @@ ConcurrentQueue<std::string> queue;
 
 void XOPNotice_ts(std::string str)
 {
+  if(RunningInMainThread())
+  {
+    OutputQueuedNotices();
+    XOPNotice(str.c_str());
+    return;
+  }
+
   queue.push(str);
 }
 

@@ -7,6 +7,7 @@
 #include <string>
 #include <vector>
 #include <functional>
+#include "SafeInt/SafeInt.hpp"
 
 // Usign std::min/max
 #undef min
@@ -364,4 +365,18 @@ outT GetChannelNumberFromParameters(T *p)
 
   // No channelNumber encountered
   throw IgorException(OPAND_MISMATCH);
+}
+
+/// @brief Safe type conversion
+template <typename T, typename U>
+T To(U val)
+{
+  T result;
+
+  if(!SafeCast(val, result))
+  {
+    throw IgorException(PNTS_INCOMPATIBLE);
+  }
+
+  return result;
 }

@@ -158,6 +158,7 @@ Static Function test_fifoWave_invalid()
 	Variable NT_INCOMPATIBLE = 16
 	Variable EXPECT_MATRIX = 408
 	Variable INCOMPATIBLE_DIMENSIONING = 444
+	variable PNTS_INCOMPATIBLE = 15
 
 	Wave configWave = $configWaveName
 
@@ -184,6 +185,18 @@ Static Function test_fifoWave_invalid()
 		CHECK_EQUAL_VAR(V_ITCError, 0)
 	EndTry
 
+#if defined(IGOR64)
+	// too large
+	Make /FREE /W /N=(2^32 + 1) fifoWave
+	try
+		ITCConfigAllChannels2 configWave, fifoWave; AbortOnRTE
+		FAIL()
+	catch
+		error = GetRTError(1)
+		CHECK_EQUAL_VAR(V_ITCXOPError, PNTS_INCOMPATIBLE)
+		CHECK_EQUAL_VAR(V_ITCError, 0)
+	EndTry
+#endif
 
 	// Too many columns in FIFO wave, compared to configWave
 	Make /FREE /W /N=(100,2) fifoWave

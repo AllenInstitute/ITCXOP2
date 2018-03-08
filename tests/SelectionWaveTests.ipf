@@ -27,12 +27,12 @@ Function testSelectionWave(testFn_1ch, testFn_2ch, validSelectionWave_1ch, valid
 	FUNCREF SelectionWaveTest_Prototype testFn_1ch, testFn_2ch
 	WAVE validSelectionWave_1ch, validSelectionWave_2ch
 
-	variable error
-
-
 	Variable NT_INCOMPATIBLE = 16
 	Variable NEED_MIN_ROWS = 10019
 	Variable EXPECT_MATRIX = 408
+	Variable INCOMPATIBLE_DIMENSIONING = 444
+	Variable NO_NAN_OR_INF = 863
+	Variable OUT_OF_RANGE  = 823
 
 	//-------------------------------------------------------------
 	// Test with valid supplied selection wave
@@ -75,6 +75,18 @@ Function testSelectionWave(testFn_1ch, testFn_2ch, validSelectionWave_1ch, valid
 	// Test with invalid 3D wave
 	testInvalid_wrongDimensions(testFn_1ch, validSelectionWave_1ch, EXPECT_MATRIX)
 	testInvalid_wrongDimensions(testFn_2ch, validSelectionWave_2ch, EXPECT_MATRIX)
+
+	if(DimSize(validSelectionWave_1ch, 0) == 5 && DimSize(validSelectionWave_2ch, 0) == 5)
+		// test with invalid offsets
+		testInvalid_wrongOffsets1(testFn_1ch, validSelectionWave_1ch, INCOMPATIBLE_DIMENSIONING)
+		testInvalid_wrongOffsets1(testFn_2ch, validSelectionWave_2ch, INCOMPATIBLE_DIMENSIONING)
+
+		testInvalid_wrongOffsets2(testFn_1ch, validSelectionWave_1ch, OUT_OF_RANGE)
+		testInvalid_wrongOffsets2(testFn_2ch, validSelectionWave_2ch, OUT_OF_RANGE)
+
+		testInvalid_wrongOffsets3(testFn_1ch, validSelectionWave_1ch, NO_NAN_OR_INF)
+		testInvalid_wrongOffsets3(testFn_2ch, validSelectionWave_2ch, NO_NAN_OR_INF)
+	endif
 End
 
 Static Function /WAVE make_1ch_1D(validSelectionWave_1ch)
@@ -171,6 +183,45 @@ Static Function testInvalid_wrongDimensions(testFn, validSelectionWave, expected
 
 	Duplicate /FREE validSelectionWave, invalidSelectionWave
 	Redimension /N=(DimSize(validSelectionWave, 0), dimSize1, 1) invalidSelectionWave
+
+	testInvalid(testFn, invalidSelectionWave, expected_ITCXOPError)
+End
+
+Static Function testInvalid_wrongOffsets1(testFn, validSelectionWave, expected_ITCXOPError)
+	FUNCREF SelectionWaveTest_Prototype testFn
+	WAVE validSelectionWave
+	Variable expected_ITCXOPError
+
+	// Use an offset which is larger than the number of data points
+	Wave/SDFR=root: fifoWave
+	Duplicate /FREE validSelectionWave, invalidSelectionWave
+	invalidSelectionWave[%Offset][] = DimSize(fifoWave, 0) + 1
+
+	testInvalid(testFn, invalidSelectionWave, expected_ITCXOPError)
+End
+
+Static Function testInvalid_wrongOffsets2(testFn, validSelectionWave, expected_ITCXOPError)
+	FUNCREF SelectionWaveTest_Prototype testFn
+	WAVE validSelectionWave
+	Variable expected_ITCXOPError
+
+	// Use an offset which is negative -1
+	Wave/SDFR=root: fifoWave
+	Duplicate /FREE validSelectionWave, invalidSelectionWave
+	invalidSelectionWave[%Offset][] = -1
+
+	testInvalid(testFn, invalidSelectionWave, expected_ITCXOPError)
+End
+
+Static Function testInvalid_wrongOffsets3(testFn, validSelectionWave, expected_ITCXOPError)
+	FUNCREF SelectionWaveTest_Prototype testFn
+	WAVE validSelectionWave
+	Variable expected_ITCXOPError
+
+	// Use an offset which is non-finite
+	Wave/SDFR=root: fifoWave
+	Duplicate /FREE validSelectionWave, invalidSelectionWave
+	invalidSelectionWave[%Offset][] = inf
 
 	testInvalid(testFn, invalidSelectionWave, expected_ITCXOPError)
 End

@@ -1,4 +1,5 @@
 #include "ITC_StandardHeaders.h"
+#include "HelperFunctions.h"
 
 // This file is part of the `ITCXOP2` project and licensed under BSD-3-Clause.
 
@@ -234,6 +235,18 @@ double ReadSamplingInterval(ITCConfigChannel2RuntimeParamsPtr p)
   throw IgorException(OPAND_MISMATCH);
 }
 
+DWORD ReadOFFFlagOptions(ITCConfigChannel2RuntimeParamsPtr p)
+{
+  if(p->OFFFlagEncountered)
+  {
+    // Parameter: p->decimate
+    return lockToIntegerRange<DWORD>(p->offset);
+  }
+
+  // OFF flag not encountered
+  return 0;
+}
+
 } // anonymous namespace
 
 extern "C" int ExecuteITCConfigChannel2(ITCConfigChannel2RuntimeParamsPtr p)
@@ -276,8 +289,15 @@ extern "C" int ExecuteITCConfigChannel2(ITCConfigChannel2RuntimeParamsPtr p)
   // decimate flag
   DWORD decimate = ReadDFlagOptions(p);
 
-  // NB -- treating FIFO wave as 1D wave.
-  size_t NumberOfPoints = WavePoints(waveHandle);
+  // offset flag
+  DWORD offset = ReadOFFFlagOptions(p);
+
+  DWORD NumberOfPoints = To<DWORD>(WavePoints(waveHandle));
+
+  if(offset >= NumberOfPoints)
+  {
+    throw IgorException(INCOMPATIBLE_DIMENSIONING);
+  }
 
   // Set up the options structure
   ITCChannelInfo lITCChannelInfo;
@@ -296,8 +316,8 @@ extern "C" int ExecuteITCConfigChannel2(ITCConfigChannel2RuntimeParamsPtr p)
   // TODO think about a way to let igor know when FifoPointer was updated
   // and also send the OBJ_INUSE message if igor wants to alter/delete the wave
   // FIFOPointer is pointing too
-  lITCChannelInfo.FIFONumberOfPoints = (DWORD) NumberOfPoints;
-  lITCChannelInfo.FIFOPointer        = (void *) (UINT_PTR) WaveData(waveHandle);
+  lITCChannelInfo.FIFONumberOfPoints = NumberOfPoints - offset;
+  lITCChannelInfo.FIFOPointer        = WaveData(waveHandle);
 
   std::vector<ITCChannelInfo> ITCChannelVec(1, lITCChannelInfo);
   ITCDLL::ITC_SetChannels(DeviceID, ITCChannelVec);

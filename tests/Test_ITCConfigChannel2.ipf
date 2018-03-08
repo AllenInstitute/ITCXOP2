@@ -369,6 +369,33 @@ Static Function testD()
 	TestValue(DflagValueFn_IGNORE, 3, expectedITCXOPError, expectedITCError)
 End
 
+Static Function OFFflagValueFn_IGNORE(val)
+	Variable val
+
+	ITCConfigChannel2 /OFF=(val) /CHN=(defaultCHN) defaultChannel, defaultSamplingInterval, $defaultWaveName
+
+	Variable /G last_ITCXOPError = V_ITCXOPError
+	Variable /G last_ITCError = V_ITCError
+End
+
+Static Function testOFF()
+	Variable expectedITCXOPError, expectedITCError
+
+	// Test some valid values
+	expectedITCXOPError = 0
+	expectedITCError = 0
+	TestValue(OFFflagValueFn_IGNORE, 0, expectedITCXOPError, expectedITCError)
+	TestValue(OFFflagValueFn_IGNORE, 100, expectedITCXOPError, expectedITCError)
+
+	// Test -1
+	expectedITCXOPError = 823
+	expectedITCError = 0
+	TestValue(OFFflagValueFn_IGNORE, -1, expectedITCXOPError, expectedITCError)
+
+	// Test NaN/Inf
+	TestNaNInf(OFFflagValueFn_IGNORE)
+End
+
 // Expecting DLL errors for invalid sampling intervals
 // Usually 2154106880 -- "Sampling Rate"
 // Sampling interval of -1 gives:
@@ -441,6 +468,18 @@ Static Function testFIFO()
 		CHECK_EQUAL_VAR(V_ITCError, 0)
 	EndTry
 
+#if defined(IGOR64)
+	// too large
+	Make /FREE /W /N=(2^32 + 1) largeWave
+	try
+		ITCConfigChannel2 /CHN=(defaultCHN) defaultChannel, defaultSamplingInterval, largeWave; AbortOnRTE
+		FAIL()
+	catch
+		error = GetRTError(1)
+		CHECK_EQUAL_VAR(V_ITCXOPError, 15)
+		CHECK_EQUAL_VAR(V_ITCError, 0)
+	EndTry
+#endif
 
 	// Try free wave
 	Make /W /FREE freeWave

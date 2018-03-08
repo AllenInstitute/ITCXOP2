@@ -104,14 +104,6 @@ Static Function testFn_2ch(fifoPosWave)
 	Variable /G last_ITCError = V_ITCError
 End
 
-Static Function test_confWave()
-	Wave fifoPosWave1ch = makeFIFOPositionWave(1)
-	Wave fifoPosWave2ch = makeFIFOPositionWave(2)
-	fifoPosWave2ch[1][1] = 1
-
-	testSelectionWave(testFn_1ch, testFn_2ch, fifoPosWave1ch, fifoPosWave2ch)
-End
-
 // Test with * selection / out wave
 Static Function test_null()
 	variable error

@@ -68,9 +68,9 @@ int RegisterITCConfigChannel2(void)
   cmdTemplate = "ITCConfigChannel2/Z[=number:displayErrors]/S=number:scale/"
                 "M=number:mode/A[=number:adjustRate]/O=number:overflow/"
                 "U=number:underrun/D=number:decimate "
-                "/DEV=number:deviceID/CHN=number:channelTypeNumeric/"
-                "CHS=string:channelTypeString number:channelNumber, "
-                "number:samplingInterval, wave:data";
+                "/DEV=number:deviceID/OFF=number:offset/"
+                "CHN=number:channelTypeNumeric/CHS=string:channelTypeString "
+                "number:channelNumber, number:samplingInterval, wave:data";
   runtimeNumVarList = EXCEPTION_VARS;
   runtimeStrVarList = "";
   return RegisterOperation(cmdTemplate, runtimeNumVarList, runtimeStrVarList,
