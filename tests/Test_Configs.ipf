@@ -110,7 +110,7 @@ Static Function TestA()
 		FAIL()
 	Catch
 		error = GetRTError(1)
-		CHECK_EQUAL_VAR(V_ITCXOPError, 10006)
+		CHECK_EQUAL_VAR(V_ITCXOPError, 0)
 		CHECK_EQUAL_VAR(V_ITCError, 2154106880)
 	EndTry
 
@@ -120,7 +120,7 @@ Static Function TestA()
 		FAIL()
 	Catch
 		error = GetRTError(1)
-		CHECK_EQUAL_VAR(V_ITCXOPError, 10006)
+		CHECK_EQUAL_VAR(V_ITCXOPError, 0)
 		CHECK_EQUAL_VAR(V_ITCError, 2154106880)
 	EndTry
 
