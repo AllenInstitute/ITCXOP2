@@ -32,6 +32,20 @@ Compared to the original ITC XOP it has the following enhancements:
 ## Running requirements
 Minimum Igor Pro versions are 6.3 for 32bit and 7.0 for 64bit.
 
+## Windows 10
+
+Out of the box the ITCXOP2 does only run in the 32bit version on Windows 10.
+The reason is that there seems to be an issue in the combination of the
+ITCMM.DLL (the vendor library which the ITCXOP2 uses) and a security feature
+called `ASLR` which is enabled by default starting with Windows 10.
+
+Luckily by disabling ASLR for Igor Pro the ITCXOP2 works again.
+
+Steps:
+- Right-click "tools\\Disable-ASLR-for-IP7-and-8.ps1" and choose "Run" and
+  choose yes when asked for administrative permissions.
+- Restart Igor Pro
+
 ## Compilation instructions
 
 Required additional software:
