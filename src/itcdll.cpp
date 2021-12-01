@@ -395,7 +395,7 @@ void ITCDLL::ITC_GetState(const DeviceIDHelper &DeviceID, ITCStatus *lITCStatus)
 {
   if(DWORD ErrorCode = ::ITC_GetState(DeviceID.getHandle(), lITCStatus))
   {
-    throw ITCException(ErrorCode, nullptr, "ITC_GetState");
+    throw ITCException(ErrorCode, DeviceID.getHandle(), "ITC_GetState");
   }
 
   DebugOut("ITC_GetState", *lITCStatus);
