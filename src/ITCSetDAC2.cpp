@@ -1,5 +1,5 @@
 #include "ITC_StandardHeaders.h"
-#include "HelperFunctions_DAC.h"
+#include "HelperFunctions_ITC.h"
 
 // This file is part of the `ITCXOP2` project and licensed under BSD-3-Clause.
 
