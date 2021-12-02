@@ -1,5 +1,7 @@
 #pragma once
 
+class DeviceIDHelper;
+
 // This file is part of the `ITCXOP2` project and licensed under BSD-3-Clause.
 
 template <typename T>
@@ -47,3 +49,5 @@ bool ReadCalibrateFlag(T *p)
   // -> Enable calibration by default.
   return true;
 }
+
+void CloseDevice(const DeviceIDHelper& DeviceID);

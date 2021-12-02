@@ -166,6 +166,9 @@
     <ClCompile Include="..\fmt\include\fmt\format.cc">
       <Filter>fmt</Filter>
     </ClCompile>
+    <ClCompile Include="..\HelperFunctions_ITC.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\itcXOP2.h">
@@ -204,9 +207,6 @@
     <ClInclude Include="..\ITCDeviceTypeEnum.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\HelperFunctions_DAC.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\ConcurrentQueue.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -233,6 +233,9 @@
     </ClInclude>
     <ClInclude Include="..\fmt\include\fmt\format.h">
       <Filter>fmt</Filter>
+    </ClInclude>
+    <ClInclude Include="..\HelperFunctions_ITC.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

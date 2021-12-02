@@ -300,6 +300,7 @@
     <ClCompile Include="..\fmt\include\fmt\format.cc" />
     <ClCompile Include="..\fmt\include\fmt\posix.cc" />
     <ClCompile Include="..\HelperFunctions.cpp" />
+    <ClCompile Include="..\HelperFunctions_ITC.cpp" />
     <ClCompile Include="..\ITCChannelTypeEnum.cpp" />
     <ClCompile Include="..\ITCCloseAll2.cpp" />
     <ClCompile Include="..\ITCCloseDevice2.cpp" />
@@ -393,7 +394,7 @@
     <ClInclude Include="..\fmt\include\fmt\printf.h" />
     <ClInclude Include="..\fmt\include\fmt\time.h" />
     <ClInclude Include="..\HelperFunctions.h" />
-    <ClInclude Include="..\HelperFunctions_DAC.h" />
+    <ClInclude Include="..\HelperFunctions_ITC.h" />
     <ClInclude Include="..\ITCChannelTypeEnum.h" />
     <ClInclude Include="..\ITCDeviceTypeEnum.h" />
     <ClInclude Include="..\itcdll.h" />
