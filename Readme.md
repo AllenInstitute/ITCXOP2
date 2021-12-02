@@ -46,6 +46,15 @@ Steps:
   choose yes when asked for administrative permissions.
 - Restart Igor Pro
 
+You can check if that worked by looking in the Exploit-Protection (german:
+"Exploit-Schutz") submenu of Windows-Security (german: "Windows Sicherheit")
+under Programs. There should be entries for `C:\Program Files\WaveMetrics\...`.
+
+In case this did not work you can try the following approach:
+- Open a Powershell console as administrator
+- Go to the `tools` directory in this repo (if you are using MIES the path is `Packages/ITCXOP2/tools`)
+- Execute `Set-ProcessMitigation -PolicyFilePath ./Settings.xml`
+
 ## Compilation instructions
 
 Required additional software:
