@@ -98,6 +98,9 @@ Static Function testOutput()
 
 	ITCGetAllChannelsConfig2 /FREE *, out
 
+	CHECK_EQUAL_VAR(V_ITCXOPError, 0)
+	CHECK_EQUAL_VAR(V_ITCError, 0)
+
 	// TODO -- how to test that the output is OK?
 End
 
