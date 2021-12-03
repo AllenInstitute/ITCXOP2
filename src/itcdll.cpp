@@ -562,3 +562,14 @@ void ITCDLL::ITC_ReadWriteFIFO(const DeviceIDHelper &DeviceID,
 
   DebugOut("ITC_ReadWriteFIFO", channelDataExVec);
 }
+
+void DebugOut(std::string caller, std::string msg)
+{
+  using namespace fmt;
+
+  if(!debuggingEnabled)
+    return;
+
+  XOPNoticeOnDestruct xd;
+  fprintf(xd.sstr, "Caller %s: %s\r", caller, msg);
+}
