@@ -48,6 +48,7 @@ Static Function Test_ITCSelectDevice2()
 			If( expectedITCError != 0 || expectedITCXOPError != 0 )
 				FAIL()
 			EndIf
+			PASS()
 		Catch
 			error = GetRTError(1)
 			// If we didn't expect an error, FAIL()

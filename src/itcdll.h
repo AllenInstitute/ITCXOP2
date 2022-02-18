@@ -65,4 +65,6 @@ public:
                                 std::vector<ITCChannelDataEx> channelDataExVec);
 };
 
+void DebugOut(std::string caller, std::string msg);
+
 #endif // ITCDLL_H

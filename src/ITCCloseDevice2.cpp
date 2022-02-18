@@ -1,4 +1,5 @@
 #include "ITC_StandardHeaders.h"
+#include "HelperFunctions_ITC.h"
 #include "DeviceIDClass.h"
 
 // This file is part of the `ITCXOP2` project and licensed under BSD-3-Clause.
@@ -15,29 +16,7 @@ extern "C" int ExecuteITCCloseDevice2(ITCCloseDevice2RuntimeParamsPtr p)
   // Get the deviceID and handle to use.
   DeviceIDHelper DeviceID(p);
 
-  // Turn off LED
-  ITCPublicConfig lITCPublicConfig;
-  ZeroMemory(&lITCPublicConfig, sizeof(lITCPublicConfig));
-  ITCDLL::ITC_ConfigDevice(DeviceID, &lITCPublicConfig);
-
-  // Close the device handle
-  ITCDLL::ITC_CloseDevice(DeviceID);
-  // TODO:
-  // What happens if this throws?
-  // We probably need to work out if the device has actually been closed.
-  // Otherwise we could end up with a zombie device (open, but not accessible
-  // from Igor)
-
-  // If we've just closed the device corresponding to the thread Device ID, then
-  // set the device ID to invalid
-  if(DeviceIDHelper::getThreadDeviceID() == DeviceID.getDeviceID())
-  {
-    DeviceIDHelper::setCurrentThreadDeviceID(
-        DeviceIDClass::INVALID_DEVICE_INDEX);
-  }
-
-  // Remove the device ID
-  DeviceIDs.remove(DeviceID.getDeviceID());
+  CloseDevice(DeviceID);
 
   END_OUTER_CATCH
 }
