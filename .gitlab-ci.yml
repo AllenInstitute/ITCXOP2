@@ -1,0 +1,113 @@
+# This file is a template, and might need editing before it works on your project.
+# see https://docs.gitlab.com/ce/ci/yaml/README.html for all available options
+
+variables:
+  GIT_SUBMODULE_STRATEGY: "recursive"
+  XOP_NAME: "ITCXOP2"
+
+stages:
+  - first
+  - second
+  - third
+  - fourth
+
+download-xoptoolkit:
+  stage: first
+  tags:
+    - docker, debian
+  cache:
+    key: xop-toolkit-8
+    paths:
+      - XOPSupport
+  variables:
+      GIT_SUBMODULE_STRATEGY: "none"
+  image:
+    name: ${CI_REGISTRY}/internal/docker-utils
+  script:
+    - if [[ -d XOPSupport ]]; then exit 0; fi
+    - curl -L --user ${XOPTOOLKIT_USER}:${XOPTOOLKIT_PW} https://www.wavemetrics.net/ecomm/xop/XOPToolkit8.exe --output XOPToolkit8.exe
+    - 7z x -y XOPToolkit8.exe
+    - mv XOP\ Toolkit\ 8/IgorXOPs8/XOPSupport .
+  artifacts:
+    paths:
+      - XOPSupport
+
+build_release_x64:
+  tags:
+    - windows, shell
+  stage: second
+  needs:
+    - download-xoptoolkit
+  script:
+    - md build
+    - cd build
+    - cmake -DWARNINGS_AS_ERRORS=ON -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 17 2022" -A x64 ..\src
+    - cmake --build . --config Release --target install
+  artifacts:
+    paths:
+      - output/win/x64
+
+build_release_x86:
+  tags:
+    - windows, shell
+  stage: second
+  needs:
+    - download-xoptoolkit
+  script:
+    - md build
+    - cd build
+    - cmake -DWARNINGS_AS_ERRORS=ON -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 17 2022" -A Win32 ..\src
+    - cmake --build . --config Release --target install
+  artifacts:
+    paths:
+      - output/win/x86
+
+packaging:
+  tags:
+    - debian, docker
+  stage: third
+  image:
+    name: ${CI_REGISTRY}/internal/docker-utils:latest
+  needs:
+    - build_release_x64
+    - build_release_x86
+  script:
+    - mkdir package
+    - zip -r package/${XOP_NAME}-XOP-$(git describe --tags --always).zip src/*.ipf output/mac output/win/*/*.xop
+    - zip -r package/${XOP_NAME}-PDB-$(git describe --tags --always).zip output/win/*/*.pdb
+    - git archive --output package/${XOP_NAME}-SRC-$(git describe --tags --always).zip HEAD .
+  artifacts:
+    paths:
+      - package
+
+deployment:
+  when: manual
+  tags:
+    - debian, docker
+  stage: fourth
+  image:
+    name: ${CI_REGISTRY}/internal/docker-utils:latest
+  needs:
+    - packaging
+  script:
+    - echo DEPLOYMENT STEP PLACEHOLDER, CHANGE CI SCRIPT ACCORDINGLY
+    # - lftp -e "mirror --reverse -n -e package /; bye" -u $FTP_USER,$FTP_PASS byte-physics.de
+
+symbol_creation_and_upload:
+  tags:
+    - debian, docker
+  stage: fourth
+  image:
+    name: ${CI_REGISTRY}/internal/docker-utils:latest
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: never
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      when: on_success
+  needs:
+    - build_release_x64
+    - build_release_x86
+  script:
+    - mkdir symbols
+    - symstore -z symbols output/win/*/*.pdb output/win/*/*.xop
+    - lftp -e "mirror --reverse -n symbols /; bye" -u $FTP_SYMBOLS_USER,$FTP_SYMBOLS_PASS ftp.byte-physics.de
