@@ -50,4 +50,4 @@ bool ReadCalibrateFlag(T *p)
   return true;
 }
 
-void CloseDevice(const DeviceIDHelper& DeviceID);
+void CloseDevice(const DeviceIDHelper &DeviceID);

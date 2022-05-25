@@ -1303,38 +1303,40 @@ typedef struct ITCWriteDigital2RuntimeParams *ITCWriteDigital2RuntimeParamsPtr;
 
 int RegisterOperations();
 
-extern "C" {
-int ExecuteITCCloseAll2(ITCCloseAll2RuntimeParamsPtr p);
-int ExecuteITCCloseDevice2(ITCCloseDevice2RuntimeParamsPtr p);
-int ExecuteITCConfigAllChannels2(ITCConfigAllChannels2RuntimeParamsPtr p);
-int ExecuteITCConfigChannel2(ITCConfigChannel2RuntimeParamsPtr p);
-int ExecuteITCConfigChannelReset2(ITCConfigChannelReset2RuntimeParamsPtr p);
-int ExecuteITCConfigChannelUpload2(ITCConfigChannelUpload2RuntimeParamsPtr p);
-int ExecuteITCFIFOAvailable2(ITCFIFOAvailable2RuntimeParamsPtr p);
-int ExecuteITCFIFOAvailableAll2(ITCFIFOAvailableAll2RuntimeParamsPtr p);
-int ExecuteITCGetAllChannelsConfig2(ITCGetAllChannelsConfig2RuntimeParamsPtr p);
-int ExecuteITCGetChannelConfig2(ITCGetChannelConfig2RuntimeParamsPtr p);
-int ExecuteITCGetCurrentDevice2(ITCGetCurrentDevice2RuntimeParamsPtr p);
-int ExecuteITCGetDeviceInfo2(ITCGetDeviceInfo2RuntimeParamsPtr p);
-int ExecuteITCGetDevices2(ITCGetDevices2RuntimeParamsPtr p);
-int ExecuteITCGetErrorString2(ITCGetErrorString2RuntimeParamsPtr p);
-int ExecuteITCGetSerialNumber2(ITCGetSerialNumber2RuntimeParamsPtr p);
-int ExecuteITCGetState2(ITCGetState2RuntimeParamsPtr p);
-int ExecuteITCGetVersions2(ITCGetVersions2RuntimeParamsPtr p);
-int ExecuteITCInitialize2(ITCInitialize2RuntimeParamsPtr p);
-int ExecuteITCOpenDevice2(ITCOpenDevice2RuntimeParamsPtr p);
-int ExecuteITCReadADC2(ITCReadADC2RuntimeParamsPtr p);
-int ExecuteITCReadDigital2(ITCReadDigital2RuntimeParamsPtr p);
-int ExecuteITCReadTimer2(ITCReadTimer2RuntimeParamsPtr p);
-int ExecuteITCSelectDevice2(ITCSelectDevice2RuntimeParamsPtr p);
-int ExecuteITCSetDAC2(ITCSetDAC2RuntimeParamsPtr p);
-int ExecuteITCSetGlobals2(ITCSetGlobals2RuntimeParamsPtr p);
-int ExecuteITCSetModes2(ITCSetModes2RuntimeParamsPtr p);
-int ExecuteITCSetState2(ITCSetState2RuntimeParamsPtr p);
-int ExecuteITCStartAcq2(ITCStartAcq2RuntimeParamsPtr p);
-int ExecuteITCStopAcq2(ITCStopAcq2RuntimeParamsPtr p);
-int ExecuteITCUpdateFIFOPosition2(ITCUpdateFIFOPosition2RuntimeParamsPtr p);
-int ExecuteITCUpdateFIFOPositionAll2(
-    ITCUpdateFIFOPositionAll2RuntimeParamsPtr p);
-int ExecuteITCWriteDigital2(ITCWriteDigital2RuntimeParamsPtr p);
+extern "C"
+{
+  int ExecuteITCCloseAll2(ITCCloseAll2RuntimeParamsPtr p);
+  int ExecuteITCCloseDevice2(ITCCloseDevice2RuntimeParamsPtr p);
+  int ExecuteITCConfigAllChannels2(ITCConfigAllChannels2RuntimeParamsPtr p);
+  int ExecuteITCConfigChannel2(ITCConfigChannel2RuntimeParamsPtr p);
+  int ExecuteITCConfigChannelReset2(ITCConfigChannelReset2RuntimeParamsPtr p);
+  int ExecuteITCConfigChannelUpload2(ITCConfigChannelUpload2RuntimeParamsPtr p);
+  int ExecuteITCFIFOAvailable2(ITCFIFOAvailable2RuntimeParamsPtr p);
+  int ExecuteITCFIFOAvailableAll2(ITCFIFOAvailableAll2RuntimeParamsPtr p);
+  int ExecuteITCGetAllChannelsConfig2(
+      ITCGetAllChannelsConfig2RuntimeParamsPtr p);
+  int ExecuteITCGetChannelConfig2(ITCGetChannelConfig2RuntimeParamsPtr p);
+  int ExecuteITCGetCurrentDevice2(ITCGetCurrentDevice2RuntimeParamsPtr p);
+  int ExecuteITCGetDeviceInfo2(ITCGetDeviceInfo2RuntimeParamsPtr p);
+  int ExecuteITCGetDevices2(ITCGetDevices2RuntimeParamsPtr p);
+  int ExecuteITCGetErrorString2(ITCGetErrorString2RuntimeParamsPtr p);
+  int ExecuteITCGetSerialNumber2(ITCGetSerialNumber2RuntimeParamsPtr p);
+  int ExecuteITCGetState2(ITCGetState2RuntimeParamsPtr p);
+  int ExecuteITCGetVersions2(ITCGetVersions2RuntimeParamsPtr p);
+  int ExecuteITCInitialize2(ITCInitialize2RuntimeParamsPtr p);
+  int ExecuteITCOpenDevice2(ITCOpenDevice2RuntimeParamsPtr p);
+  int ExecuteITCReadADC2(ITCReadADC2RuntimeParamsPtr p);
+  int ExecuteITCReadDigital2(ITCReadDigital2RuntimeParamsPtr p);
+  int ExecuteITCReadTimer2(ITCReadTimer2RuntimeParamsPtr p);
+  int ExecuteITCSelectDevice2(ITCSelectDevice2RuntimeParamsPtr p);
+  int ExecuteITCSetDAC2(ITCSetDAC2RuntimeParamsPtr p);
+  int ExecuteITCSetGlobals2(ITCSetGlobals2RuntimeParamsPtr p);
+  int ExecuteITCSetModes2(ITCSetModes2RuntimeParamsPtr p);
+  int ExecuteITCSetState2(ITCSetState2RuntimeParamsPtr p);
+  int ExecuteITCStartAcq2(ITCStartAcq2RuntimeParamsPtr p);
+  int ExecuteITCStopAcq2(ITCStopAcq2RuntimeParamsPtr p);
+  int ExecuteITCUpdateFIFOPosition2(ITCUpdateFIFOPosition2RuntimeParamsPtr p);
+  int ExecuteITCUpdateFIFOPositionAll2(
+      ITCUpdateFIFOPositionAll2RuntimeParamsPtr p);
+  int ExecuteITCWriteDigital2(ITCWriteDigital2RuntimeParamsPtr p);
 }

@@ -158,51 +158,51 @@ std::vector<T> GetChannelSelection(waveHndl waveH)
       break;
     case NT_I64:
       channelSelection[k].ChannelType =
-          (decltype(T::ChannelType))(int64p[k * numRows]);
+          (decltype(T::ChannelType)) (int64p[k * numRows]);
       channelSelection[k].ChannelNumber =
-          (decltype(T::ChannelNumber))(int64p[k * numRows + 1]);
+          (decltype(T::ChannelNumber)) (int64p[k * numRows + 1]);
       break;
     case NT_I64 | NT_UNSIGNED:
       channelSelection[k].ChannelType =
-          (decltype(T::ChannelType))(uint64p[k * numRows]);
+          (decltype(T::ChannelType)) (uint64p[k * numRows]);
       channelSelection[k].ChannelNumber =
-          (decltype(T::ChannelNumber))(uint64p[k * numRows + 1]);
+          (decltype(T::ChannelNumber)) (uint64p[k * numRows + 1]);
       break;
     case NT_I32:
       channelSelection[k].ChannelType =
-          (decltype(T::ChannelType))(int32p[k * numRows]);
+          (decltype(T::ChannelType)) (int32p[k * numRows]);
       channelSelection[k].ChannelNumber =
-          (decltype(T::ChannelNumber))(int32p[k * numRows + 1]);
+          (decltype(T::ChannelNumber)) (int32p[k * numRows + 1]);
       break;
     case NT_I32 | NT_UNSIGNED:
       channelSelection[k].ChannelType =
-          (decltype(T::ChannelType))(uint32p[k * numRows]);
+          (decltype(T::ChannelType)) (uint32p[k * numRows]);
       channelSelection[k].ChannelNumber =
-          (decltype(T::ChannelNumber))(uint32p[k * numRows + 1]);
+          (decltype(T::ChannelNumber)) (uint32p[k * numRows + 1]);
       break;
     case NT_I16:
       channelSelection[k].ChannelType =
-          (decltype(T::ChannelType))(int16p[k * numRows]);
+          (decltype(T::ChannelType)) (int16p[k * numRows]);
       channelSelection[k].ChannelNumber =
-          (decltype(T::ChannelNumber))(int16p[k * numRows + 1]);
+          (decltype(T::ChannelNumber)) (int16p[k * numRows + 1]);
       break;
     case NT_I16 | NT_UNSIGNED:
       channelSelection[k].ChannelType =
-          (decltype(T::ChannelType))(uint16p[k * numRows]);
+          (decltype(T::ChannelType)) (uint16p[k * numRows]);
       channelSelection[k].ChannelNumber =
-          (decltype(T::ChannelNumber))(uint16p[k * numRows + 1]);
+          (decltype(T::ChannelNumber)) (uint16p[k * numRows + 1]);
       break;
     case NT_I8:
       channelSelection[k].ChannelType =
-          (decltype(T::ChannelType))(int8p[k * numRows]);
+          (decltype(T::ChannelType)) (int8p[k * numRows]);
       channelSelection[k].ChannelNumber =
-          (decltype(T::ChannelNumber))(int8p[k * numRows + 1]);
+          (decltype(T::ChannelNumber)) (int8p[k * numRows + 1]);
       break;
     case NT_I8 | NT_UNSIGNED:
       channelSelection[k].ChannelType =
-          (decltype(T::ChannelType))(uint8p[k * numRows]);
+          (decltype(T::ChannelType)) (uint8p[k * numRows]);
       channelSelection[k].ChannelNumber =
-          (decltype(T::ChannelNumber))(uint8p[k * numRows + 1]);
+          (decltype(T::ChannelNumber)) (uint8p[k * numRows + 1]);
       break;
     default:
       throw IgorException(NT_INCOMPATIBLE);

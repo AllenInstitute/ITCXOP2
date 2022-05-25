@@ -370,7 +370,7 @@ void ITCDLL::ITC_GetDeviceType(const DeviceIDHelper &DeviceID,
   DWORD *DeviceTypePtr;
   if(DeviceType != nullptr)
   {
-    DeviceTypeVal = (DWORD)(*DeviceType);
+    DeviceTypeVal = (DWORD) (*DeviceType);
     DeviceTypePtr = &DeviceTypeVal;
   }
   else

@@ -308,9 +308,8 @@ void writeChannelConfigWave(T p,
 #define STOREDATAFN_PTR(Column, Field)                                         \
   storeDoubleData_waveRow<ITCChannelInfo>(                                     \
       ChannelSelection.begin(), ChannelSelection.end(), h,                     \
-      [](const ITCChannelInfo &I) -> double {                                  \
-        return (double) (UINT_PTR) I.Field;                                    \
-      },                                                                       \
+      [](const ITCChannelInfo &I) -> double                                    \
+      { return (double) (UINT_PTR) I.Field; },                                 \
       Column)
 
   STOREDATAFN(0, ModeNumberOfPoints);
