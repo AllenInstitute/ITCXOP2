@@ -10,6 +10,8 @@ extern "C" int ExecuteITCGetErrorString2(ITCGetErrorString2RuntimeParamsPtr p)
 {
   BEGIN_OUTER_CATCH
 
+  SetOperationReturn(ERROR_RETURN_VARIABLE, "");
+
   if(!p->errorCodeEncountered)
   {
     // Parameter: p->errorCode

@@ -10,6 +10,8 @@ extern "C" int ExecuteITCReadDigital2(ITCReadDigital2RuntimeParamsPtr p)
 {
   BEGIN_OUTER_CATCH
 
+  SetOperationReturn(RETURN_VARIABLE, DOUBLE_NAN);
+
   // Get the deviceID and handle to use.
   DeviceIDHelper DeviceID(p);
 

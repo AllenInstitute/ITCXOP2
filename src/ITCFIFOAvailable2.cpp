@@ -11,6 +11,8 @@ extern "C" int ExecuteITCFIFOAvailable2(ITCFIFOAvailable2RuntimeParamsPtr p)
 {
   BEGIN_OUTER_CATCH
 
+  SetOperationReturn(RETURN_VARIABLE, -1);
+
   // Get the deviceID and handle to use.
   DeviceIDHelper DeviceID(p);
 

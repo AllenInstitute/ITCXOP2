@@ -11,6 +11,8 @@ extern "C" int ExecuteITCReadADC2(ITCReadADC2RuntimeParamsPtr p)
 {
   BEGIN_OUTER_CATCH
 
+  SetOperationReturn(RETURN_VARIABLE, DOUBLE_NAN);
+
   // Get the deviceID and handle to use.
   DeviceIDHelper DeviceID(p);
 
