@@ -2,15 +2,6 @@
 
 // This file is part of the `ITCXOP2` project and licensed under BSD-3-Clause.
 
-// Required Igor versions
-#ifdef _WIN64
-// Require Igor 7.0 for 64-bit versions
-#define MIN_IGOR_VERSION 700
-#else
-// Require Igor 6.3 for 32-bit versions
-#define MIN_IGOR_VERSION 630
-#endif
-
 // clang-format off
 
 // Custom error codes

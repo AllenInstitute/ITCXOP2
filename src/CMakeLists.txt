@@ -17,7 +17,7 @@ OPTION(SANITIZER "Enable sanitizer instrumentation" OFF)
 OPTION(MSVC_RUNTIME_DYNAMIC "Link dynamically against the MSVC runtime library" OFF)
 OPTION(WARNINGS_AS_ERRORS "Error out on compiler warnings" OFF)
 
-# SET(XOP_MINIMUM_IGORVERSION 700)
+SET(XOP_MINIMUM_IGORVERSION 800)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/CreateLaunchers/cmake")
 include(CreateLaunchers)

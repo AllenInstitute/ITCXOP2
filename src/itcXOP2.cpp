@@ -1,5 +1,6 @@
 #include "XOPStandardHeaders.h" // Include ANSI headers, Mac headers, IgorXOP.h, XOP.h and XOPSupport.h
 
+#include "cmake_config.h"
 #include "itcXOP2.h"
 #include "DeviceIDClass.h"
 #include "RegisterOperations.h"
@@ -40,10 +41,7 @@ extern "C" void XOPEntry(void)
   the
   ioRecHandle to the address to be called for future messages.
 */
-HOST_IMPORT int XOPMain(IORecHandle ioRecHandle) // The use of XOPMain rather
-                                                 // than main means this XOP
-                                                 // requires Igor Pro 6.20 or
-                                                 // later
+HOST_IMPORT int XOPMain(IORecHandle ioRecHandle)
 {
   int result;
 
@@ -51,7 +49,7 @@ HOST_IMPORT int XOPMain(IORecHandle ioRecHandle) // The use of XOPMain rather
   SetXOPEntry(XOPEntry); // Set entry point for future calls.
   SetXOPType(RESIDENT | IDLES);
 
-  if(igorVersion < MIN_IGOR_VERSION)
+  if(igorVersion < XOP_MINIMUM_IGORVERSION)
   {                         // Check Igor version
     SetXOPResult(OLD_IGOR); // OLD_IGOR is defined in itcXOP2.h and there are
                             // corresponding error strings in itcXOP2.r and

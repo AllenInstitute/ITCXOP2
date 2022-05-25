@@ -11,7 +11,7 @@
 // Custom error messages
 1100 STR#
 BEGIN
-    "itcXOP2 requires at least Igor Pro 6.30 (32bit) or Igor Pro 7.0 (64bit).\0"     // OLD_IGOR
+  "itcXOP2 requires at least Igor Pro 8.0.\0"                                      // OLD_IGOR
 	"Unhandled C++ Exception\0"                                                      // UNHANDLED_CPP_EXCEPTION
 
 	"DeviceID is locked to another thread.\0"                                        // SLOT_LOCKED_TO_OTHER_THREAD
