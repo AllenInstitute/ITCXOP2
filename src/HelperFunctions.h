@@ -245,7 +245,7 @@ void storeDoubleData_waveRow(typename std::vector<T>::const_iterator first,
   // Write the data
   for(unsigned int currPoint = 0; currPoint < numPtsToWrite; currPoint++)
   {
-    size_t currIdx = rowToWrite + currPoint * dimensionSizes[ROWS];
+    size_t currIdx = startIdx + currPoint * dimensionSizes[ROWS];
     dp[currIdx]    = dataAccessFn(first[currPoint]);
   }
 }
