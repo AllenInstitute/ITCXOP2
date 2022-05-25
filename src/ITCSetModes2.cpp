@@ -12,21 +12,21 @@ extern "C" int ExecuteITCSetModes2(ITCSetModes2RuntimeParamsPtr p)
 
   ITCPublicConfig lConfig;
 
-  lConfig.DigitalInputMode    = -1;
-  lConfig.ExternalTriggerMode = -1;
-  lConfig.ExternalTrigger     = -1;
-  lConfig.EnableExternalClock = -1;
-  lConfig.DACShiftValue       = -1;
-  lConfig.InputRange          = -1;
-  lConfig.TriggerOutPosition  = -1;
-  lConfig.OutputEnable        = -1;
-  lConfig.SequenceLength      = -1;
+  lConfig.DigitalInputMode    = (DWORD) -1;
+  lConfig.ExternalTriggerMode = (DWORD) -1;
+  lConfig.ExternalTrigger     = (DWORD) -1;
+  lConfig.EnableExternalClock = (DWORD) -1;
+  lConfig.DACShiftValue       = (DWORD) -1;
+  lConfig.InputRange          = (DWORD) -1;
+  lConfig.TriggerOutPosition  = (DWORD) -1;
+  lConfig.OutputEnable        = (DWORD) -1;
+  lConfig.SequenceLength      = (DWORD) -1;
   lConfig.Sequence            = NULL;
-  lConfig.SequenceLengthIn    = -1;
+  lConfig.SequenceLengthIn    = (DWORD) -1;
   lConfig.SequenceIn          = NULL;
-  lConfig.ResetFIFOFlag       = -1;
-  lConfig.ControlLight        = -1;
-  lConfig.SamplingInterval    = -1;
+  lConfig.ResetFIFOFlag       = (DWORD) -1;
+  lConfig.ControlLight        = (DWORD) -1;
+  lConfig.SamplingInterval    = (DWORD) -1;
 
   if(p->IFlagEncountered)
   {
