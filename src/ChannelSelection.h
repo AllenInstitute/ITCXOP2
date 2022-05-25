@@ -228,5 +228,5 @@ std::vector<outT> makeChannelSelectionVec(T p, const DeviceIDHelper &DeviceID)
   // Otherwise, read the wave values.
   waveHndl waveH = p->channelSelection;
 
-  return GetChannelSelection<outT>(p->channelSelection);
+  return GetChannelSelection<outT>(waveH);
 }
