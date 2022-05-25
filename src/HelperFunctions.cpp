@@ -1,6 +1,7 @@
 #include "HelperFunctions.h"
 #include "itcXOP2.h"
 #include "itcdll.h"
+#include "fmt/format.h"
 #include <sstream>
 #include <iterator>
 #include <algorithm>
@@ -179,4 +180,20 @@ void WaveClear(waveHndl wv)
   }
 
   MemClear(WaveData(wv), numBytes);
+}
+
+void SetOperationReturn(const std::string &name, const std::string &value)
+{
+  if(int err = SetOperationStrVar(name.c_str(), value.c_str()))
+  {
+    throw IgorException(err, fmt::format("Error setting {}.", name));
+  }
+}
+
+void SetOperationReturn(const std::string &name, double value)
+{
+  if(int err = SetOperationNumVar(name.c_str(), value))
+  {
+    throw IgorException(err, fmt::format("Error setting {}.", name));
+  }
 }

@@ -378,3 +378,9 @@ T To(U val)
 
   return result;
 }
+
+/// @brief Convenience wrapper for SetOperationStrVar
+void SetOperationReturn(const std::string &name, const std::string &value);
+
+/// @brief Convenience wrapper for SetOperationNumVar
+void SetOperationReturn(const std::string &name, double value);
