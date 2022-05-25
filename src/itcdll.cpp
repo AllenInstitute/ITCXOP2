@@ -366,7 +366,7 @@ void ITCDLL::ITC_GetDeviceType(const DeviceIDHelper &DeviceID,
   // Set up the device type pointer.
   // If nullptr was supplied in DeviceType, use nullptr
   // Otherwise, make a new DWORD ptr
-  DWORD DeviceTypeVal;
+  DWORD DeviceTypeVal = (DWORD) -1;
   DWORD *DeviceTypePtr;
   if(DeviceType != nullptr)
   {
