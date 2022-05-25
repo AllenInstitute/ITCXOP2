@@ -41,11 +41,7 @@ extern "C" int ExecuteITCReadADC2(ITCReadADC2RuntimeParamsPtr p)
       volts = (double) ((short) lITCChannelData[0].Value) / SLOWANALOGVOLT;
   }
 
-  // Store the result in V_Value
-  if(int RetVal = SetOperationNumVar(RETURN_VARIABLE, volts))
-  {
-    throw IgorException(RetVal);
-  }
+  SetOperationReturn(RETURN_VARIABLE, volts);
 
   END_OUTER_CATCH
 }

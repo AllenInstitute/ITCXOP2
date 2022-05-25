@@ -11,12 +11,7 @@ ExecuteITCGetCurrentDevice2(ITCGetCurrentDevice2RuntimeParamsPtr p)
 
   DeviceIDHelper DeviceID;
 
-  // Store the result in V_Value
-  if(int RetVal =
-         SetOperationNumVar(RETURN_VARIABLE, (double) DeviceID.getDeviceID()))
-  {
-    throw IgorException(RetVal);
-  }
+  SetOperationReturn(RETURN_VARIABLE, (double) DeviceID.getDeviceID());
 
   END_OUTER_CATCH
 }
