@@ -2,10 +2,6 @@
 
 // This file is part of the `ITCXOP2` project and licensed under BSD-3-Clause.
 
-Function Run()
-	RunTest(WinList("Test_*.ipf", ";", "WIN:128"))
-End
-
 threadsafe function QuickTest()
 	// Close any devices left open
 	ITCCloseAll2
