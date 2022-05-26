@@ -36,20 +36,23 @@ Static Function readDig_devID_IGNORE(devID)
 
 	Variable /G last_ITCxOPError = V_ITCXOPError
 	Variable /G last_ITCError = V_ITCError
+	Variable /G last_Value = numType(V_Value)
 End
+
 
 Static Function readDig_noDevID_IGNORE()
 	ITCReadDigital2 defaultChannel
 
 	Variable /G last_ITCxOPError = V_ITCXOPError
 	Variable /G last_ITCError = V_ITCError
+	Variable /G last_Value = numType(V_Value)
 End
 
 // Run the standard DeviceID tests
 static Function testDevID()
 	FUNCREF DevIDTests_devID_Prototype devID_fn = readDig_devID_IGNORE
 	FUNCREF DevIDTests_noDevID_Prototype noDevID_fn = readDig_noDevID_IGNORE
-	devIDTest(devID_fn, noDevID_fn)
+	devIDTest(devID_fn, noDevID_fn, valuePass = 0, valueFail = 2)
 End
 
 Static Function testChannelNumber_fn_IGNORE(channelNumber)
@@ -58,6 +61,7 @@ Static Function testChannelNumber_fn_IGNORE(channelNumber)
 
 	Variable /G last_ITCxOPError = V_ITCXOPError
 	Variable /G last_ITCError = V_ITCError
+	Variable /G last_Value = numType(V_Value)
 End
 //
 //// Test the channel number parameter

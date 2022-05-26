@@ -13,19 +13,38 @@ Function DevIDTests_noDevID_Prototype()
 
 End
 
-function devIDTest(devID_fn, noDevID_fn)
+// valuePass, valueFail are the expected values of V_Value
+function devIDTest(devID_fn, noDevID_fn, [valuePass, valueFail])
 	FUNCREF DevIDTests_devID_Prototype devID_fn
 	FUNCREF DevIDTests_noDevID_Prototype noDevID_fn
+	variable valuePass, valueFail
 
-	testValidDevID(devID_fn)
-	testInvalidDevIDs(devID_fn)
+	variable numOpt
 
-	testLastDevID(noDevID_fn)
-	testInvalidLastDevID(noDevID_fn)
+	numOpt = ParamIsDefault(valuePass) + ParamIsDefault(valuePass)
+
+	switch(numOpt)
+		case 0:
+			// nothing to do
+			break
+		case 2:
+			valuePass = NaN
+			valueFail = NaN
+			break
+		default:
+			FAIL()
+	endswitch
+
+	testValidDevID(devID_fn, valuePass, valueFail)
+	testInvalidDevIDs(devID_fn, valuePass, valueFail)
+
+	testLastDevID(noDevID_fn, valuePass, valueFail)
+	testInvalidLastDevID(noDevID_fn, valuePass, valueFail)
 End
 
-Static Function testValidDevID(devID_fn)
+Static Function testValidDevID(devID_fn, valuePass, valueFail)
 	FUNCREF DevIDTests_devID_Prototype devID_fn
+	variable valuePass, valueFail
 
 	NVAR devNum = $lastDevIDVariableName
 	devID_fn(devNum)
@@ -33,11 +52,21 @@ Static Function testValidDevID(devID_fn)
 	NVAR last_ITCXOPError, last_ITCError
 	CHECK_EQUAL_VAR(last_ITCXOPError, 0)
 	CHECK_EQUAL_VAR(last_ITCError, 0)
+
+	NVAR/Z last_Value
+	if(numType(valuePass) == 2 && numType(valueFail) == 2)
+		// V_Value is not expected
+		CHECK(!NVAR_Exists(last_Value))
+	else
+		CHECK(NVAR_Exists(last_Value))
+		CHECK_EQUAL_VAR(last_Value, valuePass)
+	endif
 End
 
 
-Static Function testInvalidDevIDs(devID_fn)
+Static Function testInvalidDevIDs(devID_fn, valuePass, valueFail)
 	FUNCREF DevIDTests_devID_Prototype devID_fn
+	variable valuePass, valueFail
 
 	variable error
 
@@ -72,21 +101,41 @@ Static Function testInvalidDevIDs(devID_fn)
 		NVAR last_ITCXOPError, last_ITCError
 		CHECK_EQUAL_VAR(last_ITCXOPError, ITCXOPErrorCode[k])
 		CHECK_EQUAL_VAR(last_ITCError, ITCErrorCode[k])
+
+		NVAR/Z last_Value
+		if(numType(valuePass) == 2 && numType(valueFail) == 2)
+			// V_Value is not expected
+			CHECK(!NVAR_Exists(last_Value))
+		else
+			CHECK(NVAR_Exists(last_Value))
+			CHECK_EQUAL_VAR(last_Value, valueFail)
+		endif
 	EndFor
 End
 
-Static Function testLastDevID(noDevID_fn)
+Static Function testLastDevID(noDevID_fn, valuePass, valueFail)
 	FUNCREF DevIDTests_noDevID_Prototype noDevID_fn
+	variable valuePass, valueFail
 
 	noDevID_fn()
 
 	NVAR last_ITCXOPError, last_ITCError
 	CHECK_EQUAL_VAR(last_ITCXOPError, 0)
 	CHECK_EQUAL_VAR(last_ITCError, 0)
+
+	NVAR/Z last_Value
+	if(numType(valuePass) == 2 && numType(valueFail) == 2)
+		// V_Value is not expected
+		CHECK(!NVAR_Exists(last_Value))
+	else
+		CHECK(NVAR_Exists(last_Value))
+		CHECK_EQUAL_VAR(last_Value, valuePass)
+	endif
 End
 
-Static Function testInvalidLastDevID(noDevID_fn)
+Static Function testInvalidLastDevID(noDevID_fn, valuePass, valueFail)
 	FUNCREF DevIDTests_noDevID_Prototype noDevID_fn
+	variable valuePass, valueFail
 
 	Variable error
 
@@ -102,4 +151,13 @@ Static Function testInvalidLastDevID(noDevID_fn)
 	NVAR last_ITCXOPError, last_ITCError
 	CHECK_EQUAL_VAR(last_ITCXOPError, 10004)
 	CHECK_EQUAL_VAR(last_ITCError, 0)
+
+	NVAR/Z last_Value
+	if(numType(valuePass) == 2 && numType(valueFail) == 2)
+		// V_Value is not expected
+		CHECK(!NVAR_Exists(last_Value))
+	else
+		CHECK(NVAR_Exists(last_Value))
+		CHECK_EQUAL_VAR(last_Value, valueFail)
+	endif
 End

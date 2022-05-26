@@ -36,6 +36,7 @@ Static Function readADC_devID_IGNORE(devID)
 
 	Variable /G last_ITCxOPError = V_ITCXOPError
 	Variable /G last_ITCError = V_ITCError
+	Variable /G last_Value = numtype(V_Value)
 End
 
 Static Function readADC_noDevID_IGNORE()
@@ -43,12 +44,13 @@ Static Function readADC_noDevID_IGNORE()
 
 	Variable /G last_ITCxOPError = V_ITCXOPError
 	Variable /G last_ITCError = V_ITCError
+	Variable /G last_Value = numtype(V_Value)
 End
 
 static Function testDevID()
 	FUNCREF DevIDTests_devID_Prototype devID_fn = readADC_devID_IGNORE
 	FUNCREF DevIDTests_noDevID_Prototype noDevID_fn = readADC_noDevID_IGNORE
-	devIDTest(devID_fn, noDevID_fn)
+	devIDTest(devID_fn, noDevID_fn, valuePass = 0, valueFail = 2)
 End
 
 // Test the channel number parameter
@@ -58,6 +60,7 @@ Static Function testChannelNumberFn_IGNORE(channelNumber)
 
 	Variable /G last_ITCxOPError = V_ITCXOPError
 	Variable /G last_ITCError = V_ITCError
+	Variable /G last_Value = numtype(V_Value)
 End
 
 //Static Function testChannels()
@@ -80,6 +83,7 @@ Static Function noFlagFn_IGNORE()
 
 	Variable /G last_ITCxOPError = V_ITCXOPError
 	Variable /G last_ITCError = V_ITCError
+	Variable /G last_Value = numtype(V_Value)
 End
 
 Static Function CflagOnlyFn_IGNORE()
@@ -87,6 +91,7 @@ Static Function CflagOnlyFn_IGNORE()
 
 	Variable /G last_ITCxOPError = V_ITCXOPError
 	Variable /G last_ITCError = V_ITCError
+	Variable /G last_Value = numtype(V_Value)
 End
 
 Static Function CflagValueFn_IGNORE(value)
@@ -96,6 +101,7 @@ Static Function CflagValueFn_IGNORE(value)
 
 	Variable /G last_ITCxOPError = V_ITCXOPError
 	Variable /G last_ITCError = V_ITCError
+	Variable /G last_Value = numtype(V_Value)
 End
 
 Static Function VflagOnlyFn_IGNORE()
@@ -103,6 +109,7 @@ Static Function VflagOnlyFn_IGNORE()
 
 	Variable /G last_ITCxOPError = V_ITCXOPError
 	Variable /G last_ITCError = V_ITCError
+	Variable /G last_Value = numtype(V_Value)
 End
 
 Static Function VflagValueFn_IGNORE(value)
@@ -112,6 +119,7 @@ Static Function VflagValueFn_IGNORE(value)
 
 	Variable /G last_ITCxOPError = V_ITCXOPError
 	Variable /G last_ITCError = V_ITCError
+	Variable /G last_Value = numtype(V_Value)
 End
 
 
