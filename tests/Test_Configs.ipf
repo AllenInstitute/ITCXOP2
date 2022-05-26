@@ -31,8 +31,6 @@ Static Function TEST_CASE_BEGIN_OVERRIDE(name)
 	Variable /G $lastDevIDVariableName = V_Value
 
 	Make /O /W $defaultWaveName
-
-	TEST_CASE_BEGIN(name)
 End
 
 // Set the config with ITCConfigChannel2.

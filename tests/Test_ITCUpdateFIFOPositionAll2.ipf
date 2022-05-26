@@ -51,8 +51,6 @@ Static Function TEST_CASE_BEGIN_OVERRIDE(name)
 	// Upload the config
 	// (Make sure we have FIFO waves set for all channels)
 	ITCConfigAllChannels2 confWave, fifoWave
-
-	TEST_CASE_BEGIN(name)
 End
 
 // Test the /DEV flag

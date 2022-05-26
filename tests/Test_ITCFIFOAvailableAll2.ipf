@@ -30,8 +30,6 @@ Static Function TEST_CASE_BEGIN_OVERRIDE(name)
 	Duplicate /O makeConfigAllWave(1), $configWaveName
 	WAVE configWave = $configWaveName
 	configWave[%SamplingInterval] = 100
-
-	TEST_CASE_BEGIN(name)
 End
 
 // Test the /DEV flag

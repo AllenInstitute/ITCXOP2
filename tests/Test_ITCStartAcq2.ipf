@@ -44,8 +44,6 @@ Static Function TEST_CASE_BEGIN_OVERRIDE(name)
 	// Make sure that we have a device to setDAC on
 	ITCOpenDevice2/DTN=(DEVICE_NUM) DEVICE_ID
 	Variable /G $lastDevIDVariableName = V_Value
-
-	TEST_CASE_BEGIN(name)
 End
 
 // Assumes that the config and FIFO waves have been set up properly

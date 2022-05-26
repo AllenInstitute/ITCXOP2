@@ -19,8 +19,6 @@ Static Function TEST_CASE_BEGIN_OVERRIDE(name)
 	string name
 
 	ITCCloseAll2
-
-	TEST_CASE_BEGIN(name)
 End
 
 Function init_device_num()

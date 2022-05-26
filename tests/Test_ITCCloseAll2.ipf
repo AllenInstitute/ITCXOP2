@@ -24,8 +24,6 @@ Static Function TEST_CASE_BEGIN_OVERRIDE(name)
 	// Make sure that we have a device to close
 	ITCOpenDevice2/DTN=(DEVICE_NUM) DEVICE_ID
 	Variable /G $lastDevIDVariableName = V_Value
-
-	TEST_CASE_BEGIN(name)
 End
 
 Static Function DoTest()

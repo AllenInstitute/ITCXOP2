@@ -42,8 +42,6 @@ Static Function TEST_CASE_BEGIN_OVERRIDE(name)
 		// Make a global fifoWave
 		Duplicate /O makeFIFOWave(100,2), $fifoWave2chName
 	EndIf
-
-	TEST_CASE_BEGIN(name)
 End
 
 // Test the /DEV flag

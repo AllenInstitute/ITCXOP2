@@ -29,8 +29,6 @@ Static Function TEST_CASE_BEGIN_OVERRIDE(name)
 	// Set a config so we can upload it
 	Make /O /W $defaultWaveName
 	ITCConfigChannel2 /CHN=0 0, 100, $defaultWaveName
-
-	TEST_CASE_BEGIN(name)
 End
 
 Static Function devID_IGNORE(devID)
