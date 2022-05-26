@@ -4,14 +4,14 @@
 	resources that IGOR looks for in an XOP module.
 */
 
-#include "XOPSupport/XOPResources.h"			// Defines XOP-specific symbols.
+#include "../XOPSupport/XOPResources.h"			// Defines XOP-specific symbols.
 
 // This file is part of the `ITCXOP2` project and licensed under BSD-3-Clause.
 
 // Custom error messages
 1100 STR#
 BEGIN
-    "itcXOP2 requires at least Igor Pro 6.30 (32bit) or Igor Pro 7.0 (64bit).\0"     // OLD_IGOR
+  "itcXOP2 requires at least Igor Pro 8.0.\0"                                      // OLD_IGOR
 	"Unhandled C++ Exception\0"                                                      // UNHANDLED_CPP_EXCEPTION
 
 	"DeviceID is locked to another thread.\0"                                        // SLOT_LOCKED_TO_OTHER_THREAD
@@ -52,9 +52,9 @@ END
 BEGIN
 	XOP_VERSION,					// Version number of host XOP system.
 	DEV_SYS_CODE,					// Code for development system used to make XOP.
-	0,								// Obsolete - set to zero.
-	0,								// Obsolete - set to zero.
-	XOP_TOOLKIT_VERSION				// XOP Toolkit version.
+	XOP_FEATURE_FLAGS,	  // Tells Igor about XOP features
+	XOPI_RESERVED,				// Reserved - must be zero.
+	XOP_TOOLKIT_VERSION		// XOP Toolkit version.
 END
 
 1100 XOPC							// Describes operations that the XOP adds to IGOR.

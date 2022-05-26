@@ -125,11 +125,10 @@ void MakeDestWave(T p, waveHndl *destWaveH, int dataType, const int numRows,
   int options = 0;
   if(p->FREEFlagEncountered)
   {
-
     // Only allow /FREE flag if called from function
-    if(!p->calledFromFunction && !p->tp)
+    if(!p->calledFromFunction)
     {
-      throw IgorException(BADFLG);
+      throw IgorException(FREE_FLAG_ALLOWED_IN_FUNCTIONS_ONLY);
     }
 
     options |= kOpDestWaveMakeFreeWave;
@@ -245,7 +244,7 @@ void storeDoubleData_waveRow(typename std::vector<T>::const_iterator first,
   // Write the data
   for(unsigned int currPoint = 0; currPoint < numPtsToWrite; currPoint++)
   {
-    size_t currIdx = rowToWrite + currPoint * dimensionSizes[ROWS];
+    size_t currIdx = startIdx + currPoint * dimensionSizes[ROWS];
     dp[currIdx]    = dataAccessFn(first[currPoint]);
   }
 }
@@ -308,9 +307,8 @@ void writeChannelConfigWave(T p,
 #define STOREDATAFN_PTR(Column, Field)                                         \
   storeDoubleData_waveRow<ITCChannelInfo>(                                     \
       ChannelSelection.begin(), ChannelSelection.end(), h,                     \
-      [](const ITCChannelInfo &I) -> double {                                  \
-        return (double) (UINT_PTR) I.Field;                                    \
-      },                                                                       \
+      [](const ITCChannelInfo &I) -> double                                    \
+      { return (double) (UINT_PTR) I.Field; },                                 \
       Column)
 
   STOREDATAFN(0, ModeNumberOfPoints);

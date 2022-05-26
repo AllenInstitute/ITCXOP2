@@ -77,9 +77,11 @@ extern "C" int ExecuteITCOpenDevice2(ITCOpenDevice2RuntimeParamsPtr p)
       }
       catch(const ITCException &e)
       {
-        if(DeviceType == ITCDeviceTypeEnum::ITC1600 && e.ErrorCode == 0x8A513000 && i < NUM_INIT_TRIALS)
+        if(DeviceType == ITCDeviceTypeEnum::ITC1600 &&
+           e.ErrorCode == 0x8A513000 && i < NUM_INIT_TRIALS)
         {
-          DebugOut("ExecuteITCOpenDevice2", "Redoing initialization: " + std::to_string(i));
+          DebugOut("ExecuteITCOpenDevice2",
+                   "Redoing initialization: " + std::to_string(i));
           Sleep(100);
           continue;
         }
@@ -98,7 +100,7 @@ extern "C" int ExecuteITCOpenDevice2(ITCOpenDevice2RuntimeParamsPtr p)
   }
 
   // Set the Device ID in V_value
-  if (int RetVal = SetOperationNumVar(RETURN_VARIABLE, (double)currentDeviceID))
+  if(int RetVal = SetOperationNumVar(RETURN_VARIABLE, (double) currentDeviceID))
   {
     throw IgorException(RetVal);
   }
