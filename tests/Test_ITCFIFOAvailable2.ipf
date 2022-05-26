@@ -4,7 +4,7 @@
 
 // This file is part of the `ITCXOP2` project and licensed under BSD-3-Clause.
 
-// available from https://github.com/t-b/igor-unit-testing-framework
+// available from https://github.com/byte-physics/igor-unit-testing-framework
 #include "unit-testing"
 
 // Run with: RunTest("Test_ITCFIFOAvailable2.ipf")
@@ -27,8 +27,6 @@ Static Function TEST_CASE_BEGIN_OVERRIDE(name)
 	// Make sure that we have a device open
 	ITCOpenDevice2/DTN=(DEVICE_NUM) DEVICE_ID
 	Variable /G $lastDevIDVariableName = V_Value
-
-	TEST_CASE_BEGIN(name)
 End
 
 // Test CHN / CHS
@@ -39,6 +37,7 @@ Static Function fifoAvailable_chn_fn_IGNORE(chn, channelNumber)
 
 	Variable /G last_ITCXOPError = V_ITCXOPError
 	Variable /G last_ITCError = V_ITCError
+	Variable /G last_Value = V_Value
 End
 
 Static Function fifoAvailable_chs_fn_IGNORE(chs, channelNumber)
@@ -49,6 +48,7 @@ Static Function fifoAvailable_chs_fn_IGNORE(chs, channelNumber)
 
 	Variable /G last_ITCXOPError = V_ITCXOPError
 	Variable /G last_ITCError = V_ITCError
+	Variable /G last_Value = V_Value
 End
 
 Static Function fifoAvailable_chn_chs_fn_IGNORE(chn, chs, channelNumber)
@@ -60,6 +60,7 @@ Static Function fifoAvailable_chn_chs_fn_IGNORE(chn, chs, channelNumber)
 
 	Variable /G last_ITCXOPError = V_ITCXOPError
 	Variable /G last_ITCError = V_ITCError
+	Variable /G last_Value = V_Value
 End
 
 Static Function fifoAvailable_none_fn_IGNORE(channelNumber)
@@ -69,6 +70,7 @@ Static Function fifoAvailable_none_fn_IGNORE(channelNumber)
 
 	Variable /G last_ITCXOPError = V_ITCXOPError
 	Variable /G last_ITCError = V_ITCError
+	Variable /G last_Value = V_Value
 End
 
 Function fifoAvailable_test_chn_chs()
@@ -90,6 +92,7 @@ Static Function fifoAvailable_devID_IGNORE(devID)
 
 	Variable /G last_ITCxOPError = V_ITCXOPError
 	Variable /G last_ITCError = V_ITCError
+	Variable /G last_Value = V_Value
 End
 
 Static Function fifoAvailable_noDevID_IGNORE()
@@ -97,12 +100,13 @@ Static Function fifoAvailable_noDevID_IGNORE()
 
 	Variable /G last_ITCxOPError = V_ITCXOPError
 	Variable /G last_ITCError = V_ITCError
+	Variable /G last_Value = V_Value
 End
 
 static Function configChannel_test_devID()
 	FUNCREF DevIDTests_devID_Prototype devID_fn = fifoAvailable_devID_IGNORE
 	FUNCREF DevIDTests_noDevID_Prototype noDevID_fn = fifoAvailable_noDevID_IGNORE
-	devIDTest(devID_fn, noDevID_fn)
+	devIDTest(devID_fn, noDevID_fn, valuePass = 0, valueFail = -1)
 End
 
 Static Function testOutput()

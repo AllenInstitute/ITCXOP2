@@ -4,7 +4,7 @@
 
 // This file is part of the `ITCXOP2` project and licensed under BSD-3-Clause.
 
-// available from https://github.com/t-b/igor-unit-testing-framework
+// available from https://github.com/byte-physics/igor-unit-testing-framework
 #include "unit-testing"
 
 // Run with: RunTest("Test_ITCInitialize2.ipf")
@@ -25,8 +25,6 @@ Static Function TEST_CASE_BEGIN_OVERRIDE(name)
 	// Make sure that we have a device to readADC from
 	ITCOpenDevice2/DTN=(DEVICE_NUM) DEVICE_ID
 	Variable /G $lastDevIDVariableName = V_Value
-
-	TEST_CASE_BEGIN(name)
 End
 
 // Test the /DEV flag

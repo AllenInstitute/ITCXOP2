@@ -7,11 +7,14 @@
 #include <string>
 #include <vector>
 #include <functional>
+#include <map>
 #include "SafeInt/SafeInt.hpp"
 
 // Usign std::min/max
 #undef min
 #undef max
+
+using StrStrMap = std::map<std::string, std::string>;
 
 // This file is part of the `ITCXOP2` project and licensed under BSD-3-Clause.
 
@@ -378,3 +381,12 @@ T To(U val)
 
   return result;
 }
+
+/// @brief Convenience wrapper for SetOperationStrVar
+void SetOperationReturn(const std::string &name, const std::string &value);
+
+/// @brief Convenience wrapper for SetOperationNumVar
+void SetOperationReturn(const std::string &name, double value);
+
+/// @brief Return XOP version info as Key/value pairs
+StrStrMap GetVersionInfo(const std::string &xopName);

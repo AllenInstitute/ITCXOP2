@@ -19,8 +19,7 @@ extern "C" int ExecuteITCOpenDevice2(ITCOpenDevice2RuntimeParamsPtr p)
   BEGIN_OUTER_CATCH
 
   // Before we open the device, set v_Value to the invalid device ID.
-  // The value will be updated later.
-  SetOperationNumVar(RETURN_VARIABLE, DeviceIDClass::INVALID_DEVICE_ID);
+  SetOperationReturn(RETURN_VARIABLE, DeviceIDClass::INVALID_DEVICE_ID);
 
   // Get the device type from the DTN or DTS flag
   ITCDeviceTypeEnum DeviceType = GetDeviceTypeFromParameters(p);
@@ -99,11 +98,7 @@ extern "C" int ExecuteITCOpenDevice2(ITCOpenDevice2RuntimeParamsPtr p)
     throw e;
   }
 
-  // Set the Device ID in V_value
-  if(int RetVal = SetOperationNumVar(RETURN_VARIABLE, (double) currentDeviceID))
-  {
-    throw IgorException(RetVal);
-  }
+  SetOperationReturn(RETURN_VARIABLE, (double) currentDeviceID);
 
   END_OUTER_CATCH
 }

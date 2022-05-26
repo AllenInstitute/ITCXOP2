@@ -1,12 +1,16 @@
 #include "HelperFunctions.h"
 #include "itcXOP2.h"
 #include "itcdll.h"
+#include "git_version.h"
+#include "fmt/format.h"
 #include <sstream>
 #include <iterator>
 #include <algorithm>
 #include <cmath>
 
 // This file is part of the `ITCXOP2` project and licensed under BSD-3-Clause.
+
+using namespace fmt::literals;
 
 thread_local bool debuggingEnabled = false;
 
@@ -179,4 +183,48 @@ void WaveClear(waveHndl wv)
   }
 
   MemClear(WaveData(wv), numBytes);
+}
+
+void SetOperationReturn(const std::string &name, const std::string &value)
+{
+  if(int err = SetOperationStrVar(name.c_str(), value.c_str()))
+  {
+    throw IgorException(err, fmt::format("Error setting {}.", name));
+  }
+}
+
+void SetOperationReturn(const std::string &name, double value)
+{
+  if(int err = SetOperationNumVar(name.c_str(), value))
+  {
+    throw IgorException(err, fmt::format("Error setting {}.", name));
+  }
+}
+
+StrStrMap GetVersionInfo(const std::string &xopName)
+{
+  std::map<std::string, std::string> m;
+
+  m["name"]    = xopName;
+  m["version"] = GIT_REVISION;
+
+#ifdef MACIGOR64
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdate-time"
+#endif
+
+  m["builddate"] = "{} {}"_format(__DATE__, __TIME__); // NOLINT
+
+#ifdef MACIGOR64
+#pragma clang diagnostic pop
+#endif
+
+#ifdef MACIGOR64
+  m["compiler"] = "Clang {}.{}.{}"_format(__clang_major__, __clang_minor__,
+                                          __clang_patchlevel__);
+#else
+  m["compiler"] = "Visual Studio {}"_format(_MSC_VER);
+#endif
+
+  return m;
 }

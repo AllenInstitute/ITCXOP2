@@ -4,7 +4,7 @@
 
 // This file is part of the `ITCXOP2` project and licensed under BSD-3-Clause.
 
-// available from https://github.com/t-b/igor-unit-testing-framework
+// available from https://github.com/byte-physics/igor-unit-testing-framework
 #include "unit-testing"
 
 // Run with: RunTest("Test_ITCOpenDevice2.ipf")
@@ -19,8 +19,6 @@ Static Function TEST_CASE_BEGIN_OVERRIDE(name)
 	string name
 
 	ITCCloseAll2
-
-	TEST_CASE_BEGIN(name)
 End
 
 Function init_device_num()

@@ -1,18 +1,18 @@
 #pragma TextEncoding = "UTF-8"		// For details execute DisplayHelpTopic "The TextEncoding Pragma"
 #pragma rtGlobals=3		// Use modern global access method and strict wave access.
-#pragma ModuleName=Test_ITCStopAcq2
+#pragma ModuleName=Test_ITCGetCurrentDevice2
 
 // This file is part of the `ITCXOP2` project and licensed under BSD-3-Clause.
 
 // available from https://github.com/byte-physics/igor-unit-testing-framework
 #include "unit-testing"
 
-// Run with: RunTest("Test_ITCStopAcq2.ipf")
+// Run with: RunTest("Test_ITCGetDevices2.ipf")
 // and disable debugger
 
 // assumes a connected ITC18 USB
 Static Constant DEVICE_NUM    = 5
-Static Constant DEVICE_ID     =  0
+Static Constant DEVICE_ID     = 0
 
 Static Function TEST_CASE_BEGIN_OVERRIDE(name)
 	string name
@@ -25,27 +25,27 @@ Static Function TEST_CASE_BEGIN_OVERRIDE(name)
 	Variable /G $lastDevIDVariableName = V_Value
 End
 
-// Test the /DEV flag
-
-Static Function stopAcq_devID_IGNORE(devID)
-	variable devID
-	ITCStopAcq2 /DEV=(devID)
-
-	Variable /G last_ITCxOPError = V_ITCXOPError
-	Variable /G last_ITCError = V_ITCError
+static Function testGetCurrentDevice()
+	ITCGetCurrentDevice2
+	CHECK_EQUAL_VAR(V_Value, 0)
+	CHECK_EQUAL_VAR(V_ITCXOPError, 0)
+	CHECK_EQUAL_VAR(V_ITCError, 0)
 End
 
-Static Function stopAcq_noDevID_IGNORE()
-	ITCStopAcq2
+static Function testGetCurrentDeviceFails()
+	variable err
 
-	Variable /G last_ITCxOPError = V_ITCXOPError
-	Variable /G last_ITCError = V_ITCError
+	ITCCloseAll2
+
+	try
+		ITCGetCurrentDevice2; AbortONRTE
+		FAIL()
+	catch
+		err = GetRTError(1)
+		PASS()
+	endtry
+
+	CHECK_EQUAL_VAR(V_Value, -1)
+	CHECK_EQUAL_VAR(V_ITCXOPError, 10004)
+	CHECK_EQUAL_VAR(V_ITCError, 0)
 End
-
-static Function testDevID()
-	FUNCREF DevIDTests_devID_Prototype devID_fn = stopAcq_devID_IGNORE
-	FUNCREF DevIDTests_noDevID_Prototype noDevID_fn = stopAcq_noDevID_IGNORE
-	devIDTest(devID_fn, noDevID_fn)
-End
-
-// Stopping acquisition functionality tested elsewhere

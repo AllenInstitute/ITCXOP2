@@ -1,5 +1,7 @@
 #include "ITC_StandardHeaders.h"
 
+#include "DeviceIDClass.h"
+
 // This file is part of the `ITCXOP2` project and licensed under BSD-3-Clause.
 
 // Operation template:
@@ -8,9 +10,8 @@
 extern "C" int ExecuteITCGetDevices2(ITCGetDevices2RuntimeParamsPtr p)
 {
   BEGIN_OUTER_CATCH
-  // Before we call the function, set V_Value to the error value.
-  // The value will be updated later.
-  SetOperationNumVar(RETURN_VARIABLE, -1);
+
+  SetOperationReturn(RETURN_VARIABLE, DeviceIDClass::INVALID_DEVICE_ID);
 
   // Get the device type from the DTN or DTS flag
   ITCDeviceTypeEnum DeviceType = GetDeviceTypeFromParameters(p);
@@ -19,8 +20,7 @@ extern "C" int ExecuteITCGetDevices2(ITCGetDevices2RuntimeParamsPtr p)
   DWORD numDevices;
   ITCDLL::ITC_Devices(DeviceType, &numDevices);
 
-  // Update the output value
-  SetOperationNumVar(RETURN_VARIABLE, (double) numDevices);
+  SetOperationReturn(RETURN_VARIABLE, (double) numDevices);
 
   END_OUTER_CATCH
 }

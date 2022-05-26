@@ -4,7 +4,7 @@
 
 // This file is part of the `ITCXOP2` project and licensed under BSD-3-Clause.
 
-// available from https://github.com/t-b/igor-unit-testing-framework
+// available from https://github.com/byte-physics/igor-unit-testing-framework
 #include "unit-testing"
 
 // Run with: RunTest("Test_ITCConfigChannelUpload2.ipf")
@@ -29,8 +29,6 @@ Static Function TEST_CASE_BEGIN_OVERRIDE(name)
 	// Set a config so we can upload it
 	Make /O /W $defaultWaveName
 	ITCConfigChannel2 /CHN=0 0, 100, $defaultWaveName
-
-	TEST_CASE_BEGIN(name)
 End
 
 Static Function devID_IGNORE(devID)

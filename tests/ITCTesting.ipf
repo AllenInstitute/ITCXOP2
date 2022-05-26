@@ -36,33 +36,6 @@
 #include ":Test_ITCUpdateFIFOPositionAll2"
 #include ":Test_ITCWriteDigital2"
 
-Function RunPassingTests()
-	String PassingTests = ""
-
-	PassingTests += "Test_ITCCloseAll2.ipf;"
-	PassingTests += "Test_ITCCloseDevice2.ipf;"
-	PassingTests += "Test_ITCConfigChannelReset2.ipf;"
-	PassingTests += "Test_ITCConfigChannelUpload2.ipf;"
-	PassingTests += "Test_ITCConfigAllChannels2.ipf;"
-	PassingTests += "Test_ITCConfigChannel2.ipf;"
-	PassingTests += "Test_ITCFIFOAvailable2.ipf;"
-	PassingTests += "Test_ITCFIFOAvailableAll2.ipf;"
-	PassingTests += "Test_ITCGetAllChannelsConfig2.ipf;"
-	PassingTests += "Test_ITCGetChannelConfig2.ipf;"
-	PassingTests += "Test_ITCGetDevices2.ipf;"
-	PassingTests += "Test_ITCGetState2.ipf;"
-	PassingTests += "Test_ITCInitialize2.ipf;"
-	PassingTests += "Test_ITCOpenDevice2.ipf;"
-	PassingTests += "Test_ITCReadADC2.ipf;"
-	PassingTests += "Test_ITCReadDigital2.ipf;"
-	PassingTests += "Test_ITCReadTimer2.ipf;"
-	PassingTests += "Test_ITCSelectDevice2.ipf;"
-	PassingTests += "Test_ITCSetDAC2.ipf;"
-	PassingTests += "Test_ITCStartAcq2.ipf;"
-	PassingTests += "Test_ITCStopAcq2.ipf;"
-	PassingTests += "Test_ITCWriteDigital2.ipf;"
-	PassingTests += "Test_ITCUpdateFIFOPosition2.ipf;"
-	PassingTests += "Test_ITCUpdateFIFOPositionAll2.ipf;"
-
-	RunTest(PassingTests)
+Function Run()
+	RunTest(WinList("Test_*.ipf", ";", "WIN:128"))
 End

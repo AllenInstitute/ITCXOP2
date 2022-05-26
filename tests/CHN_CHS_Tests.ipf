@@ -312,9 +312,19 @@ Static Function testCHN(chn_fn, chn_value, channelNumber, expectedITCXOPError, e
 		EndIf
 	EndTry
 
-	NVAR last_ITCXOPError, last_ITCError
+	NVAR last_ITCXOPError, last_ITCError, last_Value
 	CHECK_EQUAL_VAR(last_ITCXOPError, expectedITCXOPError)
 	CHECK_EQUAL_VAR(last_ITCError, expectedITCError)
+
+	NVAR/Z last_Value
+	if(NVAR_Exists(last_Value))
+		if(last_ITCXOPError == 0 && last_ITCError == 0)
+			CHECK_EQUAL_VAR(last_Value, 0)
+		else
+			// error condition
+			CHECK_EQUAL_VAR(last_Value, -1)
+		endif
+	endif
 End
 
 Static Function testCHS(chs_fn, chs_value, channelNumber, expectedITCXOPError, expectedITCError)
@@ -340,9 +350,19 @@ Static Function testCHS(chs_fn, chs_value, channelNumber, expectedITCXOPError, e
 		EndIf
 	EndTry
 
-	NVAR last_ITCXOPError, last_ITCError
+	NVAR last_ITCXOPError, last_ITCError, last_Value
 	CHECK_EQUAL_VAR(last_ITCXOPError, expectedITCXOPError)
 	CHECK_EQUAL_VAR(last_ITCError, expectedITCError)
+
+	NVAR/Z last_Value
+	if(NVAR_Exists(last_Value))
+		if(last_ITCXOPError == 0 && last_ITCError == 0)
+			CHECK_EQUAL_VAR(last_Value, 0)
+		else
+			// error condition
+			CHECK_EQUAL_VAR(last_Value, -1)
+		endif
+	endif
 End
 
 Static Function testCHN_CHS(chn_chs_fn, chn_value, chs_value, channelNumber, expectedITCXOPError, expectedITCError)
@@ -372,4 +392,14 @@ Static Function testCHN_CHS(chn_chs_fn, chn_value, chs_value, channelNumber, exp
 	NVAR last_ITCXOPError, last_ITCError
 	CHECK_EQUAL_VAR(last_ITCXOPError, expectedITCXOPError)
 	CHECK_EQUAL_VAR(last_ITCError, expectedITCError)
+
+	NVAR/Z last_Value
+	if(NVAR_Exists(last_Value))
+		if(last_ITCXOPError == 0 && last_ITCError == 0)
+			CHECK_EQUAL_VAR(last_Value, 0)
+		else
+			// error condition
+			CHECK_EQUAL_VAR(last_Value, -1)
+		endif
+	endif
 End

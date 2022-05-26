@@ -4,7 +4,7 @@
 
 // This file is part of the `ITCXOP2` project and licensed under BSD-3-Clause.
 
-// available from https://github.com/t-b/igor-unit-testing-framework
+// available from https://github.com/byte-physics/igor-unit-testing-framework
 #include "unit-testing"
 
 // Run with: RunTest("Test_ITCReadDigital2.ipf")
@@ -26,8 +26,6 @@ Static Function TEST_CASE_BEGIN_OVERRIDE(name)
 	// Make sure that we have a device to readADC from
 	ITCOpenDevice2/DTN=(DEVICE_NUM) DEVICE_ID
 	Variable /G $lastDevIDVariableName = V_Value
-
-	TEST_CASE_BEGIN(name)
 End
 
 // Test the /DEV flag
@@ -38,20 +36,23 @@ Static Function readDig_devID_IGNORE(devID)
 
 	Variable /G last_ITCxOPError = V_ITCXOPError
 	Variable /G last_ITCError = V_ITCError
+	Variable /G last_Value = numType(V_Value)
 End
+
 
 Static Function readDig_noDevID_IGNORE()
 	ITCReadDigital2 defaultChannel
 
 	Variable /G last_ITCxOPError = V_ITCXOPError
 	Variable /G last_ITCError = V_ITCError
+	Variable /G last_Value = numType(V_Value)
 End
 
 // Run the standard DeviceID tests
 static Function testDevID()
 	FUNCREF DevIDTests_devID_Prototype devID_fn = readDig_devID_IGNORE
 	FUNCREF DevIDTests_noDevID_Prototype noDevID_fn = readDig_noDevID_IGNORE
-	devIDTest(devID_fn, noDevID_fn)
+	devIDTest(devID_fn, noDevID_fn, valuePass = 0, valueFail = 2)
 End
 
 Static Function testChannelNumber_fn_IGNORE(channelNumber)
@@ -60,6 +61,7 @@ Static Function testChannelNumber_fn_IGNORE(channelNumber)
 
 	Variable /G last_ITCxOPError = V_ITCXOPError
 	Variable /G last_ITCError = V_ITCError
+	Variable /G last_Value = numType(V_Value)
 End
 //
 //// Test the channel number parameter

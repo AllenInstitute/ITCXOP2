@@ -10,6 +10,8 @@ extern "C" int ExecuteITCGetErrorString2(ITCGetErrorString2RuntimeParamsPtr p)
 {
   BEGIN_OUTER_CATCH
 
+  SetOperationReturn(ERROR_RETURN_VARIABLE, "");
+
   if(!p->errorCodeEncountered)
   {
     // Parameter: p->errorCode
@@ -60,10 +62,7 @@ extern "C" int ExecuteITCGetErrorString2(ITCGetErrorString2RuntimeParamsPtr p)
     Message += ";" + std::string(AnalyzeText);
   }
 
-  if(int RetVal = SetOperationStrVar(ERROR_RETURN_VARIABLE, Message.c_str()))
-  {
-    return RetVal;
-  }
+  SetOperationReturn(ERROR_RETURN_VARIABLE, Message);
 
   END_OUTER_CATCH
 }

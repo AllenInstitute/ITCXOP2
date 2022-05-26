@@ -11,6 +11,8 @@ extern "C" int ExecuteITCFIFOAvailable2(ITCFIFOAvailable2RuntimeParamsPtr p)
 {
   BEGIN_OUTER_CATCH
 
+  SetOperationReturn(RETURN_VARIABLE, -1);
+
   // Get the deviceID and handle to use.
   DeviceIDHelper DeviceID(p);
 
@@ -24,12 +26,7 @@ extern "C" int ExecuteITCFIFOAvailable2(ITCFIFOAvailable2RuntimeParamsPtr p)
 
   ITCDLL::ITC_GetDataAvailable(DeviceID, &channelSelection);
 
-  // Store the result in V_Value
-  if(int RetVal = SetOperationNumVar(RETURN_VARIABLE,
-                                     (double) channelSelection[0].Value))
-  {
-    throw IgorException(RetVal);
-  }
+  SetOperationReturn(RETURN_VARIABLE, channelSelection[0].Value);
 
   END_OUTER_CATCH
 }

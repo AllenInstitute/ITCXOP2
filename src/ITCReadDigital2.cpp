@@ -10,6 +10,8 @@ extern "C" int ExecuteITCReadDigital2(ITCReadDigital2RuntimeParamsPtr p)
 {
   BEGIN_OUTER_CATCH
 
+  SetOperationReturn(RETURN_VARIABLE, DOUBLE_NAN);
+
   // Get the deviceID and handle to use.
   DeviceIDHelper DeviceID(p);
 
@@ -20,12 +22,7 @@ extern "C" int ExecuteITCReadDigital2(ITCReadDigital2RuntimeParamsPtr p)
 
   ITCDLL::ITC_AsyncIO(DeviceID, &lITCChannelData);
 
-  // Store the result in V_Value
-  if(int RetVal =
-         SetOperationNumVar(RETURN_VARIABLE, (double) lITCChannelData[0].Value))
-  {
-    throw IgorException(RetVal);
-  }
+  SetOperationReturn(RETURN_VARIABLE, (double) lITCChannelData[0].Value);
 
   END_OUTER_CATCH
 }

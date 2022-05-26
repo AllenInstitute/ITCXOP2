@@ -1,5 +1,7 @@
 #include "ITC_StandardHeaders.h"
 
+#include "DeviceIDClass.h"
+
 // This file is part of the `ITCXOP2` project and licensed under BSD-3-Clause.
 
 // Operation template: ITCGetCurrentDevice2/Z[=number:displayErrors]
@@ -9,14 +11,11 @@ ExecuteITCGetCurrentDevice2(ITCGetCurrentDevice2RuntimeParamsPtr p)
 {
   BEGIN_OUTER_CATCH
 
+  SetOperationReturn(RETURN_VARIABLE, DeviceIDClass::INVALID_DEVICE_ID);
+
   DeviceIDHelper DeviceID;
 
-  // Store the result in V_Value
-  if(int RetVal =
-         SetOperationNumVar(RETURN_VARIABLE, (double) DeviceID.getDeviceID()))
-  {
-    throw IgorException(RetVal);
-  }
+  SetOperationReturn(RETURN_VARIABLE, (double) DeviceID.getDeviceID());
 
   END_OUTER_CATCH
 }

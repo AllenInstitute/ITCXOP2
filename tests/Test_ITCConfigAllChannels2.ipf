@@ -4,7 +4,7 @@
 
 // This file is part of the `ITCXOP2` project and licensed under BSD-3-Clause.
 
-// available from https://github.com/t-b/igor-unit-testing-framework
+// available from https://github.com/byte-physics/igor-unit-testing-framework
 #include "unit-testing"
 
 // Run with: RunTest("Test_ITCConfigAllChannels2.ipf")
@@ -42,8 +42,6 @@ Static Function TEST_CASE_BEGIN_OVERRIDE(name)
 		// Make a global fifoWave
 		Duplicate /O makeFIFOWave(100,2), $fifoWave2chName
 	EndIf
-
-	TEST_CASE_BEGIN(name)
 End
 
 // Test the /DEV flag
