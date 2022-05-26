@@ -4,7 +4,7 @@
 
 // This file is part of the `ITCXOP2` project and licensed under BSD-3-Clause.
 
-// available from https://github.com/t-b/igor-unit-testing-framework
+// available from https://github.com/byte-physics/igor-unit-testing-framework
 #include "unit-testing"
 
 // Run with: RunTest("Test_ITCStartAcq2.ipf")
