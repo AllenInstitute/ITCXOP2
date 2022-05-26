@@ -125,11 +125,10 @@ void MakeDestWave(T p, waveHndl *destWaveH, int dataType, const int numRows,
   int options = 0;
   if(p->FREEFlagEncountered)
   {
-
     // Only allow /FREE flag if called from function
-    if(!p->calledFromFunction && !p->tp)
+    if(!p->calledFromFunction)
     {
-      throw IgorException(BADFLG);
+      throw IgorException(FREE_FLAG_ALLOWED_IN_FUNCTIONS_ONLY);
     }
 
     options |= kOpDestWaveMakeFreeWave;
