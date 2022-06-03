@@ -46,6 +46,6 @@ static Function testGetCurrentDeviceFails()
 	endtry
 
 	CHECK_EQUAL_VAR(V_Value, -1)
-	CHECK_EQUAL_VAR(V_ITCXOPError, 10004)
+	CHECK_EQUAL_VAR(V_ITCXOPError, 10024)
 	CHECK_EQUAL_VAR(V_ITCError, 0)
 End
