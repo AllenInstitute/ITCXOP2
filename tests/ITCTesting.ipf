@@ -35,6 +35,7 @@
 #include ":Test_ITCUpdateFIFOPosition2"
 #include ":Test_ITCUpdateFIFOPositionAll2"
 #include ":Test_ITCWriteDigital2"
+#include ":Test_ITCGetVersions2"
 
 Function Run()
 	RunTest(WinList("Test_*.ipf", ";", "WIN:128"))
