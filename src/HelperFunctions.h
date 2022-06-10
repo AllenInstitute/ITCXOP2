@@ -129,7 +129,7 @@ void MakeDestWave(T p, waveHndl *destWaveH, int dataType, const int numRows,
   if(p->FREEFlagEncountered)
   {
     // Only allow /FREE flag if called from function
-    if(!p->calledFromFunction)
+    if((!p->calledFromFunction && !p->tp) || p->calledFromMacro)
     {
       throw IgorException(FREE_FLAG_ALLOWED_IN_FUNCTIONS_ONLY);
     }
