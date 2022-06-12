@@ -106,6 +106,32 @@ std::string getStringFromHandle(Handle strHandle);
 void SetDimensionLabels(waveHndl destWaveH, int Dimension,
                         const std::vector<std::string> &dimLabels);
 
+/// @brief Return the truth if the caller can handle free waves
+///
+/// Only user-defined functions can handle free waves.
+template <typename T>
+bool AreFreeWavesAllowed(T p)
+{
+  if(p->tp)
+  {
+    // threadsafe function from main thread or preemptive thread
+    return true;
+  }
+  else if(p->calledFromMacro)
+  {
+    // real macro executing
+    return false;
+  }
+  else if(p->calledFromFunction)
+  {
+    // non-threadsafe function from main thread
+    return true;
+  }
+
+  // command line
+  return false;
+}
+
 /// Need to call FinishDestWave after modifying data
 template <typename T>
 void MakeDestWave(T p, waveHndl *destWaveH, int dataType, const int numRows,
@@ -128,8 +154,7 @@ void MakeDestWave(T p, waveHndl *destWaveH, int dataType, const int numRows,
   int options = 0;
   if(p->FREEFlagEncountered)
   {
-    // Only allow /FREE flag if called from function
-    if((!p->calledFromFunction && !p->tp) || p->calledFromMacro)
+    if(!AreFreeWavesAllowed(p))
     {
       throw IgorException(FREE_FLAG_ALLOWED_IN_FUNCTIONS_ONLY);
     }
