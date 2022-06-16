@@ -5,6 +5,7 @@
 #include <exception>
 #include <string>
 #include "itcdll.h"
+#include "fmt/format.h"
 
 // This file is part of the `ITCXOP2` project and licensed under BSD-3-Clause.
 
@@ -30,6 +31,18 @@ public:
   int HandleException(ErrorDisplayClass &ErrorDisplay) const;
 };
 
+template <>
+struct fmt::formatter<IgorException> : fmt::formatter<std::string>
+{
+  // parse is inherited from formatter<std::string>.
+  template <typename FormatContext>
+  auto format(const IgorException &e, FormatContext &ctx)
+  {
+    return format_to(ctx.out(), "error code: {:#X}, what: {}", e.ErrorCode,
+                     e.Message);
+  }
+};
+
 class ITCException : public std::exception
 {
   static std::string GetITCErrorMessage(HANDLE deviceHandle, DWORD errorCode,
@@ -47,6 +60,20 @@ public:
   const char *what() const;
 
   int HandleException(ErrorDisplayClass &ErrorDisplay) const;
+};
+
+template <>
+struct fmt::formatter<ITCException> : fmt::formatter<std::string>
+{
+  // parse is inherited from formatter<std::string>.
+  template <typename FormatContext>
+  auto format(const ITCException &e, FormatContext &ctx)
+  {
+    return format_to(
+        ctx.out(),
+        "error code: {:#X}, device handle: {}, function: {}, message: {}",
+        e.ErrorCode, e.DeviceHandle, e.FunctionName, e.Message);
+  }
 };
 
 int HandleException(const std::exception e, ErrorDisplayClass &ErrorDisplay);
