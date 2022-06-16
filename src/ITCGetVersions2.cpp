@@ -127,7 +127,7 @@ extern "C" int ExecuteITCGetVersions2(ITCGetVersions2RuntimeParamsPtr p)
     // Get the version information
     ITCDLL::ITC_GetVersions(DeviceID, &lVersion[0], &lVersion[1], &lVersion[2]);
   }
-  catch(IgorException &e)
+  catch(const IgorException &e)
   {
     // ignore non connected ITC device
     if(e.ErrorCode != SLOT_EMPTY)

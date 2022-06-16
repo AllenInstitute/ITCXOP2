@@ -47,7 +47,7 @@ void CloseDevice(const DeviceIDHelper &DeviceID)
   {
     CloseDeviceLowLevel(DeviceID.getHandle());
   }
-  catch(IgorException &)
+  catch(const IgorException &)
   {
     RemoveDevice(DeviceID);
     throw;

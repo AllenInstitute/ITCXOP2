@@ -95,17 +95,17 @@ int HandleException(const std::exception e, ErrorDisplayClass &ErrorDisplay);
 #define END_OUTER_CATCH                                                        \
   return 0;                                                                    \
   }                                                                            \
-  catch(IgorException e)                                                       \
+  catch(const IgorException &e)                                                \
   {                                                                            \
     SetOperationNumVar(XOP_ERROR_VAR, (double) e.ErrorCode);                   \
     return e.HandleException(ErrorDisplay);                                    \
   }                                                                            \
-  catch(ITCException e)                                                        \
+  catch(const ITCException &e)                                                 \
   {                                                                            \
     SetOperationNumVar(ITC_ERROR_VAR, (double) e.ErrorCode);                   \
     return e.HandleException(ErrorDisplay);                                    \
   }                                                                            \
-  catch(std::exception e)                                                      \
+  catch(const std::exception &e)                                               \
   {                                                                            \
     return HandleException(e, ErrorDisplay);                                   \
   }                                                                            \
