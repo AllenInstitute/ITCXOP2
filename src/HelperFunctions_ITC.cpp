@@ -23,17 +23,29 @@ void RemoveDevice(const DeviceIDHelper &DeviceID)
 }
 } // namespace
 
-void CloseDevice(const DeviceIDHelper &DeviceID)
+void CloseDeviceLowLevel(HANDLE DeviceHandle)
 {
   try
   {
     // Turn off LED
     ITCPublicConfig lITCPublicConfig;
     ZeroMemory(&lITCPublicConfig, sizeof(lITCPublicConfig));
-    ITCDLL::ITC_ConfigDevice(DeviceID, &lITCPublicConfig);
+    ITCDLL::ITC_ConfigDevice(DeviceHandle, &lITCPublicConfig);
+  }
+  catch(const ITCException &e)
+  {
+    DebugOut("CloseDeviceLowLevel", fmt::format("Ignoring exception: {}", e));
+  }
 
-    // Close the device handle
-    ITCDLL::ITC_CloseDevice(DeviceID);
+  // Close the device handle
+  ITCDLL::ITC_CloseDevice(DeviceHandle);
+}
+
+void CloseDevice(const DeviceIDHelper &DeviceID)
+{
+  try
+  {
+    CloseDeviceLowLevel(DeviceID.getHandle());
   }
   catch(IgorException &)
   {
