@@ -10,8 +10,6 @@
 
 // This file is part of the `ITCXOP2` project and licensed under BSD-3-Clause.
 
-using namespace fmt::literals;
-
 thread_local bool debuggingEnabled = false;
 
 std::string getStringFromHandle(Handle strHandle)
@@ -213,17 +211,17 @@ StrStrMap GetVersionInfo(const std::string &xopName)
 #pragma clang diagnostic ignored "-Wdate-time"
 #endif
 
-  m["builddate"] = "{} {}"_format(__DATE__, __TIME__); // NOLINT
+  m["builddate"] = fmt::format("{} {}", __DATE__, __TIME__); // NOLINT
 
 #ifdef MACIGOR64
 #pragma clang diagnostic pop
 #endif
 
 #ifdef MACIGOR64
-  m["compiler"] = "Clang {}.{}.{}"_format(__clang_major__, __clang_minor__,
-                                          __clang_patchlevel__);
+  m["compiler"] = fmt::format("Clang {}.{}.{}", __clang_major__,
+                              __clang_minor__, __clang_patchlevel__);
 #else
-  m["compiler"] = "Visual Studio {}"_format(_MSC_VER);
+  m["compiler"] = fmt::format("Visual Studio {}", _MSC_VER);
 #endif
 
   return m;
