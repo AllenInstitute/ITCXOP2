@@ -1,8 +1,5 @@
 #pragma once
 
-#ifndef ITCDLL_H
-#define ITCDLL_H
-
 #include <vector>
 #include <Windows.h>
 
@@ -66,5 +63,3 @@ public:
 };
 
 void DebugOut(std::string caller, std::string msg);
-
-#endif // ITCDLL_H
