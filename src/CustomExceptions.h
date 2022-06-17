@@ -38,8 +38,8 @@ struct fmt::formatter<IgorException> : fmt::formatter<std::string>
   template <typename FormatContext>
   auto format(const IgorException &e, FormatContext &ctx)
   {
-    return format_to(ctx.out(), "error code: {:#X}, what: {}", e.ErrorCode,
-                     e.Message);
+    return format_to(ctx.out(), FMT_STRING("error code: {:#X}, what: {}"),
+                     e.ErrorCode, e.Message);
   }
 };
 
@@ -71,7 +71,8 @@ struct fmt::formatter<ITCException> : fmt::formatter<std::string>
   {
     return format_to(
         ctx.out(),
-        "error code: {:#X}, device handle: {}, function: {}, message: {}",
+        FMT_STRING(
+            "error code: {:#X}, device handle: {}, function: {}, message: {}"),
         e.ErrorCode, e.DeviceHandle, e.FunctionName, e.Message);
   }
 };

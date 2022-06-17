@@ -85,8 +85,8 @@ void writeVersionWave(ITCGetVersions2RuntimeParamsPtr p,
 
   auto versionInfo = GetVersionInfo("ITCXOP2");
 
-  auto desc =
-      fmt::format("{}: {}", versionInfo["name"], versionInfo["version"]);
+  auto desc = fmt::format(FMT_STRING("{}: {}"), versionInfo["name"],
+                          versionInfo["version"]);
 
   indices[ROWS]    = 3;
   indices[COLUMNS] = 2;

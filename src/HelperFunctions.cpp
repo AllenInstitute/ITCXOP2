@@ -187,7 +187,8 @@ void SetOperationReturn(const std::string &name, const std::string &value)
 {
   if(int err = SetOperationStrVar(name.c_str(), value.c_str()))
   {
-    throw IgorException(err, fmt::format("Error setting {}.", name));
+    throw IgorException(err,
+                        fmt::format(FMT_STRING("Error setting {}."), name));
   }
 }
 
@@ -195,7 +196,8 @@ void SetOperationReturn(const std::string &name, double value)
 {
   if(int err = SetOperationNumVar(name.c_str(), value))
   {
-    throw IgorException(err, fmt::format("Error setting {}.", name));
+    throw IgorException(err,
+                        fmt::format(FMT_STRING("Error setting {}."), name));
   }
 }
 
@@ -211,17 +213,18 @@ StrStrMap GetVersionInfo(const std::string &xopName)
 #pragma clang diagnostic ignored "-Wdate-time"
 #endif
 
-  m["builddate"] = fmt::format("{} {}", __DATE__, __TIME__); // NOLINT
+  m["builddate"] =
+      fmt::format(FMT_STRING("{} {}"), __DATE__, __TIME__); // NOLINT
 
 #ifdef MACIGOR64
 #pragma clang diagnostic pop
 #endif
 
 #ifdef MACIGOR64
-  m["compiler"] = fmt::format("Clang {}.{}.{}", __clang_major__,
+  m["compiler"] = fmt::format(FMT_STRING("Clang {}.{}.{}"), __clang_major__,
                               __clang_minor__, __clang_patchlevel__);
 #else
-  m["compiler"] = fmt::format("Visual Studio {}", _MSC_VER);
+  m["compiler"] = fmt::format(FMT_STRING("Visual Studio {}"), _MSC_VER);
 #endif
 
   return m;

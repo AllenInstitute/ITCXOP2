@@ -35,8 +35,8 @@ void CloseAllDevices()
       catch(const ITCException &e)
       {
         DebugOut("CloseAllDevices",
-                 fmt::format("Unexpected exception {} for device "
-                             "type {} and number {}",
+                 fmt::format(FMT_STRING("Unexpected exception {} for device "
+                                        "type {} and number {}"),
                              e, dt, i));
       }
     }

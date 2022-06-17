@@ -34,7 +34,8 @@ void CloseDeviceLowLevel(HANDLE DeviceHandle)
   }
   catch(const ITCException &e)
   {
-    DebugOut("CloseDeviceLowLevel", fmt::format("Ignoring exception: {}", e));
+    DebugOut("CloseDeviceLowLevel",
+             fmt::format(FMT_STRING("Ignoring exception: {}"), e));
   }
 
   // Close the device handle
