@@ -23,7 +23,14 @@ extern "C" void XOPEntry(void)
   case CLEANUP:
     // Close all devices when opening a new experiment, or when closing an
     // experiment.
-    CloseAllDevices();
+    try
+    {
+      CloseAllDevices();
+    }
+    catch(...)
+    {
+      DebugOut("XOPEntry", "Ignoring unknown exception");
+    }
     break;
   case IDLE:
     OutputQueuedNotices();
