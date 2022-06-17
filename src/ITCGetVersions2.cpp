@@ -1,5 +1,4 @@
 #include "ITC_StandardHeaders.h"
-#include "fmt/format.h"
 #include <numeric>
 
 // This file is part of the `ITCXOP2` project and licensed under BSD-3-Clause.

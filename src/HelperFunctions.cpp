@@ -2,7 +2,6 @@
 #include "itcXOP2.h"
 #include "itcdll.h"
 #include "git_version.h"
-#include "fmt/format.h"
 #include <sstream>
 #include <iterator>
 #include <algorithm>
