@@ -62,4 +62,4 @@ public:
                                 std::vector<ITCChannelDataEx> channelDataExVec);
 };
 
-void DebugOut(std::string caller, std::string msg);
+void DebugOut(const std::string &caller, const std::string &msg);

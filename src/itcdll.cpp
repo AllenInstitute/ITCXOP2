@@ -39,7 +39,8 @@ public:
   fmt::memory_buffer buf;
 };
 
-void DebugOut(std::string caller, std::vector<ITCChannelInfo> chanInfo)
+void DebugOut(const std::string &caller,
+              const std::vector<ITCChannelInfo> &chanInfo)
 {
   if(!debuggingEnabled)
     return;
@@ -90,7 +91,8 @@ void DebugOut(std::string caller, std::vector<ITCChannelInfo> chanInfo)
   }
 }
 
-void DebugOut(std::string caller, std::vector<ITCChannelDataEx> chanDataEx)
+void DebugOut(const std::string &caller,
+              const std::vector<ITCChannelDataEx> &chanDataEx)
 {
   if(!debuggingEnabled)
     return;
@@ -116,7 +118,7 @@ void DebugOut(std::string caller, std::vector<ITCChannelDataEx> chanDataEx)
   }
 }
 
-void DebugOut(std::string caller, ITCPublicConfig config)
+void DebugOut(const std::string &caller, const ITCPublicConfig &config)
 {
   if(!debuggingEnabled)
     return;
@@ -158,7 +160,7 @@ void DebugOut(std::string caller, ITCPublicConfig config)
                  config.SamplingInterval);
 }
 
-void DebugOut(std::string caller, GlobalDeviceInfo deviceInfo)
+void DebugOut(const std::string &caller, const GlobalDeviceInfo &deviceInfo)
 {
   if(!debuggingEnabled)
     return;
@@ -213,7 +215,7 @@ void DebugOut(std::string caller, GlobalDeviceInfo deviceInfo)
                  deviceInfo.Reserved1);
 }
 
-void DebugOut(std::string caller, ITCStatus status)
+void DebugOut(const std::string &caller, const ITCStatus &status)
 {
   if(!debuggingEnabled)
     return;
@@ -241,7 +243,7 @@ void DebugOut(std::string caller, ITCStatus status)
                  status.RunSeconds);
 }
 
-void DebugOut(std::string caller, ITCGlobalConfig config)
+void DebugOut(const std::string &caller, const ITCGlobalConfig &config)
 {
   if(!debuggingEnabled)
     return;
@@ -268,7 +270,7 @@ void DebugOut(std::string caller, ITCGlobalConfig config)
                  config.Reserved3);
 }
 
-void DebugOut(std::string caller, ITCStartInfo config)
+void DebugOut(const std::string &caller, const ITCStartInfo &config)
 {
   if(!debuggingEnabled)
     return;
@@ -597,7 +599,7 @@ void ITCDLL::ITC_ReadWriteFIFO(const DeviceIDHelper &DeviceID,
   DebugOut("ITC_ReadWriteFIFO", channelDataExVec);
 }
 
-void DebugOut(std::string caller, std::string msg)
+void DebugOut(const std::string &caller, const std::string &msg)
 {
   if(!debuggingEnabled)
     return;
