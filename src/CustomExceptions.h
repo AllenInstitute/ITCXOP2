@@ -16,12 +16,6 @@ public:
   const std::string Message;
 
   /// Constructors
-  // Mark default constructor as deprecated
-  // - Allows use of default constructor when a custom error code hasn't been
-  // implemented
-  // - Compiler warning allows us to find usages later
-  __declspec(deprecated("Using default error code.  You should replace this "
-                        "with a custom error code")) IgorException();
   IgorException(int errorCode);
   IgorException(int errorCode, const std::string &errorMessage);
 

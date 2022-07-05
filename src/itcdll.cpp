@@ -500,7 +500,7 @@ void ITCDLL::ITC_SetChannels(const DeviceIDHelper &DeviceID,
 {
   if(channels.empty())
   {
-    throw IgorException();
+    throw IgorException(ITC_DLL_ERROR);
   }
 
   if(DWORD ErrorCode = ::ITC_SetChannels(
@@ -565,7 +565,7 @@ void ITCDLL::ITC_UpdateFIFOPosition(
 {
   if(channelDataExVec.empty())
   {
-    throw IgorException();
+    throw IgorException(ITC_DLL_ERROR);
   }
 
   if(DWORD ErrorCode = ::ITC_UpdateFIFOPosition(DeviceID.getHandle(),
@@ -584,7 +584,7 @@ void ITCDLL::ITC_ReadWriteFIFO(const DeviceIDHelper &DeviceID,
 {
   if(channelDataExVec.empty())
   {
-    throw IgorException();
+    throw IgorException(ITC_DLL_ERROR);
   }
 
   if(DWORD ErrorCode = ::ITC_ReadWriteFIFO(DeviceID.getHandle(),

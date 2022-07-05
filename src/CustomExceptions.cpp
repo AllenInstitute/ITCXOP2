@@ -10,10 +10,6 @@
 // IgorException
 //--------------------------------------------------------------
 
-IgorException::IgorException() : ErrorCode(EXIT_FAILURE)
-{
-}
-
 IgorException::IgorException(int errorCode) : ErrorCode(errorCode)
 {
 }

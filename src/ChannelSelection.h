@@ -48,8 +48,7 @@ std::vector<T> GetAllChannelSelection(const DeviceIDHelper &DeviceID)
     break;
 
   default:
-    // TODO: Custom error code
-    throw IgorException();
+    throw IgorException(GENERAL_BAD_VIBS);
   }
 
   // Fill in the vector.
