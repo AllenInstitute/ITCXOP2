@@ -85,17 +85,17 @@ extern "C" int ExecuteITCOpenDevice2(ITCOpenDevice2RuntimeParamsPtr p)
           continue;
         }
 
-        throw e;
+        throw;
       }
     }
 
     const long key = (InstruKey << 16) | IgorKey;
     ITCDLL::ITC_SetSoftKey(DeviceID, key);
   }
-  catch(const std::exception &e)
+  catch(const std::exception &)
   {
     CloseDevice(DeviceID);
-    throw e;
+    throw;
   }
 
   SetOperationReturn(RETURN_VARIABLE, (double) currentDeviceID);

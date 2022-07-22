@@ -35,10 +35,10 @@ void CloseDevice(const DeviceIDHelper &DeviceID)
     // Close the device handle
     ITCDLL::ITC_CloseDevice(DeviceID);
   }
-  catch(IgorException &e)
+  catch(IgorException &)
   {
     RemoveDevice(DeviceID);
-    throw e;
+    throw;
   }
 
   RemoveDevice(DeviceID);

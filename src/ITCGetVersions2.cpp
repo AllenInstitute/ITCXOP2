@@ -132,7 +132,7 @@ extern "C" int ExecuteITCGetVersions2(ITCGetVersions2RuntimeParamsPtr p)
     // ignore non connected ITC device
     if(e.ErrorCode != SLOT_EMPTY)
     {
-      throw e;
+      throw;
     }
   }
 
