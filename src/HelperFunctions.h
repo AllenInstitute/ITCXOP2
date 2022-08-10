@@ -18,7 +18,7 @@ using StrStrMap = std::map<std::string, std::string>;
 
 // This file is part of the `ITCXOP2` project and licensed under BSD-3-Clause.
 
-extern thread_local bool debuggingEnabled;
+extern bool debuggingEnabled;
 
 template <class T>
 void ReadGlobalDebugFlag(T *p)
