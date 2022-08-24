@@ -70,18 +70,6 @@ packaging:
     paths:
       - package
 
-deployment:
-  when: manual
-  tags:
-    - debian, docker
-  image:
-    name: ${CI_REGISTRY}/internal/docker-utils:latest
-  needs:
-    - packaging
-  script:
-    - echo DEPLOYMENT STEP PLACEHOLDER, CHANGE CI SCRIPT ACCORDINGLY
-    # - lftp -e "mirror --reverse -n -e package /; bye" -u $FTP_USER,$FTP_PASS byte-physics.de
-
 symbol_creation_and_upload:
   tags:
     - debian, docker
