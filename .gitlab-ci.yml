@@ -2,7 +2,7 @@
 # see https://docs.gitlab.com/ce/ci/yaml/README.html for all available options
 
 variables:
-  GIT_SUBMODULE_STRATEGY: "recursive"
+  GIT_SUBMODULE_STRATEGY: recursive
   XOP_NAME: "ITCXOP2"
 
 download-xoptoolkit:
@@ -13,7 +13,7 @@ download-xoptoolkit:
     paths:
       - XOPSupport
   variables:
-      GIT_SUBMODULE_STRATEGY: "none"
+      GIT_SUBMODULE_STRATEGY: none
   image:
     name: ${CI_REGISTRY}/internal/docker-utils
   script:
