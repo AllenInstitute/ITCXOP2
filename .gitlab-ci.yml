@@ -5,14 +5,7 @@ variables:
   GIT_SUBMODULE_STRATEGY: "recursive"
   XOP_NAME: "ITCXOP2"
 
-stages:
-  - first
-  - second
-  - third
-  - fourth
-
 download-xoptoolkit:
-  stage: first
   tags:
     - docker, debian
   cache:
@@ -35,7 +28,6 @@ download-xoptoolkit:
 build_release_x64:
   tags:
     - windows, shell
-  stage: second
   needs:
     - download-xoptoolkit
   script:
@@ -50,7 +42,6 @@ build_release_x64:
 build_release_x86:
   tags:
     - windows, shell
-  stage: second
   needs:
     - download-xoptoolkit
   script:
@@ -65,7 +56,6 @@ build_release_x86:
 packaging:
   tags:
     - debian, docker
-  stage: third
   image:
     name: ${CI_REGISTRY}/internal/docker-utils:latest
   needs:
@@ -84,7 +74,6 @@ deployment:
   when: manual
   tags:
     - debian, docker
-  stage: fourth
   image:
     name: ${CI_REGISTRY}/internal/docker-utils:latest
   needs:
@@ -96,7 +85,6 @@ deployment:
 symbol_creation_and_upload:
   tags:
     - debian, docker
-  stage: fourth
   image:
     name: ${CI_REGISTRY}/internal/docker-utils:latest
   rules:
