@@ -3,6 +3,7 @@
 
 variables:
   GIT_SUBMODULE_STRATEGY: recursive
+  GIT_DEPTH: 0 # fetch all tags
   XOP_NAME: "ITCXOP2"
 
 download-xoptoolkit:
@@ -14,6 +15,7 @@ download-xoptoolkit:
       - XOPSupport
   variables:
       GIT_SUBMODULE_STRATEGY: none
+      GIT_STRATEGY: none
   image:
     name: ${CI_REGISTRY}/internal/docker-utils
   script:
@@ -30,6 +32,8 @@ build_release_x64:
     - windows, shell
   needs:
     - download-xoptoolkit
+  before_script:
+    - git fetch --unshallow --quiet >NUL 2>&1 || (call )
   script:
     - md build
     - cd build
@@ -44,6 +48,8 @@ build_release_x86:
     - windows, shell
   needs:
     - download-xoptoolkit
+  before_script:
+    - git fetch --unshallow --quiet >NUL 2>&1 || (call )
   script:
     - md build
     - cd build
@@ -61,6 +67,8 @@ packaging:
   needs:
     - build_release_x64
     - build_release_x86
+  before_script:
+    - git fetch --unshallow --quiet 2>/dev/null || true
   script:
     - mkdir package
     - zip -r package/${XOP_NAME}-XOP-$(git describe --tags --always).zip src/*.ipf output/mac output/win/*/*.xop
@@ -83,6 +91,9 @@ symbol_creation_and_upload:
   needs:
     - build_release_x64
     - build_release_x86
+  variables:
+      GIT_SUBMODULE_STRATEGY: none
+      GIT_STRATEGY: none
   script:
     - mkdir symbols
     - symstore -z symbols output/win/*/*.pdb output/win/*/*.xop
