@@ -452,8 +452,8 @@ int RegisterITCSetGlobals2(void)
 
   // NOTE: If you change this template, you must change the
   // ITCSetGlobals2RuntimeParams structure as well.
-  cmdTemplate =
-      "ITCSetGlobals2/Z[=number:displayErrors]/D[=number:debugOutput]";
+  cmdTemplate       = "ITCSetGlobals2/Z[=number:displayErrors]/"
+                      "D[=number:debugOutput]/LTS=string:logTemplateString";
   runtimeNumVarList = "";
   runtimeStrVarList = "";
   return RegisterOperation(cmdTemplate, runtimeNumVarList, runtimeStrVarList,

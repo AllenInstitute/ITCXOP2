@@ -964,6 +964,11 @@ struct ITCSetGlobals2RuntimeParams
   double debugOutput; // Optional parameter.
   int DFlagParamsSet[1];
 
+  // Parameters for /LTS flag group.
+  int LTSFlagEncountered;
+  Handle logTemplateString;
+  int LTSFlagParamsSet[1];
+
   // Main parameters.
 
   // These are postamble fields that Igor sets.
