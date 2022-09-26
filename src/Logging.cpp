@@ -3,6 +3,14 @@
 #include "Logging.h"
 
 #include <array>
+#include <mutex>
+
+constexpr char PACKAGE_NAME[] = "ITCXOP2";
+
+using LockGuard = std::lock_guard<std::recursive_mutex>;
+
+std::recursive_mutex loggingMutex;
+std::unique_ptr<Logging> loggingSink;
 
 namespace
 {
@@ -179,4 +187,35 @@ void Logging::AddLogEntry(const json &doc) const
 void Logging::AddLogEntry(const std::string &str) const
 {
   m_impl->AddLogEntry(TEMPLATE_KEY_STR, str);
+}
+
+void AddLogEntry(const json &doc)
+{
+  LockGuard lock(loggingMutex);
+
+  if(!loggingSink)
+  {
+    loggingSink = std::make_unique<Logging>(PACKAGE_NAME);
+  }
+
+  loggingSink->AddLogEntry(doc);
+}
+
+void AddLogEntry(const std::string &str)
+{
+  LockGuard lock(loggingMutex);
+
+  if(!loggingSink)
+  {
+    loggingSink = std::make_unique<Logging>(PACKAGE_NAME);
+  }
+
+  loggingSink->AddLogEntry(str);
+}
+
+void SetLoggingTemplate(const std::string &loggingTemplate)
+{
+  LockGuard lock(loggingMutex);
+
+  loggingSink = std::make_unique<Logging>(PACKAGE_NAME, loggingTemplate);
 }

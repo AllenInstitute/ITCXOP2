@@ -3,6 +3,10 @@
 #include <memory>
 #include <string>
 
+void AddLogEntry(const json &doc);
+void AddLogEntry(const std::string &str);
+void SetLoggingTemplate(const std::string &loggingTemplate);
+
 // Logging class creating JSONL formatted log files in Igor Preferences folder
 // under `package`
 //
