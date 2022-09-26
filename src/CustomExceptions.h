@@ -7,6 +7,7 @@
 #include "itcdll.h"
 #include "fmt/format.h"
 #include "fmt/ranges.h"
+#include "fmt/chrono.h"
 
 // This file is part of the `ITCXOP2` project and licensed under BSD-3-Clause.
 
