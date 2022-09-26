@@ -5,6 +5,7 @@
 #include "Shlwapi.h"
 
 #include "ConcurrentXOPNotice.h"
+#include "Logging.h"
 
 // This file is part of the `ITCXOP2` project and licensed under BSD-3-Clause.
 
@@ -13,10 +14,10 @@
 
 namespace
 {
-class XOPNoticeOnDestruct
+class OutputToLogfileOnDestruct
 {
 public:
-  XOPNoticeOnDestruct()
+  OutputToLogfileOnDestruct()
   {
     if(RunningInMainThread())
     {
@@ -28,9 +29,9 @@ public:
     }
   }
 
-  ~XOPNoticeOnDestruct()
+  ~OutputToLogfileOnDestruct()
   {
-      XOPNotice_ts(to_string(buf).c_str());
+    AddLogEntry(to_string(buf));
   }
 
   fmt::memory_buffer buf;
@@ -42,7 +43,7 @@ void DebugOut(const std::string &caller,
   if(!debuggingEnabled)
     return;
 
-  XOPNoticeOnDestruct xd;
+  OutputToLogfileOnDestruct xd;
   fmt::format_to(xd.buf, FMT_STRING("Caller {}\r"), caller);
   DEBUGPRINT_SIZEOF(ITCChannelInfo);
 
@@ -94,7 +95,7 @@ void DebugOut(const std::string &caller,
   if(!debuggingEnabled)
     return;
 
-  XOPNoticeOnDestruct xd;
+  OutputToLogfileOnDestruct xd;
   fmt::format_to(xd.buf, FMT_STRING("Caller {}\r"), caller);
   DEBUGPRINT_SIZEOF(ITCChannelDataEx);
 
@@ -120,7 +121,7 @@ void DebugOut(const std::string &caller, const ITCPublicConfig &config)
   if(!debuggingEnabled)
     return;
 
-  XOPNoticeOnDestruct xd;
+  OutputToLogfileOnDestruct xd;
 
   fmt::format_to(xd.buf, FMT_STRING("Caller {}\r"), caller);
   DEBUGPRINT_SIZEOF(ITCPublicConfig);
@@ -162,7 +163,7 @@ void DebugOut(const std::string &caller, const GlobalDeviceInfo &deviceInfo)
   if(!debuggingEnabled)
     return;
 
-  XOPNoticeOnDestruct xd;
+  OutputToLogfileOnDestruct xd;
   fmt::format_to(xd.buf, FMT_STRING("Caller {}\r"), caller);
   DEBUGPRINT_SIZEOF(GlobalDeviceInfo);
 
@@ -217,7 +218,7 @@ void DebugOut(const std::string &caller, const ITCStatus &status)
   if(!debuggingEnabled)
     return;
 
-  XOPNoticeOnDestruct xd;
+  OutputToLogfileOnDestruct xd;
   fmt::format_to(xd.buf, FMT_STRING("Caller {}\r"), caller);
   DEBUGPRINT_SIZEOF(ITCStatus);
 
@@ -245,7 +246,7 @@ void DebugOut(const std::string &caller, const ITCGlobalConfig &config)
   if(!debuggingEnabled)
     return;
 
-  XOPNoticeOnDestruct xd;
+  OutputToLogfileOnDestruct xd;
   fmt::format_to(xd.buf, FMT_STRING("Caller {}\r"), caller);
   DEBUGPRINT_SIZEOF(ITCGlobalConfig);
 
@@ -272,7 +273,7 @@ void DebugOut(const std::string &caller, const ITCStartInfo &config)
   if(!debuggingEnabled)
     return;
 
-  XOPNoticeOnDestruct xd;
+  OutputToLogfileOnDestruct xd;
 
   fmt::format_to(xd.buf, FMT_STRING("Caller {}\r"), caller);
   DEBUGPRINT_SIZEOF(ITCStartInfo);
@@ -601,6 +602,6 @@ void DebugOut(const std::string &caller, const std::string &msg)
   if(!debuggingEnabled)
     return;
 
-  XOPNoticeOnDestruct xd;
+  OutputToLogfileOnDestruct xd;
   fmt::format_to(xd.buf, FMT_STRING("Caller {}: {}\r"), caller, msg);
 }
