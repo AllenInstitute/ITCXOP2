@@ -105,6 +105,7 @@ ITCUpdateFIFOPosition2.cpp
 ITCUpdateFIFOPositionAll2.cpp
 ITCWriteDigital2.cpp
 itcXOP2.cpp
+Logging.cpp
 RegisterOperations.cpp
 )
 
@@ -130,6 +131,7 @@ SET(HEADERS
     ITCChannelTypeEnum.h
     ITCDeviceTypeEnum.h
     ITC_StandardHeaders.h
+    Logging.h
     RegisterOperations.h
     itcXOP2.h
     itcdll.h

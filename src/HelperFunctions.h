@@ -10,6 +10,9 @@
 #include <map>
 #include "SafeInt/SafeInt.hpp"
 
+#include <nlohmann/json.hpp>
+using namespace nlohmann;
+
 // Usign std::min/max
 #undef min
 #undef max
@@ -421,3 +424,7 @@ void SetOperationReturn(const std::string &name, double value);
 
 /// @brief Return XOP version info as Key/value pairs
 StrStrMap GetVersionInfo(const std::string &xopName);
+
+int CreateDirectory(const std::string &path);
+
+void EnsureDirectoryExists(const std::string &path);

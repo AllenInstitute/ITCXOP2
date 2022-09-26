@@ -228,3 +228,71 @@ StrStrMap GetVersionInfo(const std::string &xopName)
 
   return m;
 }
+
+int CreateDirectory(const std::string &path)
+{
+#ifdef WINIGOR
+  int error;
+
+  // https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-createdirectorya
+  auto ret = CreateDirectoryA(path.c_str(), nullptr);
+
+  // If the function succeeds, the return value is nonzero
+  if(ret)
+  {
+    return 0;
+  }
+
+  error = GetLastError();
+
+  if(error == ERROR_ALREADY_EXISTS)
+  {
+    return FOLDER_EXISTS_NO_OVERWRITE;
+  }
+  else if(error == ERROR_PATH_NOT_FOUND)
+  {
+    return CANT_OPEN_FOLDER;
+  }
+  else
+  {
+    return GENERAL_BAD_VIBS;
+  }
+#else
+#ifdef MACIGOR
+  // https://developer.apple.com/library/archive/documentation/System/Conceptual/ManPages_iPhoneOS/man2/mkdir.2.html
+  auto ret = mkdir(path.c_str(), 0777);
+  if(!ret)
+  {
+    return 0;
+  }
+
+  if(errno == EEXIST)
+  {
+    return FOLDER_EXISTS_NO_OVERWRITE;
+  }
+  else if(errno == ENOTDIR)
+  {
+    return CANT_OPEN_FOLDER;
+  }
+  else
+  {
+    return INTERNAL_ERROR;
+  }
+
+#else
+#error "Unsupported architecture"
+#endif
+#endif
+}
+
+void EnsureDirectoryExists(const std::string &path)
+{
+  auto ret = CreateDirectory(path);
+
+  if(ret == 0 || ret == FOLDER_EXISTS_NO_OVERWRITE)
+  {
+    return;
+  }
+
+  throw IgorException(ret);
+}

@@ -46,6 +46,8 @@
 // Trying to use the thread DeviceID when it's not  set
 #define THREAD_DEVICE_ID_NOT_SET               24 + FIRST_XOP_ERR
 
+#define INVALID_LOGGING_TEMPLATE               25 + FIRST_XOP_ERR
+
 // clang-format on
 
 /* Prototypes */
