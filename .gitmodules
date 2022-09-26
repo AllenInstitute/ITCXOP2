@@ -7,3 +7,6 @@
 [submodule "src/cmake/CreateLaunchers"]
 	path = src/cmake/CreateLaunchers
 	url = https://github.com/caseymcc/CreateLaunchers.git
+[submodule "src/json"]
+	path = src/json
+	url = https://github.com/nlohmann/json
