@@ -30,10 +30,7 @@ public:
 
   ~XOPNoticeOnDestruct()
   {
-    if(debuggingEnabled)
-    {
       XOPNotice_ts(to_string(buf).c_str());
-    }
   }
 
   fmt::memory_buffer buf;
