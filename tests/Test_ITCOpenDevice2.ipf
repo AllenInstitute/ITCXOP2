@@ -18,6 +18,8 @@ Static Constant DEVICE_ID     =  0
 Static Function TEST_CASE_BEGIN_OVERRIDE(name)
 	string name
 
+	ApplySafeGlobalDefaults()
+
 	ITCCloseAll2
 End
 

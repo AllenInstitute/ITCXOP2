@@ -20,6 +20,8 @@ Static Constant		numDigitalInputs = 2; // 1 DI on device + 1 DI aux input
 Static Function TEST_CASE_BEGIN_OVERRIDE(name)
 	string name
 
+	ApplySafeGlobalDefaults()
+
 	// Close any devices left open
 	ITCCloseAll2
 

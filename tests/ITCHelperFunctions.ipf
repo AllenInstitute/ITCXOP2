@@ -107,3 +107,7 @@ threadsafe Static Function setDimLabels(dataWave, labelWave, dimension)
 		SetDimLabel dimension, k, $labelWave[k], dataWave
 	EndFor
 End
+
+Function ApplySafeGlobalDefaults()
+	ITCSetGlobals2/D=0/Z=0
+End
