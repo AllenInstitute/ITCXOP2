@@ -1,6 +1,7 @@
 ﻿#pragma TextEncoding = "UTF-8"	// For details execute DisplayHelpTopic "The TextEncoding Pragma"
 #pragma rtGlobals=3		          // Use modern global access method and strict wave access.
 #pragma ModuleName=Test_GetVersions2
+#pragma igorVersion=9.01
 
 // This file is part of the `ITCXOP2` project and licensed under BSD-3-Clause.
 

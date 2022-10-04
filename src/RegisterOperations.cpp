@@ -47,8 +47,8 @@ int RegisterITCConfigAllChannels2(void)
 
   // NOTE: If you change this template, you must change the
   // ITCConfigAllChannels2RuntimeParams structure as well.
-  cmdTemplate = "ITCConfigAllChannels2/Z[=number:displayErrors]/"
-                "DEV=number:deviceID wave:config, wave:data";
+  cmdTemplate       = "ITCConfigAllChannels2/Z[=number:displayErrors]/"
+                      "DEV=number:deviceID wave:config, wave:data";
   runtimeNumVarList = EXCEPTION_VARS;
   runtimeStrVarList = "";
   return RegisterOperation(cmdTemplate, runtimeNumVarList, runtimeStrVarList,
@@ -123,9 +123,9 @@ int RegisterITCFIFOAvailable2(void)
 
   // NOTE: If you change this template, you must change the
   // ITCFIFOAvailable2RuntimeParams structure as well.
-  cmdTemplate = "ITCFIFOAvailable2/Z[=number:displayErrors] "
-                "/DEV=number:deviceID/CHN=number:channelTypeNumeric/"
-                "CHS=string:channelTypeString number:channelNumber";
+  cmdTemplate       = "ITCFIFOAvailable2/Z[=number:displayErrors] "
+                      "/DEV=number:deviceID/CHN=number:channelTypeNumeric/"
+                      "CHS=string:channelTypeString number:channelNumber";
   runtimeNumVarList = EXCEPTION_VARS ";" RETURN_VARIABLE;
   runtimeStrVarList = "";
   return RegisterOperation(cmdTemplate, runtimeNumVarList, runtimeStrVarList,
@@ -142,9 +142,9 @@ int RegisterITCFIFOAvailableAll2(void)
 
   // NOTE: If you change this template, you must change the
   // ITCFIFOAvailableAll2RuntimeParams structure as well.
-  cmdTemplate = "ITCFIFOAvailableAll2/Z[=number:displayErrors]/O/FREE/"
-                "DEV=number:deviceID wave:{channelSelection,real}, "
-                "DataFolderAndName:{dest,real}";
+  cmdTemplate       = "ITCFIFOAvailableAll2/Z[=number:displayErrors]/O/FREE/"
+                      "DEV=number:deviceID wave:{channelSelection,real}, "
+                      "DataFolderAndName:{dest,real}";
   runtimeNumVarList = EXCEPTION_VARS;
   runtimeStrVarList = "";
   return RegisterOperation(cmdTemplate, runtimeNumVarList, runtimeStrVarList,
@@ -180,10 +180,10 @@ int RegisterITCGetChannelConfig2(void)
 
   // NOTE: If you change this template, you must change the
   // ITCGetChannelConfig2RuntimeParams structure as well.
-  cmdTemplate = "ITCGetChannelConfig2/Z[=number:displayErrors] "
-                "/DEV=number:deviceID/CHN=number:channelTypeNumeric/"
-                "CHS=string:channelTypeString/O/FREE number:channelNumber, "
-                "DataFolderAndName:{dest,real}";
+  cmdTemplate       = "ITCGetChannelConfig2/Z[=number:displayErrors] "
+                      "/DEV=number:deviceID/CHN=number:channelTypeNumeric/"
+                      "CHS=string:channelTypeString/O/FREE number:channelNumber, "
+                      "DataFolderAndName:{dest,real}";
   runtimeNumVarList = EXCEPTION_VARS;
   runtimeStrVarList = "";
   return RegisterOperation(cmdTemplate, runtimeNumVarList, runtimeStrVarList,
@@ -217,8 +217,8 @@ int RegisterITCGetDeviceInfo2(void)
 
   // NOTE: If you change this template, you must change the
   // ITCGetDeviceInfo2RuntimeParams structure as well.
-  cmdTemplate = "ITCGetDeviceInfo2/Z[=number:displayErrors]/"
-                "DEV=number:deviceID /O /FREE DataFolderAndName:{dest,real}";
+  cmdTemplate       = "ITCGetDeviceInfo2/Z[=number:displayErrors]/"
+                      "DEV=number:deviceID /O /FREE DataFolderAndName:{dest,real}";
   runtimeNumVarList = EXCEPTION_VARS;
   runtimeStrVarList = "";
   return RegisterOperation(cmdTemplate, runtimeNumVarList, runtimeStrVarList,
@@ -235,8 +235,8 @@ int RegisterITCGetDevices2(void)
 
   // NOTE: If you change this template, you must change the
   // ITCGetDevices2RuntimeParams structure as well.
-  cmdTemplate = "ITCGetDevices2/Z[=number:displayErrors]/"
-                "DTN=number:deviceTypeNumeric/DTS=string:deviceTypeString";
+  cmdTemplate       = "ITCGetDevices2/Z[=number:displayErrors]/"
+                      "DTN=number:deviceTypeNumeric/DTS=string:deviceTypeString";
   runtimeNumVarList = EXCEPTION_VARS ";" RETURN_VARIABLE;
   runtimeStrVarList = "";
   return RegisterOperation(cmdTemplate, runtimeNumVarList, runtimeStrVarList,
@@ -253,8 +253,8 @@ int RegisterITCGetErrorString2(void)
 
   // NOTE: If you change this template, you must change the
   // ITCGetErrorString2RuntimeParams structure as well.
-  cmdTemplate = "ITCGetErrorString2/Z[=number:displayErrors]/"
-                "DEV[=number:deviceID] /X number:errorCode";
+  cmdTemplate       = "ITCGetErrorString2/Z[=number:displayErrors]/"
+                      "DEV[=number:deviceID] /X number:errorCode";
   runtimeNumVarList = EXCEPTION_VARS;
   runtimeStrVarList = ERROR_RETURN_VARIABLE;
   return RegisterOperation(cmdTemplate, runtimeNumVarList, runtimeStrVarList,
@@ -271,8 +271,8 @@ int RegisterITCGetSerialNumber2(void)
 
   // NOTE: If you change this template, you must change the
   // ITCGetSerialNumber2RuntimeParams structure as well.
-  cmdTemplate = "ITCGetSerialNumber2/Z[=number:displayErrors]/"
-                "DEV=number:deviceID/O/FREE DataFolderAndName:{dest,real}";
+  cmdTemplate       = "ITCGetSerialNumber2/Z[=number:displayErrors]/"
+                      "DEV=number:deviceID/O/FREE DataFolderAndName:{dest,real}";
   runtimeNumVarList = EXCEPTION_VARS;
   runtimeStrVarList = "";
   return RegisterOperation(cmdTemplate, runtimeNumVarList, runtimeStrVarList,
@@ -325,9 +325,9 @@ int RegisterITCInitialize2(void)
 
   // NOTE: If you change this template, you must change the
   // ITCInitialize2RuntimeParams structure as well.
-  cmdTemplate = "ITCInitialize2/Z[=number:displayErrors] "
-                "/DEV=number:deviceID/M=number:mode/U=string:file/"
-                "F=number:fFunc/D=number:dFunc/H=number:hFunc/R=number:rFunc";
+  cmdTemplate       = "ITCInitialize2/Z[=number:displayErrors] "
+                      "/DEV=number:deviceID/M=number:mode/U=string:file/"
+                      "F=number:fFunc/D=number:dFunc/H=number:hFunc/R=number:rFunc";
   runtimeNumVarList = EXCEPTION_VARS;
   runtimeStrVarList = "";
   return RegisterOperation(cmdTemplate, runtimeNumVarList, runtimeStrVarList,
@@ -344,9 +344,9 @@ int RegisterITCOpenDevice2(void)
 
   // NOTE: If you change this template, you must change the
   // ITCOpenDevice2RuntimeParams structure as well.
-  cmdTemplate = "ITCOpenDevice2/Z[=number:displayErrors]/"
-                "DTN=number:deviceTypeNumeric/DTS=string:deviceTypeString "
-                "number:deviceNumber";
+  cmdTemplate       = "ITCOpenDevice2/Z[=number:displayErrors]/"
+                      "DTN=number:deviceTypeNumeric/DTS=string:deviceTypeString "
+                      "number:deviceNumber";
   runtimeNumVarList = EXCEPTION_VARS ";" RETURN_VARIABLE;
   runtimeStrVarList = "";
   return RegisterOperation(cmdTemplate, runtimeNumVarList, runtimeStrVarList,
@@ -434,9 +434,9 @@ int RegisterITCSetDAC2(void)
 
   // NOTE: If you change this template, you must change the
   // ITCSetDAC2RuntimeParams structure as well.
-  cmdTemplate = "ITCSetDAC2/Z[=number:displayErrors]/DEV=number:deviceID/"
-                "V[=number:voltageOn]/C[=number:calibrateOn] "
-                "number:channelNumber, number:voltageOrDACUnits";
+  cmdTemplate       = "ITCSetDAC2/Z[=number:displayErrors]/DEV=number:deviceID/"
+                      "V[=number:voltageOn]/C[=number:calibrateOn] "
+                      "number:channelNumber, number:voltageOrDACUnits";
   runtimeNumVarList = EXCEPTION_VARS;
   runtimeStrVarList = "";
   return RegisterOperation(cmdTemplate, runtimeNumVarList, runtimeStrVarList,
@@ -548,8 +548,8 @@ int RegisterITCUpdateFIFOPositionAll2(void)
 
   // NOTE: If you change this template, you must change the
   // ITCUpdateFIFOPositionAll2RuntimeParams structure as well.
-  cmdTemplate = "ITCUpdateFIFOPositionAll2/Z[=number:displayErrors]/"
-                "DEV=number:deviceID wave:fifoPos";
+  cmdTemplate       = "ITCUpdateFIFOPositionAll2/Z[=number:displayErrors]/"
+                      "DEV=number:deviceID wave:fifoPos";
   runtimeNumVarList = EXCEPTION_VARS;
   runtimeStrVarList = "";
   return RegisterOperation(cmdTemplate, runtimeNumVarList, runtimeStrVarList,
@@ -566,10 +566,10 @@ int RegisterITCUpdateFIFOPosition2(void)
 
   // NOTE: If you change this template, you must change the
   // ITCUpdateFIFOPosition2RuntimeParams structure as well.
-  cmdTemplate = "ITCUpdateFIFOPosition2/Z[=number:displayErrors]/"
-                "DEV=number:deviceID/L[=number:lastFIFO] /R[=number:resetFIFO] "
-                "/CHN=number:channelTypeNumeric/CHS=string:channelTypeString "
-                "number:channelNumber, number:position";
+  cmdTemplate       = "ITCUpdateFIFOPosition2/Z[=number:displayErrors]/"
+                      "DEV=number:deviceID/L[=number:lastFIFO] /R[=number:resetFIFO] "
+                      "/CHN=number:channelTypeNumeric/CHS=string:channelTypeString "
+                      "number:channelNumber, number:position";
   runtimeNumVarList = EXCEPTION_VARS;
   runtimeStrVarList = "";
   return RegisterOperation(cmdTemplate, runtimeNumVarList, runtimeStrVarList,
@@ -586,8 +586,8 @@ int RegisterITCWriteDigital2(void)
 
   // NOTE: If you change this template, you must change the
   // ITCWriteDigital2RuntimeParams structure as well.
-  cmdTemplate = "ITCWriteDigital2/Z[=number:displayErrors] "
-                "/DEV=number:deviceID number:channelNumber, number:value";
+  cmdTemplate       = "ITCWriteDigital2/Z[=number:displayErrors] "
+                      "/DEV=number:deviceID number:channelNumber, number:value";
   runtimeNumVarList = EXCEPTION_VARS;
   runtimeStrVarList = "";
   return RegisterOperation(cmdTemplate, runtimeNumVarList, runtimeStrVarList,
