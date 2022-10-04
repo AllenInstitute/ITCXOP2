@@ -112,9 +112,15 @@ void SetDimensionLabels(waveHndl destWaveH, int Dimension,
 template <typename T>
 bool AreFreeWavesAllowed(T p)
 {
+  // work around old buggy IP versions
+  if(igorVersion < 901)
+  {
+    return true;
+  }
+
   if(p->tp)
   {
-    // threadsafe function from main thread or preemptive thread
+    // threadsafe function from preemptive thread
     return true;
   }
   else if(p->calledFromMacro)
