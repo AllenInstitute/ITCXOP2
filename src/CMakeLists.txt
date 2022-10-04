@@ -343,7 +343,23 @@ ELSEIF(WIN32)
     # C4127: conditional expression is constant
     TARGET_COMPILE_OPTIONS(${libname} PRIVATE $<$<CONFIG:RELEASE>:/Zi> /MP /W4 /wd4706 /wd4127 $<$<BOOL:${WARNINGS_AS_ERRORS}>:/WX>)
     set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /Zi")
-    set(CMAKE_SHARED_LINKER_FLAGS_RELEASE "${CMAKE_SHARED_LINKER_FLAGS_RELEASE} /DEBUG /OPT:REF /OPT:ICF")
+    set(CMAKE_SHARED_LINKER_FLAGS_RELEASE "${CMAKE_SHARED_LINKER_FLAGS_RELEASE} /DEBUG")
+
+    # Gy: Enable function level linking
+    # Ob1: Inline only functions with __inline
+    # GR-: No runtime type information
+    # GS-: Don't try to detect stack overflows
+    # GF-: Deactivate string pooling
+    TARGET_COMPILE_OPTIONS(${libname} PRIVATE /Gy /Ob1 /GR- /GS- /GF-)
+
+    # DYNAMICBASE:NO: Disable ASLR
+    # LARGEADDRESSAWARE: Allow accessing data/files larger than 2GB
+    # OPT:NOICF: Deactivate COMDAT folding
+    # OPT:REF: Delete unused functions/variables
+    # INCREMENTAL:NO: Turn off incremental linking
+    # SUBSYSTEM:WINDOWS: Use the WINDOWS subsystem
+    # NXCOMPAT:NO: Disable DEP (Data Execution Prevention)
+    TARGET_LINK_OPTIONS(${libname} PRIVATE /DYNAMICBASE:NO /LARGEADDRESSAWARE /OPT:NOICF /OPT:REF /INCREMENTAL:NO /SUBSYSTEM:WINDOWS /NXCOMPAT:NO)
 
     FUNCTION(SET_ALL_TARGETS_LINKTYPE _dir)
       GET_PROPERTY(_subdirs DIRECTORY "${_dir}" PROPERTY SUBDIRECTORIES)
