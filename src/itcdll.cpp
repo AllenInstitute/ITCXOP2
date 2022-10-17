@@ -408,13 +408,13 @@ void ITCDLL::ITC_AnalyzeError(LONG Status, char *Text, DWORD MaxCharacters)
 void ITCDLL::ITC_AsyncIO(const DeviceIDHelper &DeviceID,
                          std::vector<ITCChannelDataEx> *Channels)
 {
+  DebugOut("ITC_AsyncIO", *Channels);
+
   if(DWORD ErrorCode = ::ITC_AsyncIO(
          DeviceID.getHandle(), (DWORD) Channels->size(), Channels->data()))
   {
     throw ITCException(ErrorCode, DeviceID.getHandle(), "ITC_AsyncIO");
   }
-
-  DebugOut("ITC_AsyncIO", *Channels);
 }
 
 void ITCDLL::ITC_CloseDevice(HANDLE DeviceHandle)
@@ -434,12 +434,12 @@ void ITCDLL::ITC_CloseDevice(const DeviceIDHelper &DeviceID)
 
 void ITCDLL::ITC_ConfigDevice(HANDLE DeviceHandle, ITCPublicConfig *sITCConfig)
 {
+  DebugOut("ITC_ConfigDevice", *sITCConfig);
+
   if(DWORD ErrorCode = ::ITC_ConfigDevice(DeviceHandle, sITCConfig))
   {
     throw ITCException(ErrorCode, DeviceHandle, "ITC_ConfigDevice");
   }
-
-  DebugOut("ITC_ConfigDevice", *sITCConfig);
 }
 
 void ITCDLL::ITC_ConfigDevice(const DeviceIDHelper &DeviceID,
@@ -461,36 +461,36 @@ void ITCDLL::ITC_Devices(ITCDeviceTypeEnum DeviceType, DWORD *DeviceNumber)
 void ITCDLL::ITC_GetChannels(const DeviceIDHelper &DeviceID,
                              std::vector<ITCChannelInfo> *channels)
 {
+  DebugOut("ITC_GetChannels", *channels);
+
   if(DWORD ErrorCode = ::ITC_GetChannels(
          DeviceID.getHandle(), (DWORD) channels->size(), channels->data()))
   {
     throw ITCException(ErrorCode, DeviceID.getHandle(), "ITC_GetChannels");
   }
-
-  DebugOut("ITC_GetChannels", *channels);
 }
 
 void ITCDLL::ITC_GetDataAvailable(const DeviceIDHelper &DeviceID,
                                   std::vector<ITCChannelDataEx> *channels)
 {
+  DebugOut("ITC_GetDataAvailable", *channels);
+
   if(DWORD ErrorCode = ::ITC_GetDataAvailable(
          DeviceID.getHandle(), (DWORD) channels->size(), channels->data()))
   {
     throw ITCException(ErrorCode, DeviceID.getHandle(), "ITC_GetDataAvailable");
   }
-
-  DebugOut("ITC_GetDataAvailable", *channels);
 }
 
 void ITCDLL::ITC_GetDeviceInfo(const DeviceIDHelper &DeviceID,
                                GlobalDeviceInfo *sDeviceInfo)
 {
+  DebugOut("ITC_GetDeviceInfo", *sDeviceInfo);
+
   if(DWORD ErrorCode = ::ITC_GetDeviceInfo(DeviceID.getHandle(), sDeviceInfo))
   {
     throw ITCException(ErrorCode, DeviceID.getHandle(), "ITC_GetDeviceInfo");
   }
-
-  DebugOut("ITC_GetDeviceInfo", *sDeviceInfo);
 }
 
 void ITCDLL::ITC_GetDeviceType(const DeviceIDHelper &DeviceID,
@@ -527,12 +527,12 @@ void ITCDLL::ITC_GetDeviceType(const DeviceIDHelper &DeviceID,
 
 void ITCDLL::ITC_GetState(const DeviceIDHelper &DeviceID, ITCStatus *lITCStatus)
 {
+  DebugOut("ITC_GetState", *lITCStatus);
+
   if(DWORD ErrorCode = ::ITC_GetState(DeviceID.getHandle(), lITCStatus))
   {
     throw ITCException(ErrorCode, DeviceID.getHandle(), "ITC_GetState");
   }
-
-  DebugOut("ITC_GetState", *lITCStatus);
 }
 
 void ITCDLL::ITC_GetStatusText(HANDLE deviceHandle, LONG Status, char *Text,
@@ -564,12 +564,12 @@ void ITCDLL::ITC_GetVersions(const DeviceIDHelper &DeviceID,
 
 void ITCDLL::ITC_GlobalConfig(ITCGlobalConfig *GlobalConfig)
 {
+  DebugOut("ITC_GlobalConfig", *GlobalConfig);
+
   if(DWORD ErrorCode = ::ITC_GlobalConfig(GlobalConfig))
   {
     throw ITCException(ErrorCode, nullptr, "ITC_GlobalConfig");
   }
-
-  DebugOut("ITC_GlobalConfig", *GlobalConfig);
 }
 
 void ITCDLL::ITC_InitDevice(const DeviceIDHelper &DeviceID,
@@ -617,6 +617,8 @@ void ITCDLL::ITC_ResetChannels(const DeviceIDHelper &DeviceID)
 void ITCDLL::ITC_SetChannels(const DeviceIDHelper &DeviceID,
                              std::vector<ITCChannelInfo> *channels)
 {
+  DebugOut("ITC_SetChannels", *channels);
+
   if(channels->empty())
   {
     throw IgorException(ITC_DLL_ERROR);
@@ -627,8 +629,6 @@ void ITCDLL::ITC_SetChannels(const DeviceIDHelper &DeviceID,
   {
     throw ITCException(ErrorCode, DeviceID.getHandle(), "ITC_SetChannels");
   }
-
-  DebugOut("ITC_SetChannels", *channels);
 }
 
 void ITCDLL::ITC_SetSoftKey(const DeviceIDHelper &DeviceID, DWORD SoftKey)
@@ -643,24 +643,28 @@ void ITCDLL::ITC_SetSoftKey(const DeviceIDHelper &DeviceID, DWORD SoftKey)
 
 void ITCDLL::ITC_SetState(const DeviceIDHelper &DeviceID, ITCStatus *lITCStatus)
 {
+  DebugOut("ITC_SetState", *lITCStatus);
+
   if(DWORD ErrorCode = ::ITC_SetState(DeviceID.getHandle(), lITCStatus))
   {
     throw ITCException(ErrorCode, DeviceID.getHandle(), "ITC_SetState");
   }
-
-  DebugOut("ITC_SetState", *lITCStatus);
 }
 
 void ITCDLL::ITC_Start(const DeviceIDHelper &DeviceID, ITCStartInfo *sParam)
 {
-  if(DWORD ErrorCode = ::ITC_Start(DeviceID.getHandle(), sParam))
-  {
-    throw ITCException(ErrorCode, DeviceID.getHandle(), "ITC_Start");
-  }
-
   if(sParam != nullptr)
   {
     DebugOut("ITC_Start", *sParam);
+  }
+  else
+  {
+    DebugOut("ITC_Start", "ITCStartInfo == nullptr");
+  }
+
+  if(DWORD ErrorCode = ::ITC_Start(DeviceID.getHandle(), sParam))
+  {
+    throw ITCException(ErrorCode, DeviceID.getHandle(), "ITC_Start");
   }
 }
 
@@ -688,6 +692,8 @@ void ITCDLL::ITC_UpdateFIFOPosition(
     const DeviceIDHelper &DeviceID,
     std::vector<ITCChannelDataEx> *channelDataExVec)
 {
+  DebugOut("ITC_UpdateFIFOPosition", *channelDataExVec);
+
   if(channelDataExVec->empty())
   {
     throw IgorException(ITC_DLL_ERROR);
@@ -700,13 +706,13 @@ void ITCDLL::ITC_UpdateFIFOPosition(
     throw ITCException(ErrorCode, DeviceID.getHandle(),
                        "ITC_UpdateFIFOPosition");
   }
-
-  DebugOut("ITC_UpdateFIFOPosition", *channelDataExVec);
 }
 
 void ITCDLL::ITC_ReadWriteFIFO(const DeviceIDHelper &DeviceID,
                                std::vector<ITCChannelDataEx> *channelDataExVec)
 {
+  DebugOut("ITC_ReadWriteFIFO", *channelDataExVec);
+
   if(channelDataExVec->empty())
   {
     throw IgorException(ITC_DLL_ERROR);
@@ -718,8 +724,6 @@ void ITCDLL::ITC_ReadWriteFIFO(const DeviceIDHelper &DeviceID,
   {
     throw ITCException(ErrorCode, DeviceID.getHandle(), "ITC_ReadWriteFIFO");
   }
-
-  DebugOut("ITC_ReadWriteFIFO", *channelDataExVec);
 }
 
 void DebugOut(const std::string &caller, const std::string &msg)
