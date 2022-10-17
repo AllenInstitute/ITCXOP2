@@ -89,7 +89,7 @@ ExecuteITCUpdateFIFOPosition2(ITCUpdateFIFOPosition2RuntimeParamsPtr p)
     lITCChannelData[0].Value = lockToIntegerRange<DWORD>(p->position);
   }
 
-  ITCDLL::ITC_UpdateFIFOPosition(DeviceID, lITCChannelData);
+  ITCDLL::ITC_UpdateFIFOPosition(DeviceID, &lITCChannelData);
 
   END_OUTER_CATCH
 }

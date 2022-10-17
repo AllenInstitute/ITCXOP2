@@ -615,20 +615,20 @@ void ITCDLL::ITC_ResetChannels(const DeviceIDHelper &DeviceID)
 }
 
 void ITCDLL::ITC_SetChannels(const DeviceIDHelper &DeviceID,
-                             std::vector<ITCChannelInfo> channels)
+                             std::vector<ITCChannelInfo> *channels)
 {
-  if(channels.empty())
+  if(channels->empty())
   {
     throw IgorException(ITC_DLL_ERROR);
   }
 
   if(DWORD ErrorCode = ::ITC_SetChannels(
-         DeviceID.getHandle(), (DWORD) channels.size(), channels.data()))
+         DeviceID.getHandle(), (DWORD) channels->size(), channels->data()))
   {
     throw ITCException(ErrorCode, DeviceID.getHandle(), "ITC_SetChannels");
   }
 
-  DebugOut("ITC_SetChannels", channels);
+  DebugOut("ITC_SetChannels", *channels);
 }
 
 void ITCDLL::ITC_SetSoftKey(const DeviceIDHelper &DeviceID, DWORD SoftKey)
@@ -686,40 +686,40 @@ void ITCDLL::ITC_UpdateChannels(const DeviceIDHelper &DeviceID)
 
 void ITCDLL::ITC_UpdateFIFOPosition(
     const DeviceIDHelper &DeviceID,
-    std::vector<ITCChannelDataEx> channelDataExVec)
+    std::vector<ITCChannelDataEx> *channelDataExVec)
 {
-  if(channelDataExVec.empty())
+  if(channelDataExVec->empty())
   {
     throw IgorException(ITC_DLL_ERROR);
   }
 
-  if(DWORD ErrorCode = ::ITC_UpdateFIFOPosition(DeviceID.getHandle(),
-                                                (DWORD) channelDataExVec.size(),
-                                                channelDataExVec.data()))
+  if(DWORD ErrorCode = ::ITC_UpdateFIFOPosition(
+         DeviceID.getHandle(), (DWORD) channelDataExVec->size(),
+         channelDataExVec->data()))
   {
     throw ITCException(ErrorCode, DeviceID.getHandle(),
                        "ITC_UpdateFIFOPosition");
   }
 
-  DebugOut("ITC_UpdateFIFOPosition", channelDataExVec);
+  DebugOut("ITC_UpdateFIFOPosition", *channelDataExVec);
 }
 
 void ITCDLL::ITC_ReadWriteFIFO(const DeviceIDHelper &DeviceID,
-                               std::vector<ITCChannelDataEx> channelDataExVec)
+                               std::vector<ITCChannelDataEx> *channelDataExVec)
 {
-  if(channelDataExVec.empty())
+  if(channelDataExVec->empty())
   {
     throw IgorException(ITC_DLL_ERROR);
   }
 
   if(DWORD ErrorCode = ::ITC_ReadWriteFIFO(DeviceID.getHandle(),
-                                           (DWORD) channelDataExVec.size(),
-                                           channelDataExVec.data()))
+                                           (DWORD) channelDataExVec->size(),
+                                           channelDataExVec->data()))
   {
     throw ITCException(ErrorCode, DeviceID.getHandle(), "ITC_ReadWriteFIFO");
   }
 
-  DebugOut("ITC_ReadWriteFIFO", channelDataExVec);
+  DebugOut("ITC_ReadWriteFIFO", *channelDataExVec);
 }
 
 void DebugOut(const std::string &caller, const std::string &msg)

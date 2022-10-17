@@ -47,7 +47,7 @@ ExecuteITCUpdateFIFOPositionAll2(ITCUpdateFIFOPositionAll2RuntimeParamsPtr p)
   std::vector<ITCChannelDataEx> fifoPos = readFifoPos(p);
 
   // Call the function
-  ITCDLL::ITC_UpdateFIFOPosition(DeviceID, fifoPos);
+  ITCDLL::ITC_UpdateFIFOPosition(DeviceID, &fifoPos);
 
   END_OUTER_CATCH
 }
