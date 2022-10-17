@@ -369,10 +369,36 @@ void DebugOut(const std::string &caller, const ITCStartInfo &config)
                  FMT_STRING("config.StopTime=[{}]\r"), config.StopTime);
 }
 
+void DebugOut(const std::string &caller, const HWFunction &func)
+{
+  if(!debuggingEnabled)
+    return;
+
+  OutputToLogfileOnDestruct xd;
+  fmt::format_to(std::back_inserter(xd.buf), FMT_STRING("Caller {}\r"), caller);
+  DEBUGPRINT_SIZEOF(HWFunction);
+
+  fmt::format_to(std::back_inserter(xd.buf), FMT_STRING("func.Mode={}\r"),
+                 func.Mode);
+  fmt::format_to(std::back_inserter(xd.buf), FMT_STRING("func.U2F_File={}\r"),
+                 func.U2F_File);
+  fmt::format_to(std::back_inserter(xd.buf),
+                 FMT_STRING("func.SizeOfSpecialFunction={}\r"),
+                 func.SizeOfSpecialFunction);
+  fmt::format_to(std::back_inserter(xd.buf),
+                 FMT_STRING("func.SpecialFunction={}\r"), func.SpecialFunction);
+  fmt::format_to(std::back_inserter(xd.buf), FMT_STRING("func.Reserved={}\r"),
+                 func.Reserved);
+  fmt::format_to(std::back_inserter(xd.buf), FMT_STRING("func.id={}\r"),
+                 func.id);
+}
+
 } // anonymous namespace
 
 void ITCDLL::ITC_AnalyzeError(LONG Status, char *Text, DWORD MaxCharacters)
 {
+  DebugOut("ITC_AnalyzeError", fmt::format(FMT_STRING("Status={}"), Status));
+
   if(DWORD ErrorCode = ::ITC_AnalyzeError(Status, Text, MaxCharacters))
   {
     throw ITCException(ErrorCode, nullptr, "ITC_AnalyseError");
@@ -393,6 +419,8 @@ void ITCDLL::ITC_AsyncIO(const DeviceIDHelper &DeviceID,
 
 void ITCDLL::ITC_CloseDevice(HANDLE DeviceHandle)
 {
+  DebugOut("ITC_CloseDevice", "called");
+
   if(DWORD ErrorCode = ::ITC_CloseDevice(DeviceHandle))
   {
     throw ITCException(ErrorCode, DeviceHandle, "ITC_CloseDevice");
@@ -422,6 +450,8 @@ void ITCDLL::ITC_ConfigDevice(const DeviceIDHelper &DeviceID,
 
 void ITCDLL::ITC_Devices(ITCDeviceTypeEnum DeviceType, DWORD *DeviceNumber)
 {
+  DebugOut("ITC_Devices", "called");
+
   if(DWORD ErrorCode = ::ITC_Devices((DWORD) DeviceType, DeviceNumber))
   {
     throw ITCException(ErrorCode, nullptr, "ITC_Devices");
@@ -508,6 +538,8 @@ void ITCDLL::ITC_GetState(const DeviceIDHelper &DeviceID, ITCStatus *lITCStatus)
 void ITCDLL::ITC_GetStatusText(HANDLE deviceHandle, LONG Status, char *Text,
                                DWORD MaxCharacters)
 {
+  DebugOut("ITC_GetStatusText", fmt::format(FMT_STRING("Status={}"), Status));
+
   if(DWORD ErrorCode =
          ::ITC_GetStatusText(deviceHandle, Status, Text, MaxCharacters))
   {
@@ -520,6 +552,8 @@ void ITCDLL::ITC_GetVersions(const DeviceIDHelper &DeviceID,
                              VersionInfo *KernelLevelDriverVersion,
                              VersionInfo *HardwareVersion)
 {
+  DebugOut("ITC_GetVersions", "called");
+
   if(DWORD ErrorCode =
          ::ITC_GetVersions(DeviceID.getHandle(), ThisDriverVersion,
                            KernelLevelDriverVersion, HardwareVersion))
@@ -541,6 +575,15 @@ void ITCDLL::ITC_GlobalConfig(ITCGlobalConfig *GlobalConfig)
 void ITCDLL::ITC_InitDevice(const DeviceIDHelper &DeviceID,
                             HWFunction *sHWFunction)
 {
+  if(sHWFunction != nullptr)
+  {
+    DebugOut("ITC_InitDevice", *sHWFunction);
+  }
+  else
+  {
+    DebugOut("ITC_InitDevice", "sHWFunction == nullptr");
+  }
+
   if(DWORD ErrorCode = ::ITC_InitDevice(DeviceID.getHandle(), sHWFunction))
   {
     throw ITCException(ErrorCode, DeviceID.getHandle(), "ITC_InitDevice");
@@ -550,6 +593,10 @@ void ITCDLL::ITC_InitDevice(const DeviceIDHelper &DeviceID,
 void ITCDLL::ITC_OpenDevice(ITCDeviceTypeEnum DeviceType, DWORD DeviceNumber,
                             DWORD Mode, HANDLE *DeviceHandle)
 {
+  DebugOut("ITC_OpenDevice",
+           fmt::format(FMT_STRING("DeviceType={}\rDeviceNumber={}\rMode={}"),
+                       (DWORD) DeviceType, DeviceNumber, Mode));
+
   if(DWORD ErrorCode =
          ::ITC_OpenDevice((DWORD) DeviceType, DeviceNumber, Mode, DeviceHandle))
   {
@@ -559,6 +606,8 @@ void ITCDLL::ITC_OpenDevice(ITCDeviceTypeEnum DeviceType, DWORD DeviceNumber,
 
 void ITCDLL::ITC_ResetChannels(const DeviceIDHelper &DeviceID)
 {
+  DebugOut("ITC_ResetChannels", "called");
+
   if(DWORD ErrorCode = ::ITC_ResetChannels(DeviceID.getHandle()))
   {
     throw ITCException(ErrorCode, DeviceID.getHandle(), "ITC_ResetChannels");
@@ -584,6 +633,8 @@ void ITCDLL::ITC_SetChannels(const DeviceIDHelper &DeviceID,
 
 void ITCDLL::ITC_SetSoftKey(const DeviceIDHelper &DeviceID, DWORD SoftKey)
 {
+  DebugOut("ITC_SetSoftKey", fmt::format(FMT_STRING("SoftKey={}"), SoftKey));
+
   if(DWORD ErrorCode = ::ITC_SetSoftKey(DeviceID.getHandle(), SoftKey))
   {
     throw ITCException(ErrorCode, DeviceID.getHandle(), "ITC_SetSoftKey");
@@ -615,6 +666,8 @@ void ITCDLL::ITC_Start(const DeviceIDHelper &DeviceID, ITCStartInfo *sParam)
 
 void ITCDLL::ITC_Stop(const DeviceIDHelper &DeviceID, void *sParam)
 {
+  DebugOut("ITC_Stop", fmt::format(FMT_STRING("sParam={}"), sParam));
+
   if(DWORD ErrorCode = ::ITC_Stop(DeviceID.getHandle(), sParam))
   {
     throw ITCException(ErrorCode, DeviceID.getHandle(), "ITC_Stop");
@@ -623,6 +676,8 @@ void ITCDLL::ITC_Stop(const DeviceIDHelper &DeviceID, void *sParam)
 
 void ITCDLL::ITC_UpdateChannels(const DeviceIDHelper &DeviceID)
 {
+  DebugOut("ITC_UpdateChannels", "called");
+
   if(DWORD ErrorCode = ::ITC_UpdateChannels(DeviceID.getHandle()))
   {
     throw ITCException(ErrorCode, DeviceID.getHandle(), "ITC_UpdateChannels");
