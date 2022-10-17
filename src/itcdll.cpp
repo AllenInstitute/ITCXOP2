@@ -410,6 +410,11 @@ void ITCDLL::ITC_AsyncIO(const DeviceIDHelper &DeviceID,
 {
   DebugOut("ITC_AsyncIO", *Channels);
 
+  if(Channels->empty())
+  {
+    throw IgorException(ITC_DLL_ERROR);
+  }
+
   if(DWORD ErrorCode = ::ITC_AsyncIO(
          DeviceID.getHandle(), (DWORD) Channels->size(), Channels->data()))
   {
@@ -463,6 +468,11 @@ void ITCDLL::ITC_GetChannels(const DeviceIDHelper &DeviceID,
 {
   DebugOut("ITC_GetChannels", *channels);
 
+  if(channels->empty())
+  {
+    throw IgorException(ITC_DLL_ERROR);
+  }
+
   if(DWORD ErrorCode = ::ITC_GetChannels(
          DeviceID.getHandle(), (DWORD) channels->size(), channels->data()))
   {
@@ -474,6 +484,11 @@ void ITCDLL::ITC_GetDataAvailable(const DeviceIDHelper &DeviceID,
                                   std::vector<ITCChannelDataEx> *channels)
 {
   DebugOut("ITC_GetDataAvailable", *channels);
+
+  if(channels->empty())
+  {
+    throw IgorException(ITC_DLL_ERROR);
+  }
 
   if(DWORD ErrorCode = ::ITC_GetDataAvailable(
          DeviceID.getHandle(), (DWORD) channels->size(), channels->data()))
