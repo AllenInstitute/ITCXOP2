@@ -135,3 +135,33 @@ static Function LTSFlagWorks()
 	actual = ReadFile(path)
 	CHECK_GT_VAR(strsearch(actual, "{\"blahh\":\"blubb\"", 0), 0)
 End
+
+static Function CheckExceptionLogging()
+
+	string actual, path
+
+	ITCSetGlobals2/D=1/Z=1
+
+	path = GetLogFilePath_IGNORE()
+	GetFileFolderInfo/Q/Z=1 path
+	CHECK_NEQ_VAR(V_flag, 0)
+
+	// regular log entry
+	ITCOpenDevice2/DTN=(DEVICE_NUM) DEVICE_ID
+
+	ITCCloseAll2
+
+	// ITCException
+	ITCOpenDevice2/DTN=(DEVICE_NUM) 5
+
+	ITCCloseAll2
+
+	actual = ReadFile(path)
+	CHECK_GT_VAR(strsearch(actual, "ITCException", 0), 0)
+
+	// IgorException
+	ITCOpenDevice2/DTN=(NaN) DEVICE_ID
+
+	actual = ReadFile(path)
+	CHECK_GT_VAR(strsearch(actual, "IgorException", 0), 0)
+End
