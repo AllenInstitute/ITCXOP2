@@ -4,7 +4,6 @@
 // This file is part of the `ITCXOP2` project and licensed under BSD-3-Clause.
 
 #include "itcdll.h"
-#include <sstream>
 
 //--------------------------------------------------------------
 // IgorException
@@ -63,16 +62,15 @@ std::string ITCException::GetITCErrorMessage(HANDLE deviceHandle,
     // Error in call to ITC_GetStatusText.
     // No nicely formatted status text available.
     // Just display the function name and the return value.
-    std::stringstream OutStringStream;
-    OutStringStream << "Error in call to " << functionName << "." << std::endl
-                    << "Reported error: " << std::ios::hex << errorCode;
-    return OutStringStream.str();
+    return fmt::format(
+        FMT_STRING("Error in call to {}.\rReported error: {:#X}"), functionName,
+        errorCode);
   }
 
-  // Retrieved the status text.  Display the nicely formatted error message.
-  std::string OutString = "DLL Error.\n\tError in call to " + functionName +
-                          ".\n\tReported error: " + std::string(TextBuffer);
-  return OutString;
+  // Retrieved the status text. Display the nicely formatted error message.
+  return fmt::format(
+      FMT_STRING("DLL Error.\rError in call to {}.\rReported error: {}"),
+      functionName, TextBuffer);
 }
 
 ITCException::ITCException(DWORD errorCode, HANDLE deviceHandle,

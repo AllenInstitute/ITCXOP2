@@ -1,7 +1,6 @@
 #pragma once
 #include "ErrorDisplayClass.h"
 #include <Windows.h>
-#include <sstream>
 #include <exception>
 #include <string>
 #include "itcdll.h"
