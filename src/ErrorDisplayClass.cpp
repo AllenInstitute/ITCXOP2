@@ -38,6 +38,6 @@ void ErrorDisplayClass::WriteToCommandWindow(const std::string &message)
 {
   if(shouldShowError())
   {
-    XOPNotice_ts((message + "\n"));
+    XOPNotice_ts((message + "\r"));
   }
 }

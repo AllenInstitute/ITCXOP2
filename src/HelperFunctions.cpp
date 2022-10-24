@@ -2,17 +2,13 @@
 #include "itcXOP2.h"
 #include "itcdll.h"
 #include "git_version.h"
-#include "fmt/format.h"
-#include <sstream>
 #include <iterator>
 #include <algorithm>
 #include <cmath>
 
 // This file is part of the `ITCXOP2` project and licensed under BSD-3-Clause.
 
-using namespace fmt::literals;
-
-thread_local bool debuggingEnabled = false;
+bool debuggingEnabled = false;
 
 std::string getStringFromHandle(Handle strHandle)
 {
@@ -189,7 +185,8 @@ void SetOperationReturn(const std::string &name, const std::string &value)
 {
   if(int err = SetOperationStrVar(name.c_str(), value.c_str()))
   {
-    throw IgorException(err, fmt::format("Error setting {}.", name));
+    throw IgorException(err,
+                        fmt::format(FMT_STRING("Error setting {}."), name));
   }
 }
 
@@ -197,7 +194,8 @@ void SetOperationReturn(const std::string &name, double value)
 {
   if(int err = SetOperationNumVar(name.c_str(), value))
   {
-    throw IgorException(err, fmt::format("Error setting {}.", name));
+    throw IgorException(err,
+                        fmt::format(FMT_STRING("Error setting {}."), name));
   }
 }
 
@@ -213,18 +211,87 @@ StrStrMap GetVersionInfo(const std::string &xopName)
 #pragma clang diagnostic ignored "-Wdate-time"
 #endif
 
-  m["builddate"] = "{} {}"_format(__DATE__, __TIME__); // NOLINT
+  m["builddate"] =
+      fmt::format(FMT_STRING("{} {}"), __DATE__, __TIME__); // NOLINT
 
 #ifdef MACIGOR64
 #pragma clang diagnostic pop
 #endif
 
 #ifdef MACIGOR64
-  m["compiler"] = "Clang {}.{}.{}"_format(__clang_major__, __clang_minor__,
-                                          __clang_patchlevel__);
+  m["compiler"] = fmt::format(FMT_STRING("Clang {}.{}.{}"), __clang_major__,
+                              __clang_minor__, __clang_patchlevel__);
 #else
-  m["compiler"] = "Visual Studio {}"_format(_MSC_VER);
+  m["compiler"] = fmt::format(FMT_STRING("Visual Studio {}"), _MSC_VER);
 #endif
 
   return m;
+}
+
+int CreateDirectory(const std::string &path)
+{
+#ifdef WINIGOR
+  int error;
+
+  // https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-createdirectorya
+  auto ret = CreateDirectoryA(path.c_str(), nullptr);
+
+  // If the function succeeds, the return value is nonzero
+  if(ret)
+  {
+    return 0;
+  }
+
+  error = GetLastError();
+
+  if(error == ERROR_ALREADY_EXISTS)
+  {
+    return FOLDER_EXISTS_NO_OVERWRITE;
+  }
+  else if(error == ERROR_PATH_NOT_FOUND)
+  {
+    return CANT_OPEN_FOLDER;
+  }
+  else
+  {
+    return GENERAL_BAD_VIBS;
+  }
+#else
+#ifdef MACIGOR
+  // https://developer.apple.com/library/archive/documentation/System/Conceptual/ManPages_iPhoneOS/man2/mkdir.2.html
+  auto ret = mkdir(path.c_str(), 0777);
+  if(!ret)
+  {
+    return 0;
+  }
+
+  if(errno == EEXIST)
+  {
+    return FOLDER_EXISTS_NO_OVERWRITE;
+  }
+  else if(errno == ENOTDIR)
+  {
+    return CANT_OPEN_FOLDER;
+  }
+  else
+  {
+    return INTERNAL_ERROR;
+  }
+
+#else
+#error "Unsupported architecture"
+#endif
+#endif
+}
+
+void EnsureDirectoryExists(const std::string &path)
+{
+  auto ret = CreateDirectory(path);
+
+  if(ret == 0 || ret == FOLDER_EXISTS_NO_OVERWRITE)
+  {
+    return;
+  }
+
+  throw IgorException(ret);
 }

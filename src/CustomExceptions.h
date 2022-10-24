@@ -1,10 +1,12 @@
 #pragma once
 #include "ErrorDisplayClass.h"
 #include <Windows.h>
-#include <sstream>
 #include <exception>
 #include <string>
 #include "itcdll.h"
+#include "fmt/format.h"
+#include "fmt/ranges.h"
+#include "fmt/chrono.h"
 
 // This file is part of the `ITCXOP2` project and licensed under BSD-3-Clause.
 
@@ -15,12 +17,6 @@ public:
   const std::string Message;
 
   /// Constructors
-  // Mark default constructor as deprecated
-  // - Allows use of default constructor when a custom error code hasn't been
-  // implemented
-  // - Compiler warning allows us to find usages later
-  __declspec(deprecated("Using default error code.  You should replace this "
-                        "with a custom error code")) IgorException();
   IgorException(int errorCode);
   IgorException(int errorCode, const std::string &errorMessage);
 
@@ -28,6 +24,18 @@ public:
 
   /// Displays the exception if required; gets the return code.
   int HandleException(ErrorDisplayClass &ErrorDisplay) const;
+};
+
+template <>
+struct fmt::formatter<IgorException> : fmt::formatter<std::string>
+{
+  // parse is inherited from formatter<std::string>.
+  template <typename FormatContext>
+  auto format(const IgorException &e, FormatContext &ctx)
+  {
+    return format_to(ctx.out(), FMT_STRING("error code: {:#X}, what: {}"),
+                     e.ErrorCode, e.Message);
+  }
 };
 
 class ITCException : public std::exception
@@ -49,6 +57,21 @@ public:
   int HandleException(ErrorDisplayClass &ErrorDisplay) const;
 };
 
+template <>
+struct fmt::formatter<ITCException> : fmt::formatter<std::string>
+{
+  // parse is inherited from formatter<std::string>.
+  template <typename FormatContext>
+  auto format(const ITCException &e, FormatContext &ctx)
+  {
+    return format_to(
+        ctx.out(),
+        FMT_STRING(
+            "error code: {:#X}, device handle: {}, function: {}, message: {}"),
+        e.ErrorCode, e.DeviceHandle, e.FunctionName, e.Message);
+  }
+};
+
 int HandleException(const std::exception e, ErrorDisplayClass &ErrorDisplay);
 
 #define RETURN_VARIABLE "V_Value"
@@ -68,17 +91,17 @@ int HandleException(const std::exception e, ErrorDisplayClass &ErrorDisplay);
 #define END_OUTER_CATCH                                                        \
   return 0;                                                                    \
   }                                                                            \
-  catch(IgorException e)                                                       \
+  catch(const IgorException &e)                                                \
   {                                                                            \
     SetOperationNumVar(XOP_ERROR_VAR, (double) e.ErrorCode);                   \
     return e.HandleException(ErrorDisplay);                                    \
   }                                                                            \
-  catch(ITCException e)                                                        \
+  catch(const ITCException &e)                                                 \
   {                                                                            \
     SetOperationNumVar(ITC_ERROR_VAR, (double) e.ErrorCode);                   \
     return e.HandleException(ErrorDisplay);                                    \
   }                                                                            \
-  catch(std::exception e)                                                      \
+  catch(const std::exception &e)                                               \
   {                                                                            \
     return HandleException(e, ErrorDisplay);                                   \
   }                                                                            \

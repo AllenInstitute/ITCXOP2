@@ -30,7 +30,7 @@ IF(CMAKE_SIZEOF_VOID_P EQUAL 4)
   SET(itcmm_lib "ITCMM32.lib")
 
   IF(MSVC)
-    SET(igorPath "C:/Program Files/WaveMetrics/Igor Pro 8 Folder/IgorBinaries_Win32/Igor.exe")
+    SET(igorPath "C:/Program Files/WaveMetrics/Igor Pro 9 Folder/IgorBinaries_Win32/Igor.exe")
   ELSEIF(APPLE)
     MESSAGE(FATAL_ERROR "No 32bit support on MacOSX.")
   ENDIF()
@@ -42,9 +42,9 @@ ELSEIF(CMAKE_SIZEOF_VOID_P EQUAL 8)
   SET(itcmm_lib "ITCMM64.lib")
 
   IF(MSVC)
-    SET(igorPath "C:/Program Files/WaveMetrics/Igor Pro 8 Folder/IgorBinaries_x64/Igor64.exe")
+    SET(igorPath "C:/Program Files/WaveMetrics/Igor Pro 9 Folder/IgorBinaries_x64/Igor64.exe")
   ELSEIF(APPLE)
-    SET(igorPath "/Applications/Igor\ Pro\ 8\ Folder/Igor64.app/Contents/MacOS/Igor64")
+    SET(igorPath "/Applications/Igor\ Pro\ 9\ Folder/Igor64.app/Contents/MacOS/Igor64")
   ENDIF()
 ENDIF()
 
@@ -105,6 +105,7 @@ ITCUpdateFIFOPosition2.cpp
 ITCUpdateFIFOPositionAll2.cpp
 ITCWriteDigital2.cpp
 itcXOP2.cpp
+Logging.cpp
 RegisterOperations.cpp
 )
 
@@ -130,6 +131,7 @@ SET(HEADERS
     ITCChannelTypeEnum.h
     ITCDeviceTypeEnum.h
     ITC_StandardHeaders.h
+    Logging.h
     RegisterOperations.h
     itcXOP2.h
     itcdll.h
@@ -379,6 +381,13 @@ ELSEIF(WIN32)
     SET_ALL_TARGETS_LINKTYPE(".")
   ENDIF()
 ENDIF()
+
+SET(JSON_BuildTests OFF CACHE INTERNAL "")
+SET(JSON_Install OFF CACHE INTERNAL "")
+SET(JSON_ImplicitConversions OFF CACHE INTERNAL "")
+ADD_SUBDIRECTORY(json)
+
+TARGET_LINK_LIBRARIES(${libname} PRIVATE nlohmann_json::nlohmann_json)
 
 ADD_SUBDIRECTORY(fmt EXCLUDE_FROM_ALL)
 

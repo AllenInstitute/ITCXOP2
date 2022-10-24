@@ -1,274 +1,404 @@
 #include "XOPStandardHeaders.h"
 #include "itcdll.h"
 #include "HelperFunctions.h"
-#include <sstream>
 #include "CustomExceptions.h"
 #include "Shlwapi.h"
 
-#include "fmt/format.h"
-#include "fmt/ostream.h"
-#include "fmt/printf.h"
 #include "ConcurrentXOPNotice.h"
+#include "Logging.h"
 
 // This file is part of the `ITCXOP2` project and licensed under BSD-3-Clause.
 
-#define DEBUGPRINT_SIZEOF(A) fprintf(xd.sstr, "sizeof(" #A ")=%d\r", sizeof(A));
+#define DEBUGPRINT_SIZEOF(A)                                                   \
+  fmt::format_to(std::back_inserter(xd.buf),                                   \
+                 FMT_STRING("sizeof(" #A ")={}\r"), sizeof(A));
 
 namespace
 {
-class XOPNoticeOnDestruct
+class OutputToLogfileOnDestruct
 {
 public:
-  XOPNoticeOnDestruct()
+  OutputToLogfileOnDestruct()
   {
     if(RunningInMainThread())
     {
-      fmt::fprintf(sstr, "(main thread)\r");
+      fmt::format_to(std::back_inserter(buf), "(main thread)\r");
     }
     else
     {
-      fmt::fprintf(sstr, "(thread %d)\r", GetCurrentThreadId());
+      fmt::format_to(std::back_inserter(buf), FMT_STRING("(thread {})\r"),
+                     GetCurrentThreadId());
     }
   }
 
-  ~XOPNoticeOnDestruct()
+  ~OutputToLogfileOnDestruct()
   {
-    if(debuggingEnabled)
-    {
-      XOPNotice_ts(sstr.str());
-    }
+    AddLogEntry(to_string(buf));
   }
 
-  std::stringstream sstr;
+  fmt::memory_buffer buf;
 };
 
-void DebugOut(std::string caller, std::vector<ITCChannelInfo> chanInfo)
+void DebugOut(const std::string &caller,
+              const std::vector<ITCChannelInfo> &chanInfo)
 {
-  using namespace fmt;
-
   if(!debuggingEnabled)
     return;
 
-  XOPNoticeOnDestruct xd;
-  fprintf(xd.sstr, "Caller %s\r", caller);
+  OutputToLogfileOnDestruct xd;
+  fmt::format_to(std::back_inserter(xd.buf), FMT_STRING("Caller {}\r"), caller);
   DEBUGPRINT_SIZEOF(ITCChannelInfo);
 
   for(size_t i = 0; i < chanInfo.size(); i++)
   {
-    fprintf(xd.sstr, "ChanInfo[%d].ModeNumberOfPoints=%d\r", i,
-            chanInfo[i].ModeNumberOfPoints);
-    fprintf(xd.sstr, "ChanInfo[%d].ChannelType=%d\r", i,
-            chanInfo[i].ChannelType);
-    fprintf(xd.sstr, "ChanInfo[%d].ChannelNumber=%d\r", i,
-            chanInfo[i].ChannelNumber);
-    fprintf(xd.sstr, "ChanInfo[%d].ChannelMode=%d\r", i,
-            chanInfo[i].ChannelMode);
-    fprintf(xd.sstr, "ChanInfo[%d].ErrorMode=%d\r", i, chanInfo[i].ErrorMode);
-    fprintf(xd.sstr, "ChanInfo[%d].ErrorState=%d\r", i, chanInfo[i].ErrorState);
-    fprintf(xd.sstr, "ChanInfo[%d].FIFOPointer=%#x\r", i,
-            (UINT_PTR) chanInfo[i].FIFOPointer);
-    fprintf(xd.sstr, "ChanInfo[%d].FIFONumberOfPoints=%d\r", i,
-            chanInfo[i].FIFONumberOfPoints);
-    fprintf(xd.sstr, "ChanInfo[%d].ModeOfOperation=%d\r", i,
-            chanInfo[i].ModeOfOperation);
-    fprintf(xd.sstr, "ChanInfo[%d].SizeOfModeParameters=%d\r", i,
-            chanInfo[i].SizeOfModeParameters);
-    fprintf(xd.sstr, "ChanInfo[%d].ModeParameters=%#x\r", i,
-            (UINT_PTR) chanInfo[i].ModeParameters);
-    fprintf(xd.sstr, "ChanInfo[%d].SamplingIntervalFlag=%d\r", i,
-            chanInfo[i].SamplingIntervalFlag);
-    fprintf(xd.sstr, "ChanInfo[%d].SamplingRate=%g\r", i,
-            chanInfo[i].SamplingRate);
-    fprintf(xd.sstr, "ChanInfo[%d].StartOffset=%g\r", i,
-            chanInfo[i].StartOffset);
-    fprintf(xd.sstr, "ChanInfo[%d].Gain=%g\r", i, chanInfo[i].Gain);
-    fprintf(xd.sstr, "ChanInfo[%d].Offset=%g\r", i, chanInfo[i].Offset);
-    fprintf(xd.sstr, "ChanInfo[%d].ExternalDecimation=%d\r", i,
-            chanInfo[i].ExternalDecimation);
-    fprintf(xd.sstr, "ChanInfo[%d].HardwareUnderrunValue=%d\r", i,
-            chanInfo[i].HardwareUnderrunValue);
+    fmt::format_to(std::back_inserter(xd.buf),
+                   FMT_STRING("ChanInfo[{}].ModeNumberOfPoints={}\r"), i,
+                   chanInfo[i].ModeNumberOfPoints);
+    fmt::format_to(std::back_inserter(xd.buf),
+                   FMT_STRING("ChanInfo[{}].ChannelType={}\r"), i,
+                   chanInfo[i].ChannelType);
+    fmt::format_to(std::back_inserter(xd.buf),
+                   FMT_STRING("ChanInfo[{}].ChannelNumber={}\r"), i,
+                   chanInfo[i].ChannelNumber);
+    fmt::format_to(std::back_inserter(xd.buf),
+                   FMT_STRING("ChanInfo[{}].ChannelMode={}\r"), i,
+                   chanInfo[i].ChannelMode);
+    fmt::format_to(std::back_inserter(xd.buf),
+                   FMT_STRING("ChanInfo[{}].ErrorMode={}\r"), i,
+                   chanInfo[i].ErrorMode);
+    fmt::format_to(std::back_inserter(xd.buf),
+                   FMT_STRING("ChanInfo[{}].ErrorState={}\r"), i,
+                   chanInfo[i].ErrorState);
+    fmt::format_to(std::back_inserter(xd.buf),
+                   FMT_STRING("ChanInfo[{}].FIFOPointer={:#x}\r"), i,
+                   (UINT_PTR) chanInfo[i].FIFOPointer);
+    fmt::format_to(std::back_inserter(xd.buf),
+                   FMT_STRING("ChanInfo[{}].FIFONumberOfPoints={}\r"), i,
+                   chanInfo[i].FIFONumberOfPoints);
+    fmt::format_to(std::back_inserter(xd.buf),
+                   FMT_STRING("ChanInfo[{}].ModeOfOperation={}\r"), i,
+                   chanInfo[i].ModeOfOperation);
+    fmt::format_to(std::back_inserter(xd.buf),
+                   FMT_STRING("ChanInfo[{}].SizeOfModeParameters={}\r"), i,
+                   chanInfo[i].SizeOfModeParameters);
+    fmt::format_to(std::back_inserter(xd.buf),
+                   FMT_STRING("ChanInfo[{}].ModeParameters={:#x}\r"), i,
+                   (UINT_PTR) chanInfo[i].ModeParameters);
+    fmt::format_to(std::back_inserter(xd.buf),
+                   FMT_STRING("ChanInfo[{}].SamplingIntervalFlag={}\r"), i,
+                   chanInfo[i].SamplingIntervalFlag);
+    fmt::format_to(std::back_inserter(xd.buf),
+                   FMT_STRING("ChanInfo[{}].SamplingRate={}\r"), i,
+                   chanInfo[i].SamplingRate);
+    fmt::format_to(std::back_inserter(xd.buf),
+                   FMT_STRING("ChanInfo[{}].StartOffset={}\r"), i,
+                   chanInfo[i].StartOffset);
+    fmt::format_to(std::back_inserter(xd.buf),
+                   FMT_STRING("ChanInfo[{}].Gain={}\r"), i, chanInfo[i].Gain);
+    fmt::format_to(std::back_inserter(xd.buf),
+                   FMT_STRING("ChanInfo[{}].Offset={}\r"), i,
+                   chanInfo[i].Offset);
+    fmt::format_to(std::back_inserter(xd.buf),
+                   FMT_STRING("ChanInfo[{}].ExternalDecimation={}\r"), i,
+                   chanInfo[i].ExternalDecimation);
+    fmt::format_to(std::back_inserter(xd.buf),
+                   FMT_STRING("ChanInfo[{}].HardwareUnderrunValue={}\r"), i,
+                   chanInfo[i].HardwareUnderrunValue);
   }
 }
 
-void DebugOut(std::string caller, std::vector<ITCChannelDataEx> chanDataEx)
+void DebugOut(const std::string &caller,
+              const std::vector<ITCChannelDataEx> &chanDataEx)
 {
-  using namespace fmt;
-
   if(!debuggingEnabled)
     return;
 
-  XOPNoticeOnDestruct xd;
-  fprintf(xd.sstr, "Caller %s\r", caller);
+  OutputToLogfileOnDestruct xd;
+  fmt::format_to(std::back_inserter(xd.buf), FMT_STRING("Caller {}\r"), caller);
   DEBUGPRINT_SIZEOF(ITCChannelDataEx);
 
   for(size_t i = 0; i < chanDataEx.size(); i++)
   {
-    fprintf(xd.sstr, "chanDataEx[%d].ChannelType=%d\r", i,
-            chanDataEx[i].ChannelType);
-    fprintf(xd.sstr, "chanDataEx[%d].Command=%d\r", i, chanDataEx[i].Command);
-    fprintf(xd.sstr, "chanDataEx[%d].ChannelNumber=%d\r", i,
-            chanDataEx[i].ChannelNumber);
-    fprintf(xd.sstr, "chanDataEx[%d].Status=%d\r", i, chanDataEx[i].Status);
-    fprintf(xd.sstr, "chanDataEx[%d].Value=%d\r", i, chanDataEx[i].Value);
-    fprintf(xd.sstr, "chanDataEx[%d].DataPointer=%#x\r", i,
-            (UINT_PTR) chanDataEx[i].DataPointer);
+    fmt::format_to(std::back_inserter(xd.buf),
+                   FMT_STRING("chanDataEx[{}].ChannelType={}\r"), i,
+                   chanDataEx[i].ChannelType);
+    fmt::format_to(std::back_inserter(xd.buf),
+                   FMT_STRING("chanDataEx[{}].Command={}\r"), i,
+                   chanDataEx[i].Command);
+    fmt::format_to(std::back_inserter(xd.buf),
+                   FMT_STRING("chanDataEx[{}].ChannelNumber={}\r"), i,
+                   chanDataEx[i].ChannelNumber);
+    fmt::format_to(std::back_inserter(xd.buf),
+                   FMT_STRING("chanDataEx[{}].Status={}\r"), i,
+                   chanDataEx[i].Status);
+    fmt::format_to(std::back_inserter(xd.buf),
+                   FMT_STRING("chanDataEx[{}].Value={}\r"), i,
+                   chanDataEx[i].Value);
+    fmt::format_to(std::back_inserter(xd.buf),
+                   FMT_STRING("chanDataEx[{}].DataPointer={:#x}\r"), i,
+                   (UINT_PTR) chanDataEx[i].DataPointer);
   }
 }
 
-void DebugOut(std::string caller, ITCPublicConfig config)
+void DebugOut(const std::string &caller, const ITCPublicConfig &config)
 {
-  using namespace fmt;
-
   if(!debuggingEnabled)
     return;
 
-  XOPNoticeOnDestruct xd;
+  OutputToLogfileOnDestruct xd;
 
-  fprintf(xd.sstr, "Caller %s\r", caller);
+  fmt::format_to(std::back_inserter(xd.buf), FMT_STRING("Caller {}\r"), caller);
   DEBUGPRINT_SIZEOF(ITCPublicConfig);
 
-  fprintf(xd.sstr, "config.DigitalInputModed=[%d]\r", config.DigitalInputMode);
-  fprintf(xd.sstr, "config.ExternalTriggerModed=[%d]\r",
-          config.ExternalTriggerMode);
-  fprintf(xd.sstr, "config.ExternalTriggerd=[%d]\r", config.ExternalTrigger);
-  fprintf(xd.sstr, "config.EnableExternalClockd=[%d]\r",
-          config.EnableExternalClock);
-  fprintf(xd.sstr, "config.DACShiftValued=[%d]\r", config.DACShiftValue);
-  fprintf(xd.sstr, "config.InputRanged=[%d]\r", config.InputRange);
-  fprintf(xd.sstr, "config.TriggerOutPositiond=[%d]\r",
-          config.TriggerOutPosition);
-  fprintf(xd.sstr, "config.OutputEnabled=[%d]\r", config.OutputEnable);
-  fprintf(xd.sstr, "config.SequenceLengthd=[%d]\r", config.SequenceLength);
-  fprintf(xd.sstr, "config.Sequenced=[%d]\r", (UINT_PTR) config.Sequence);
-  fprintf(xd.sstr, "config.SequenceLengthInd=[%d]\r", config.SequenceLengthIn);
-  fprintf(xd.sstr, "config.SequenceInd=[%d]\r", (UINT_PTR) config.SequenceIn);
-  fprintf(xd.sstr, "config.ResetFIFOFlagd=[%d]\r", config.ResetFIFOFlag);
-  fprintf(xd.sstr, "config.ControlLightd=[%d]\r", config.ControlLight);
-  fprintf(xd.sstr, "config.SamplingIntervald=[%g]\r", config.SamplingInterval);
+  fmt::format_to(std::back_inserter(xd.buf),
+                 FMT_STRING("config.DigitalInputModed=[{}]\r"),
+                 config.DigitalInputMode);
+  fmt::format_to(std::back_inserter(xd.buf),
+                 FMT_STRING("config.ExternalTriggerModed=[{}]\r"),
+                 config.ExternalTriggerMode);
+  fmt::format_to(std::back_inserter(xd.buf),
+                 FMT_STRING("config.ExternalTriggerd=[{}]\r"),
+                 config.ExternalTrigger);
+  fmt::format_to(std::back_inserter(xd.buf),
+                 FMT_STRING("config.EnableExternalClockd=[{}]\r"),
+                 config.EnableExternalClock);
+  fmt::format_to(std::back_inserter(xd.buf),
+                 FMT_STRING("config.DACShiftValued=[{}]\r"),
+                 config.DACShiftValue);
+  fmt::format_to(std::back_inserter(xd.buf),
+                 FMT_STRING("config.InputRanged=[{}]\r"), config.InputRange);
+  fmt::format_to(std::back_inserter(xd.buf),
+                 FMT_STRING("config.TriggerOutPositiond=[{}]\r"),
+                 config.TriggerOutPosition);
+  fmt::format_to(std::back_inserter(xd.buf),
+                 FMT_STRING("config.OutputEnabled=[{}]\r"),
+                 config.OutputEnable);
+  fmt::format_to(std::back_inserter(xd.buf),
+                 FMT_STRING("config.SequenceLengthd=[{}]\r"),
+                 config.SequenceLength);
+  fmt::format_to(std::back_inserter(xd.buf),
+                 FMT_STRING("config.Sequenced=[{}]\r"),
+                 (UINT_PTR) config.Sequence);
+  fmt::format_to(std::back_inserter(xd.buf),
+                 FMT_STRING("config.SequenceLengthInd=[{}]\r"),
+                 config.SequenceLengthIn);
+  fmt::format_to(std::back_inserter(xd.buf),
+                 FMT_STRING("config.SequenceInd=[{}]\r"),
+                 (UINT_PTR) config.SequenceIn);
+  fmt::format_to(std::back_inserter(xd.buf),
+                 FMT_STRING("config.ResetFIFOFlagd=[{}]\r"),
+                 config.ResetFIFOFlag);
+  fmt::format_to(std::back_inserter(xd.buf),
+                 FMT_STRING("config.ControlLightd=[{}]\r"),
+                 config.ControlLight);
+  fmt::format_to(std::back_inserter(xd.buf),
+                 FMT_STRING("config.SamplingIntervald=[{}]\r"),
+                 config.SamplingInterval);
 }
 
-void DebugOut(std::string caller, GlobalDeviceInfo deviceInfo)
+void DebugOut(const std::string &caller, const GlobalDeviceInfo &deviceInfo)
 {
-  using namespace fmt;
-
   if(!debuggingEnabled)
     return;
 
-  XOPNoticeOnDestruct xd;
-  fprintf(xd.sstr, "Caller %s\r", caller);
+  OutputToLogfileOnDestruct xd;
+  fmt::format_to(std::back_inserter(xd.buf), FMT_STRING("Caller {}\r"), caller);
   DEBUGPRINT_SIZEOF(GlobalDeviceInfo);
 
-  fprintf(xd.sstr, "deviceInfo.DeviceType=[%d]\r", deviceInfo.DeviceType);
-  fprintf(xd.sstr, "deviceInfo.DeviceNumber=[%d]\r", deviceInfo.DeviceNumber);
-  fprintf(xd.sstr, "deviceInfo.PrimaryFIFOSize=[%d]\r",
-          deviceInfo.PrimaryFIFOSize);
-  fprintf(xd.sstr, "deviceInfo.SecondaryFIFOSize=[%d]\r",
-          deviceInfo.SecondaryFIFOSize);
+  fmt::format_to(std::back_inserter(xd.buf),
+                 FMT_STRING("deviceInfo.DeviceType=[{}]\r"),
+                 deviceInfo.DeviceType);
+  fmt::format_to(std::back_inserter(xd.buf),
+                 FMT_STRING("deviceInfo.DeviceNumber=[{}]\r"),
+                 deviceInfo.DeviceNumber);
+  fmt::format_to(std::back_inserter(xd.buf),
+                 FMT_STRING("deviceInfo.PrimaryFIFOSize=[{}]\r"),
+                 deviceInfo.PrimaryFIFOSize);
+  fmt::format_to(std::back_inserter(xd.buf),
+                 FMT_STRING("deviceInfo.SecondaryFIFOSize=[{}]\r"),
+                 deviceInfo.SecondaryFIFOSize);
 
-  fprintf(xd.sstr, "deviceInfo.LoadedFunction=[%d]\r",
-          deviceInfo.LoadedFunction);
-  fprintf(xd.sstr, "deviceInfo.SoftKey=[%d]\r", deviceInfo.SoftKey);
-  fprintf(xd.sstr, "deviceInfo.Mode=[%d]\r", deviceInfo.Mode);
-  fprintf(xd.sstr, "deviceInfo.MasterSerialNumber=[%d]\r",
-          deviceInfo.MasterSerialNumber);
+  fmt::format_to(std::back_inserter(xd.buf),
+                 FMT_STRING("deviceInfo.LoadedFunction=[{}]\r"),
+                 deviceInfo.LoadedFunction);
+  fmt::format_to(std::back_inserter(xd.buf),
+                 FMT_STRING("deviceInfo.SoftKey=[{}]\r"), deviceInfo.SoftKey);
+  fmt::format_to(std::back_inserter(xd.buf),
+                 FMT_STRING("deviceInfo.Mode=[{}]\r"), deviceInfo.Mode);
+  fmt::format_to(std::back_inserter(xd.buf),
+                 FMT_STRING("deviceInfo.MasterSerialNumber=[{}]\r"),
+                 deviceInfo.MasterSerialNumber);
 
-  fprintf(xd.sstr, "deviceInfo.SecondarySerialNumber=[%d]\r",
-          deviceInfo.SecondarySerialNumber);
-  fprintf(xd.sstr, "deviceInfo.HostSerialNumber=[%d]\r",
-          deviceInfo.HostSerialNumber);
-  fprintf(xd.sstr, "deviceInfo.NumberOfDACs=[%d]\r", deviceInfo.NumberOfDACs);
-  fprintf(xd.sstr, "deviceInfo.NumberOfADCs=[%d]\r", deviceInfo.NumberOfADCs);
+  fmt::format_to(std::back_inserter(xd.buf),
+                 FMT_STRING("deviceInfo.SecondarySerialNumber=[{}]\r"),
+                 deviceInfo.SecondarySerialNumber);
+  fmt::format_to(std::back_inserter(xd.buf),
+                 FMT_STRING("deviceInfo.HostSerialNumber=[{}]\r"),
+                 deviceInfo.HostSerialNumber);
+  fmt::format_to(std::back_inserter(xd.buf),
+                 FMT_STRING("deviceInfo.NumberOfDACs=[{}]\r"),
+                 deviceInfo.NumberOfDACs);
+  fmt::format_to(std::back_inserter(xd.buf),
+                 FMT_STRING("deviceInfo.NumberOfADCs=[{}]\r"),
+                 deviceInfo.NumberOfADCs);
 
-  fprintf(xd.sstr, "deviceInfo.NumberOfDOs=[%d]\r", deviceInfo.NumberOfDOs);
-  fprintf(xd.sstr, "deviceInfo.NumberOfDIs=[%d]\r", deviceInfo.NumberOfDIs);
-  fprintf(xd.sstr, "deviceInfo.NumberOfAUXOs=[%d]\r", deviceInfo.NumberOfAUXOs);
-  fprintf(xd.sstr, "deviceInfo.NumberOfAUXIs=[%d]\r", deviceInfo.NumberOfAUXIs);
+  fmt::format_to(std::back_inserter(xd.buf),
+                 FMT_STRING("deviceInfo.NumberOfDOs=[{}]\r"),
+                 deviceInfo.NumberOfDOs);
+  fmt::format_to(std::back_inserter(xd.buf),
+                 FMT_STRING("deviceInfo.NumberOfDIs=[{}]\r"),
+                 deviceInfo.NumberOfDIs);
+  fmt::format_to(std::back_inserter(xd.buf),
+                 FMT_STRING("deviceInfo.NumberOfAUXOs=[{}]\r"),
+                 deviceInfo.NumberOfAUXOs);
+  fmt::format_to(std::back_inserter(xd.buf),
+                 FMT_STRING("deviceInfo.NumberOfAUXIs=[{}]\r"),
+                 deviceInfo.NumberOfAUXIs);
 
-  fprintf(xd.sstr, "deviceInfo.MinimumSamplingInterval=[%d]\r",
-          deviceInfo.MinimumSamplingInterval);
-  fprintf(xd.sstr, "deviceInfo.MinimumSamplingStep=[%d]\r",
-          deviceInfo.MinimumSamplingStep);
-  fprintf(xd.sstr, "deviceInfo.FirmwareVersion0=[%d]\r",
-          deviceInfo.FirmwareVersion0);
-  fprintf(xd.sstr, "deviceInfo.Reserved1=[%d]\r", deviceInfo.Reserved1);
+  fmt::format_to(std::back_inserter(xd.buf),
+                 FMT_STRING("deviceInfo.MinimumSamplingInterval=[{}]\r"),
+                 deviceInfo.MinimumSamplingInterval);
+  fmt::format_to(std::back_inserter(xd.buf),
+                 FMT_STRING("deviceInfo.MinimumSamplingStep=[{}]\r"),
+                 deviceInfo.MinimumSamplingStep);
+  fmt::format_to(std::back_inserter(xd.buf),
+                 FMT_STRING("deviceInfo.FirmwareVersion0=[{}]\r"),
+                 deviceInfo.FirmwareVersion0);
+  fmt::format_to(std::back_inserter(xd.buf),
+                 FMT_STRING("deviceInfo.Reserved1=[{}]\r"),
+                 deviceInfo.Reserved1);
 }
 
-void DebugOut(std::string caller, ITCStatus status)
+void DebugOut(const std::string &caller, const ITCStatus &status)
 {
-  using namespace fmt;
-
   if(!debuggingEnabled)
     return;
 
-  XOPNoticeOnDestruct xd;
-  fprintf(xd.sstr, "Caller %s\r", caller);
+  OutputToLogfileOnDestruct xd;
+  fmt::format_to(std::back_inserter(xd.buf), FMT_STRING("Caller {}\r"), caller);
   DEBUGPRINT_SIZEOF(ITCStatus);
 
-  fprintf(xd.sstr, "status.CommandStatus=[%d]\r", status.CommandStatus);
-  fprintf(xd.sstr, "status.RunningMode=[%d]\r", status.RunningMode);
-  fprintf(xd.sstr, "status.Overflow=[%d]\r", status.Overflow);
-  fprintf(xd.sstr, "status.Clipping=[%d]\r", status.Clipping);
-  fprintf(xd.sstr, "status.State=[%d]\r", status.State);
-  fprintf(xd.sstr, "status.Reserved0=[%d]\r", status.Reserved0);
-  fprintf(xd.sstr, "status.Reserved1=[%d]\r", status.Reserved1);
-  fprintf(xd.sstr, "status.Reserved2=[%d]\r", status.Reserved2);
-  fprintf(xd.sstr, "status.TotalSeconds=[%g]\r", status.TotalSeconds);
-  fprintf(xd.sstr, "status.RunSeconds=[%g]\r", status.RunSeconds);
+  fmt::format_to(std::back_inserter(xd.buf),
+                 FMT_STRING("status.CommandStatus=[{}]\r"),
+                 status.CommandStatus);
+  fmt::format_to(std::back_inserter(xd.buf),
+                 FMT_STRING("status.RunningMode=[{}]\r"), status.RunningMode);
+  fmt::format_to(std::back_inserter(xd.buf),
+                 FMT_STRING("status.Overflow=[{}]\r"), status.Overflow);
+  fmt::format_to(std::back_inserter(xd.buf),
+                 FMT_STRING("status.Clipping=[{}]\r"), status.Clipping);
+  fmt::format_to(std::back_inserter(xd.buf), FMT_STRING("status.State=[{}]\r"),
+                 status.State);
+  fmt::format_to(std::back_inserter(xd.buf),
+                 FMT_STRING("status.Reserved0=[{}]\r"), status.Reserved0);
+  fmt::format_to(std::back_inserter(xd.buf),
+                 FMT_STRING("status.Reserved1=[{}]\r"), status.Reserved1);
+  fmt::format_to(std::back_inserter(xd.buf),
+                 FMT_STRING("status.Reserved2=[{}]\r"), status.Reserved2);
+  fmt::format_to(std::back_inserter(xd.buf),
+                 FMT_STRING("status.TotalSeconds=[{}]\r"), status.TotalSeconds);
+  fmt::format_to(std::back_inserter(xd.buf),
+                 FMT_STRING("status.RunSeconds=[{}]\r"), status.RunSeconds);
 }
 
-void DebugOut(std::string caller, ITCGlobalConfig config)
+void DebugOut(const std::string &caller, const ITCGlobalConfig &config)
 {
-  using namespace fmt;
-
   if(!debuggingEnabled)
     return;
 
-  XOPNoticeOnDestruct xd;
-  fprintf(xd.sstr, "Caller %s\r", caller);
+  OutputToLogfileOnDestruct xd;
+  fmt::format_to(std::back_inserter(xd.buf), FMT_STRING("Caller {}\r"), caller);
   DEBUGPRINT_SIZEOF(ITCGlobalConfig);
 
-  fprintf(xd.sstr, "config.SoftwareFIFOSize=[%d]\r", config.SoftwareFIFOSize);
-  fprintf(xd.sstr, "config.HardwareFIFOSize_A=[%d]\r",
-          config.HardwareFIFOSize_A);
-  fprintf(xd.sstr, "config.HardwareFIFOSize_B=[%d]\r",
-          config.HardwareFIFOSize_B);
-  fprintf(xd.sstr, "config.TransferSizeLimitation=[%d]\r",
-          config.TransferSizeLimitation);
-  fprintf(xd.sstr, "config.Reserved0=[%d]\r", config.Reserved0);
-  fprintf(xd.sstr, "config.Reserved1=[%d]\r", config.Reserved1);
-  fprintf(xd.sstr, "config.Reserved2=[%d]\r", config.Reserved2);
-  fprintf(xd.sstr, "config.Reserved3=[%d]\r", config.Reserved3);
+  fmt::format_to(std::back_inserter(xd.buf),
+                 FMT_STRING("config.SoftwareFIFOSize=[{}]\r"),
+                 config.SoftwareFIFOSize);
+  fmt::format_to(std::back_inserter(xd.buf),
+                 FMT_STRING("config.HardwareFIFOSize_A=[{}]\r"),
+                 config.HardwareFIFOSize_A);
+  fmt::format_to(std::back_inserter(xd.buf),
+                 FMT_STRING("config.HardwareFIFOSize_B=[{}]\r"),
+                 config.HardwareFIFOSize_B);
+  fmt::format_to(std::back_inserter(xd.buf),
+                 FMT_STRING("config.TransferSizeLimitation=[{}]\r"),
+                 config.TransferSizeLimitation);
+  fmt::format_to(std::back_inserter(xd.buf),
+                 FMT_STRING("config.Reserved0=[{}]\r"), config.Reserved0);
+  fmt::format_to(std::back_inserter(xd.buf),
+                 FMT_STRING("config.Reserved1=[{}]\r"), config.Reserved1);
+  fmt::format_to(std::back_inserter(xd.buf),
+                 FMT_STRING("config.Reserved2=[{}]\r"), config.Reserved2);
+  fmt::format_to(std::back_inserter(xd.buf),
+                 FMT_STRING("config.Reserved3=[{}]\r"), config.Reserved3);
 }
 
-void DebugOut(std::string caller, ITCStartInfo config)
+void DebugOut(const std::string &caller, const ITCStartInfo &config)
 {
-  using namespace fmt;
-
   if(!debuggingEnabled)
     return;
 
-  XOPNoticeOnDestruct xd;
+  OutputToLogfileOnDestruct xd;
 
-  fprintf(xd.sstr, "Caller %s\r", caller);
+  fmt::format_to(std::back_inserter(xd.buf), FMT_STRING("Caller {}\r"), caller);
   DEBUGPRINT_SIZEOF(ITCStartInfo);
 
-  fprintf(xd.sstr, "config.ExternalTrigger=[%d]\r", config.ExternalTrigger);
-  fprintf(xd.sstr, "config.OutputEnable=[%d]\r", config.OutputEnable);
-  fprintf(xd.sstr, "config.StopOnOverflow=[%d]\r", config.StopOnOverflow);
-  fprintf(xd.sstr, "config.StopOnUnderrun=[%d]\r", config.StopOnUnderrun);
-  fprintf(xd.sstr, "config.RunningOption=[%d]\r", config.RunningOption);
-  fprintf(xd.sstr, "config.ResetFIFOs=[%d]\r", config.ResetFIFOs);
-  fprintf(xd.sstr, "config.NumberOf640usToRun=[%d]\r",
-          config.NumberOf640usToRun);
-  fprintf(xd.sstr, "config.Reserved3=[%d]\r", config.Reserved3);
-  fprintf(xd.sstr, "config.StartTime=[%g]\r", config.StartTime);
-  fprintf(xd.sstr, "config.StopTime=[%g]\r", config.StopTime);
+  fmt::format_to(std::back_inserter(xd.buf),
+                 FMT_STRING("config.ExternalTrigger=[{}]\r"),
+                 config.ExternalTrigger);
+  fmt::format_to(std::back_inserter(xd.buf),
+                 FMT_STRING("config.OutputEnable=[{}]\r"), config.OutputEnable);
+  fmt::format_to(std::back_inserter(xd.buf),
+                 FMT_STRING("config.StopOnOverflow=[{}]\r"),
+                 config.StopOnOverflow);
+  fmt::format_to(std::back_inserter(xd.buf),
+                 FMT_STRING("config.StopOnUnderrun=[{}]\r"),
+                 config.StopOnUnderrun);
+  fmt::format_to(std::back_inserter(xd.buf),
+                 FMT_STRING("config.RunningOption=[{}]\r"),
+                 config.RunningOption);
+  fmt::format_to(std::back_inserter(xd.buf),
+                 FMT_STRING("config.ResetFIFOs=[{}]\r"), config.ResetFIFOs);
+  fmt::format_to(std::back_inserter(xd.buf),
+                 FMT_STRING("config.NumberOf640usToRun=[{}]\r"),
+                 config.NumberOf640usToRun);
+  fmt::format_to(std::back_inserter(xd.buf),
+                 FMT_STRING("config.Reserved3=[{}]\r"), config.Reserved3);
+  fmt::format_to(std::back_inserter(xd.buf),
+                 FMT_STRING("config.StartTime=[{}]\r"), config.StartTime);
+  fmt::format_to(std::back_inserter(xd.buf),
+                 FMT_STRING("config.StopTime=[{}]\r"), config.StopTime);
+}
+
+void DebugOut(const std::string &caller, const HWFunction &func)
+{
+  if(!debuggingEnabled)
+    return;
+
+  OutputToLogfileOnDestruct xd;
+  fmt::format_to(std::back_inserter(xd.buf), FMT_STRING("Caller {}\r"), caller);
+  DEBUGPRINT_SIZEOF(HWFunction);
+
+  fmt::format_to(std::back_inserter(xd.buf), FMT_STRING("func.Mode={}\r"),
+                 func.Mode);
+  fmt::format_to(std::back_inserter(xd.buf), FMT_STRING("func.U2F_File={}\r"),
+                 func.U2F_File);
+  fmt::format_to(std::back_inserter(xd.buf),
+                 FMT_STRING("func.SizeOfSpecialFunction={}\r"),
+                 func.SizeOfSpecialFunction);
+  fmt::format_to(std::back_inserter(xd.buf),
+                 FMT_STRING("func.SpecialFunction={}\r"), func.SpecialFunction);
+  fmt::format_to(std::back_inserter(xd.buf), FMT_STRING("func.Reserved={}\r"),
+                 func.Reserved);
+  fmt::format_to(std::back_inserter(xd.buf), FMT_STRING("func.id={}\r"),
+                 func.id);
 }
 
 } // anonymous namespace
 
 void ITCDLL::ITC_AnalyzeError(LONG Status, char *Text, DWORD MaxCharacters)
 {
+  DebugOut("ITC_AnalyzeError", fmt::format(FMT_STRING("Status={}"), Status));
+
   if(DWORD ErrorCode = ::ITC_AnalyzeError(Status, Text, MaxCharacters))
   {
     throw ITCException(ErrorCode, nullptr, "ITC_AnalyseError");
@@ -278,17 +408,24 @@ void ITCDLL::ITC_AnalyzeError(LONG Status, char *Text, DWORD MaxCharacters)
 void ITCDLL::ITC_AsyncIO(const DeviceIDHelper &DeviceID,
                          std::vector<ITCChannelDataEx> *Channels)
 {
+  DebugOut("ITC_AsyncIO", *Channels);
+
+  if(Channels->empty())
+  {
+    throw IgorException(ITC_DLL_ERROR);
+  }
+
   if(DWORD ErrorCode = ::ITC_AsyncIO(
          DeviceID.getHandle(), (DWORD) Channels->size(), Channels->data()))
   {
     throw ITCException(ErrorCode, DeviceID.getHandle(), "ITC_AsyncIO");
   }
-
-  DebugOut("ITC_AsyncIO", *Channels);
 }
 
 void ITCDLL::ITC_CloseDevice(HANDLE DeviceHandle)
 {
+  DebugOut("ITC_CloseDevice", "called");
+
   if(DWORD ErrorCode = ::ITC_CloseDevice(DeviceHandle))
   {
     throw ITCException(ErrorCode, DeviceHandle, "ITC_CloseDevice");
@@ -302,12 +439,12 @@ void ITCDLL::ITC_CloseDevice(const DeviceIDHelper &DeviceID)
 
 void ITCDLL::ITC_ConfigDevice(HANDLE DeviceHandle, ITCPublicConfig *sITCConfig)
 {
+  DebugOut("ITC_ConfigDevice", *sITCConfig);
+
   if(DWORD ErrorCode = ::ITC_ConfigDevice(DeviceHandle, sITCConfig))
   {
     throw ITCException(ErrorCode, DeviceHandle, "ITC_ConfigDevice");
   }
-
-  DebugOut("ITC_ConfigDevice", *sITCConfig);
 }
 
 void ITCDLL::ITC_ConfigDevice(const DeviceIDHelper &DeviceID,
@@ -318,6 +455,8 @@ void ITCDLL::ITC_ConfigDevice(const DeviceIDHelper &DeviceID,
 
 void ITCDLL::ITC_Devices(ITCDeviceTypeEnum DeviceType, DWORD *DeviceNumber)
 {
+  DebugOut("ITC_Devices", "called");
+
   if(DWORD ErrorCode = ::ITC_Devices((DWORD) DeviceType, DeviceNumber))
   {
     throw ITCException(ErrorCode, nullptr, "ITC_Devices");
@@ -327,36 +466,46 @@ void ITCDLL::ITC_Devices(ITCDeviceTypeEnum DeviceType, DWORD *DeviceNumber)
 void ITCDLL::ITC_GetChannels(const DeviceIDHelper &DeviceID,
                              std::vector<ITCChannelInfo> *channels)
 {
+  DebugOut("ITC_GetChannels", *channels);
+
+  if(channels->empty())
+  {
+    throw IgorException(ITC_DLL_ERROR);
+  }
+
   if(DWORD ErrorCode = ::ITC_GetChannels(
          DeviceID.getHandle(), (DWORD) channels->size(), channels->data()))
   {
     throw ITCException(ErrorCode, DeviceID.getHandle(), "ITC_GetChannels");
   }
-
-  DebugOut("ITC_GetChannels", *channels);
 }
 
 void ITCDLL::ITC_GetDataAvailable(const DeviceIDHelper &DeviceID,
                                   std::vector<ITCChannelDataEx> *channels)
 {
+  DebugOut("ITC_GetDataAvailable", *channels);
+
+  if(channels->empty())
+  {
+    throw IgorException(ITC_DLL_ERROR);
+  }
+
   if(DWORD ErrorCode = ::ITC_GetDataAvailable(
          DeviceID.getHandle(), (DWORD) channels->size(), channels->data()))
   {
     throw ITCException(ErrorCode, DeviceID.getHandle(), "ITC_GetDataAvailable");
   }
-
-  DebugOut("ITC_GetDataAvailable", *channels);
 }
 
 void ITCDLL::ITC_GetDeviceInfo(const DeviceIDHelper &DeviceID,
                                GlobalDeviceInfo *sDeviceInfo)
 {
+  DebugOut("ITC_GetDeviceInfo", *sDeviceInfo);
+
   if(DWORD ErrorCode = ::ITC_GetDeviceInfo(DeviceID.getHandle(), sDeviceInfo))
   {
     throw ITCException(ErrorCode, DeviceID.getHandle(), "ITC_GetDeviceInfo");
   }
-
-  DebugOut("ITC_GetDeviceInfo", *sDeviceInfo);
 }
 
 void ITCDLL::ITC_GetDeviceType(const DeviceIDHelper &DeviceID,
@@ -393,17 +542,19 @@ void ITCDLL::ITC_GetDeviceType(const DeviceIDHelper &DeviceID,
 
 void ITCDLL::ITC_GetState(const DeviceIDHelper &DeviceID, ITCStatus *lITCStatus)
 {
+  DebugOut("ITC_GetState", *lITCStatus);
+
   if(DWORD ErrorCode = ::ITC_GetState(DeviceID.getHandle(), lITCStatus))
   {
     throw ITCException(ErrorCode, DeviceID.getHandle(), "ITC_GetState");
   }
-
-  DebugOut("ITC_GetState", *lITCStatus);
 }
 
 void ITCDLL::ITC_GetStatusText(HANDLE deviceHandle, LONG Status, char *Text,
                                DWORD MaxCharacters)
 {
+  DebugOut("ITC_GetStatusText", fmt::format(FMT_STRING("Status={}"), Status));
+
   if(DWORD ErrorCode =
          ::ITC_GetStatusText(deviceHandle, Status, Text, MaxCharacters))
   {
@@ -416,6 +567,8 @@ void ITCDLL::ITC_GetVersions(const DeviceIDHelper &DeviceID,
                              VersionInfo *KernelLevelDriverVersion,
                              VersionInfo *HardwareVersion)
 {
+  DebugOut("ITC_GetVersions", "called");
+
   if(DWORD ErrorCode =
          ::ITC_GetVersions(DeviceID.getHandle(), ThisDriverVersion,
                            KernelLevelDriverVersion, HardwareVersion))
@@ -426,17 +579,26 @@ void ITCDLL::ITC_GetVersions(const DeviceIDHelper &DeviceID,
 
 void ITCDLL::ITC_GlobalConfig(ITCGlobalConfig *GlobalConfig)
 {
+  DebugOut("ITC_GlobalConfig", *GlobalConfig);
+
   if(DWORD ErrorCode = ::ITC_GlobalConfig(GlobalConfig))
   {
     throw ITCException(ErrorCode, nullptr, "ITC_GlobalConfig");
   }
-
-  DebugOut("ITC_GlobalConfig", *GlobalConfig);
 }
 
 void ITCDLL::ITC_InitDevice(const DeviceIDHelper &DeviceID,
                             HWFunction *sHWFunction)
 {
+  if(sHWFunction != nullptr)
+  {
+    DebugOut("ITC_InitDevice", *sHWFunction);
+  }
+  else
+  {
+    DebugOut("ITC_InitDevice", "sHWFunction == nullptr");
+  }
+
   if(DWORD ErrorCode = ::ITC_InitDevice(DeviceID.getHandle(), sHWFunction))
   {
     throw ITCException(ErrorCode, DeviceID.getHandle(), "ITC_InitDevice");
@@ -446,6 +608,10 @@ void ITCDLL::ITC_InitDevice(const DeviceIDHelper &DeviceID,
 void ITCDLL::ITC_OpenDevice(ITCDeviceTypeEnum DeviceType, DWORD DeviceNumber,
                             DWORD Mode, HANDLE *DeviceHandle)
 {
+  DebugOut("ITC_OpenDevice",
+           fmt::format(FMT_STRING("DeviceType={}\rDeviceNumber={}\rMode={}"),
+                       (DWORD) DeviceType, DeviceNumber, Mode));
+
   if(DWORD ErrorCode =
          ::ITC_OpenDevice((DWORD) DeviceType, DeviceNumber, Mode, DeviceHandle))
   {
@@ -455,6 +621,8 @@ void ITCDLL::ITC_OpenDevice(ITCDeviceTypeEnum DeviceType, DWORD DeviceNumber,
 
 void ITCDLL::ITC_ResetChannels(const DeviceIDHelper &DeviceID)
 {
+  DebugOut("ITC_ResetChannels", "called");
+
   if(DWORD ErrorCode = ::ITC_ResetChannels(DeviceID.getHandle()))
   {
     throw ITCException(ErrorCode, DeviceID.getHandle(), "ITC_ResetChannels");
@@ -462,24 +630,26 @@ void ITCDLL::ITC_ResetChannels(const DeviceIDHelper &DeviceID)
 }
 
 void ITCDLL::ITC_SetChannels(const DeviceIDHelper &DeviceID,
-                             std::vector<ITCChannelInfo> channels)
+                             std::vector<ITCChannelInfo> *channels)
 {
-  if(channels.empty())
+  DebugOut("ITC_SetChannels", *channels);
+
+  if(channels->empty())
   {
-    throw IgorException();
+    throw IgorException(ITC_DLL_ERROR);
   }
 
   if(DWORD ErrorCode = ::ITC_SetChannels(
-         DeviceID.getHandle(), (DWORD) channels.size(), channels.data()))
+         DeviceID.getHandle(), (DWORD) channels->size(), channels->data()))
   {
     throw ITCException(ErrorCode, DeviceID.getHandle(), "ITC_SetChannels");
   }
-
-  DebugOut("ITC_SetChannels", channels);
 }
 
 void ITCDLL::ITC_SetSoftKey(const DeviceIDHelper &DeviceID, DWORD SoftKey)
 {
+  DebugOut("ITC_SetSoftKey", fmt::format(FMT_STRING("SoftKey={}"), SoftKey));
+
   if(DWORD ErrorCode = ::ITC_SetSoftKey(DeviceID.getHandle(), SoftKey))
   {
     throw ITCException(ErrorCode, DeviceID.getHandle(), "ITC_SetSoftKey");
@@ -488,29 +658,35 @@ void ITCDLL::ITC_SetSoftKey(const DeviceIDHelper &DeviceID, DWORD SoftKey)
 
 void ITCDLL::ITC_SetState(const DeviceIDHelper &DeviceID, ITCStatus *lITCStatus)
 {
+  DebugOut("ITC_SetState", *lITCStatus);
+
   if(DWORD ErrorCode = ::ITC_SetState(DeviceID.getHandle(), lITCStatus))
   {
     throw ITCException(ErrorCode, DeviceID.getHandle(), "ITC_SetState");
   }
-
-  DebugOut("ITC_SetState", *lITCStatus);
 }
 
 void ITCDLL::ITC_Start(const DeviceIDHelper &DeviceID, ITCStartInfo *sParam)
 {
-  if(DWORD ErrorCode = ::ITC_Start(DeviceID.getHandle(), sParam))
-  {
-    throw ITCException(ErrorCode, DeviceID.getHandle(), "ITC_Start");
-  }
-
   if(sParam != nullptr)
   {
     DebugOut("ITC_Start", *sParam);
+  }
+  else
+  {
+    DebugOut("ITC_Start", "ITCStartInfo == nullptr");
+  }
+
+  if(DWORD ErrorCode = ::ITC_Start(DeviceID.getHandle(), sParam))
+  {
+    throw ITCException(ErrorCode, DeviceID.getHandle(), "ITC_Start");
   }
 }
 
 void ITCDLL::ITC_Stop(const DeviceIDHelper &DeviceID, void *sParam)
 {
+  DebugOut("ITC_Stop", fmt::format(FMT_STRING("sParam={}"), sParam));
+
   if(DWORD ErrorCode = ::ITC_Stop(DeviceID.getHandle(), sParam))
   {
     throw ITCException(ErrorCode, DeviceID.getHandle(), "ITC_Stop");
@@ -519,6 +695,8 @@ void ITCDLL::ITC_Stop(const DeviceIDHelper &DeviceID, void *sParam)
 
 void ITCDLL::ITC_UpdateChannels(const DeviceIDHelper &DeviceID)
 {
+  DebugOut("ITC_UpdateChannels", "called");
+
   if(DWORD ErrorCode = ::ITC_UpdateChannels(DeviceID.getHandle()))
   {
     throw ITCException(ErrorCode, DeviceID.getHandle(), "ITC_UpdateChannels");
@@ -527,49 +705,48 @@ void ITCDLL::ITC_UpdateChannels(const DeviceIDHelper &DeviceID)
 
 void ITCDLL::ITC_UpdateFIFOPosition(
     const DeviceIDHelper &DeviceID,
-    std::vector<ITCChannelDataEx> channelDataExVec)
+    std::vector<ITCChannelDataEx> *channelDataExVec)
 {
-  if(channelDataExVec.empty())
+  DebugOut("ITC_UpdateFIFOPosition", *channelDataExVec);
+
+  if(channelDataExVec->empty())
   {
-    throw IgorException();
+    throw IgorException(ITC_DLL_ERROR);
   }
 
-  if(DWORD ErrorCode = ::ITC_UpdateFIFOPosition(DeviceID.getHandle(),
-                                                (DWORD) channelDataExVec.size(),
-                                                channelDataExVec.data()))
+  if(DWORD ErrorCode = ::ITC_UpdateFIFOPosition(
+         DeviceID.getHandle(), (DWORD) channelDataExVec->size(),
+         channelDataExVec->data()))
   {
     throw ITCException(ErrorCode, DeviceID.getHandle(),
                        "ITC_UpdateFIFOPosition");
   }
-
-  DebugOut("ITC_UpdateFIFOPosition", channelDataExVec);
 }
 
 void ITCDLL::ITC_ReadWriteFIFO(const DeviceIDHelper &DeviceID,
-                               std::vector<ITCChannelDataEx> channelDataExVec)
+                               std::vector<ITCChannelDataEx> *channelDataExVec)
 {
-  if(channelDataExVec.empty())
+  DebugOut("ITC_ReadWriteFIFO", *channelDataExVec);
+
+  if(channelDataExVec->empty())
   {
-    throw IgorException();
+    throw IgorException(ITC_DLL_ERROR);
   }
 
   if(DWORD ErrorCode = ::ITC_ReadWriteFIFO(DeviceID.getHandle(),
-                                           (DWORD) channelDataExVec.size(),
-                                           channelDataExVec.data()))
+                                           (DWORD) channelDataExVec->size(),
+                                           channelDataExVec->data()))
   {
     throw ITCException(ErrorCode, DeviceID.getHandle(), "ITC_ReadWriteFIFO");
   }
-
-  DebugOut("ITC_ReadWriteFIFO", channelDataExVec);
 }
 
-void DebugOut(std::string caller, std::string msg)
+void DebugOut(const std::string &caller, const std::string &msg)
 {
-  using namespace fmt;
-
   if(!debuggingEnabled)
     return;
 
-  XOPNoticeOnDestruct xd;
-  fprintf(xd.sstr, "Caller %s: %s\r", caller, msg);
+  OutputToLogfileOnDestruct xd;
+  fmt::format_to(std::back_inserter(xd.buf), FMT_STRING("Caller {}: {}\r"),
+                 caller, msg);
 }

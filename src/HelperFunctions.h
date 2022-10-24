@@ -10,6 +10,9 @@
 #include <map>
 #include "SafeInt/SafeInt.hpp"
 
+#include <nlohmann/json.hpp>
+using namespace nlohmann;
+
 // Usign std::min/max
 #undef min
 #undef max
@@ -18,7 +21,7 @@ using StrStrMap = std::map<std::string, std::string>;
 
 // This file is part of the `ITCXOP2` project and licensed under BSD-3-Clause.
 
-extern thread_local bool debuggingEnabled;
+extern bool debuggingEnabled;
 
 template <class T>
 void ReadGlobalDebugFlag(T *p)
@@ -421,3 +424,7 @@ void SetOperationReturn(const std::string &name, double value);
 
 /// @brief Return XOP version info as Key/value pairs
 StrStrMap GetVersionInfo(const std::string &xopName);
+
+int CreateDirectory(const std::string &path);
+
+void EnsureDirectoryExists(const std::string &path);

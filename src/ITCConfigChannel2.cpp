@@ -320,7 +320,7 @@ extern "C" int ExecuteITCConfigChannel2(ITCConfigChannel2RuntimeParamsPtr p)
   lITCChannelInfo.FIFOPointer        = WaveData(waveHandle);
 
   std::vector<ITCChannelInfo> ITCChannelVec(1, lITCChannelInfo);
-  ITCDLL::ITC_SetChannels(DeviceID, ITCChannelVec);
+  ITCDLL::ITC_SetChannels(DeviceID, &ITCChannelVec);
 
   END_OUTER_CATCH
 }

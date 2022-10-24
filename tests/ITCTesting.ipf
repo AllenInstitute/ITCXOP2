@@ -30,6 +30,7 @@
 #include ":Test_ITCReadTimer2"
 #include ":Test_ITCSelectDevice2"
 #include ":Test_ITCSetDAC2"
+#include ":Test_ITCSetGlobals2"
 #include ":Test_ITCStartAcq2"
 #include ":Test_ITCStopAcq2"
 #include ":Test_ITCUpdateFIFOPosition2"

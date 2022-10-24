@@ -1,5 +1,8 @@
 #include "ITC_StandardHeaders.h"
 #include "DeviceIDClass.h"
+#include "HelperFunctions_ITC.h"
+
+#include <array>
 
 // This file is part of the `ITCXOP2` project and licensed under BSD-3-Clause.
 
@@ -9,54 +12,44 @@ extern DeviceIDClass DeviceIDs;
 
 void CloseAllDevices()
 {
-  for(size_t currDeviceID = 0; currDeviceID < DeviceIDClass::MaxNumberOfDevices;
-      currDeviceID++)
+  const std::array<int, 6> deviceTypes{ITC16_ID, ITC18_ID, USB16_ID,
+                                       USB18_ID, ITC00_ID, ITC1600_ID};
+  for(auto dt : deviceTypes)
   {
-    // Get the handle associated with the DeviceID
-    HANDLE currDeviceHandle = nullptr;
-    if(int RetVal = DeviceIDs.forceGet(currDeviceID, &currDeviceHandle))
+    for(int i = 0; i < ITC_MAX_DEVICE_NUMBER; i += 1)
     {
-      // Slot was empty.
-      // Keep going.
-      continue;
-    }
+      HANDLE handle = INVALID_HANDLE_VALUE;
+      DWORD ret     = ITC_GetDeviceHandle(dt, i, &handle);
 
-    try
-    {
-      // Turn off LED
-      ITCPublicConfig lITCPublicConfig;
-      ZeroMemory(&lITCPublicConfig, sizeof(lITCPublicConfig));
+      if(ret != ERROR_SUCCESS || handle == INVALID_HANDLE_VALUE)
+      {
+        continue;
+      }
 
-      ITCDLL::ITC_ConfigDevice(currDeviceHandle, &lITCPublicConfig);
-
-      // Close the device
-      ITCDLL::ITC_CloseDevice(currDeviceHandle);
-      DeviceIDs.forceRemove(currDeviceID);
-    }
-    catch(const IgorException &)
-    {
-      // Keep going even if we encounter an Igor exception
-      // Release the lock since we're done with it
-      DeviceIDs.forceRelease(currDeviceID);
-      continue;
-    }
-    catch(const ITCException &)
-    {
-      // Keep going even if we encounter a driver exception
-      // Release the lock since we're done with it
-      DeviceIDs.forceRelease(currDeviceID);
-      continue;
+      try
+      {
+        CloseDeviceLowLevel(handle);
+      }
+      catch(const ITCException &e)
+      {
+        DebugOut("CloseAllDevices",
+                 fmt::format(FMT_STRING("Unexpected exception {} for device "
+                                        "type {} and number {}"),
+                             e, dt, i));
+      }
     }
   }
 
-  // Make sure that nothing is un-locked in the end.
-  // Every code path above should have released the slot, but
-  // due to race conditions, another thread may have picked it up
+  // clear our list of open devices
+  // after this all devices are removed and cleared
   for(size_t currDeviceID = 0; currDeviceID < DeviceIDClass::MaxNumberOfDevices;
       currDeviceID++)
   {
+    DeviceIDs.forceRemove(currDeviceID);
     DeviceIDs.forceRelease(currDeviceID);
   }
+
+  DeviceIDHelper::setCurrentThreadDeviceID(DeviceIDClass::INVALID_DEVICE_INDEX);
 }
 
 extern "C" int ExecuteITCCloseAll2(ITCCloseAll2RuntimeParamsPtr p)

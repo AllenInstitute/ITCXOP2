@@ -51,3 +51,4 @@ bool ReadCalibrateFlag(T *p)
 }
 
 void CloseDevice(const DeviceIDHelper &DeviceID);
+void CloseDeviceLowLevel(HANDLE DeviceHandle);

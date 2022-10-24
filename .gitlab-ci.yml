@@ -2,17 +2,11 @@
 # see https://docs.gitlab.com/ce/ci/yaml/README.html for all available options
 
 variables:
-  GIT_SUBMODULE_STRATEGY: "recursive"
+  GIT_SUBMODULE_STRATEGY: recursive
+  GIT_DEPTH: 0 # fetch all tags
   XOP_NAME: "ITCXOP2"
 
-stages:
-  - first
-  - second
-  - third
-  - fourth
-
 download-xoptoolkit:
-  stage: first
   tags:
     - docker, debian
   cache:
@@ -20,7 +14,8 @@ download-xoptoolkit:
     paths:
       - XOPSupport
   variables:
-      GIT_SUBMODULE_STRATEGY: "none"
+      GIT_SUBMODULE_STRATEGY: none
+      GIT_STRATEGY: none
   image:
     name: ${CI_REGISTRY}/internal/docker-utils
   script:
@@ -35,9 +30,10 @@ download-xoptoolkit:
 build_release_x64:
   tags:
     - windows, shell
-  stage: second
   needs:
     - download-xoptoolkit
+  before_script:
+    - git fetch --unshallow --quiet >NUL 2>&1 || (call )
   script:
     - md build
     - cd build
@@ -50,9 +46,10 @@ build_release_x64:
 build_release_x86:
   tags:
     - windows, shell
-  stage: second
   needs:
     - download-xoptoolkit
+  before_script:
+    - git fetch --unshallow --quiet >NUL 2>&1 || (call )
   script:
     - md build
     - cd build
@@ -65,12 +62,13 @@ build_release_x86:
 packaging:
   tags:
     - debian, docker
-  stage: third
   image:
     name: ${CI_REGISTRY}/internal/docker-utils:latest
   needs:
     - build_release_x64
     - build_release_x86
+  before_script:
+    - git fetch --unshallow --quiet 2>/dev/null || true
   script:
     - mkdir package
     - zip -r package/${XOP_NAME}-XOP-$(git describe --tags --always).zip src/*.ipf output/mac output/win/*/*.xop
@@ -80,23 +78,9 @@ packaging:
     paths:
       - package
 
-deployment:
-  when: manual
-  tags:
-    - debian, docker
-  stage: fourth
-  image:
-    name: ${CI_REGISTRY}/internal/docker-utils:latest
-  needs:
-    - packaging
-  script:
-    - echo DEPLOYMENT STEP PLACEHOLDER, CHANGE CI SCRIPT ACCORDINGLY
-    # - lftp -e "mirror --reverse -n -e package /; bye" -u $FTP_USER,$FTP_PASS byte-physics.de
-
 symbol_creation_and_upload:
   tags:
     - debian, docker
-  stage: fourth
   image:
     name: ${CI_REGISTRY}/internal/docker-utils:latest
   rules:
@@ -107,6 +91,9 @@ symbol_creation_and_upload:
   needs:
     - build_release_x64
     - build_release_x86
+  variables:
+      GIT_SUBMODULE_STRATEGY: none
+      GIT_STRATEGY: none
   script:
     - mkdir symbols
     - symstore -z symbols output/win/*/*.pdb output/win/*/*.xop

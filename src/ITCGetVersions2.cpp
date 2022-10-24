@@ -1,5 +1,4 @@
 #include "ITC_StandardHeaders.h"
-#include "fmt/format.h"
 #include <numeric>
 
 // This file is part of the `ITCXOP2` project and licensed under BSD-3-Clause.
@@ -85,8 +84,8 @@ void writeVersionWave(ITCGetVersions2RuntimeParamsPtr p,
 
   auto versionInfo = GetVersionInfo("ITCXOP2");
 
-  auto desc =
-      fmt::format("{}: {}", versionInfo["name"], versionInfo["version"]);
+  auto desc = fmt::format(FMT_STRING("{}: {}"), versionInfo["name"],
+                          versionInfo["version"]);
 
   indices[ROWS]    = 3;
   indices[COLUMNS] = 2;
@@ -127,12 +126,12 @@ extern "C" int ExecuteITCGetVersions2(ITCGetVersions2RuntimeParamsPtr p)
     // Get the version information
     ITCDLL::ITC_GetVersions(DeviceID, &lVersion[0], &lVersion[1], &lVersion[2]);
   }
-  catch(IgorException &e)
+  catch(const IgorException &e)
   {
     // ignore non connected ITC device
     if(e.ErrorCode != SLOT_EMPTY)
     {
-      throw e;
+      throw;
     }
   }
 

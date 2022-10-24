@@ -42,6 +42,7 @@ BEGIN
 	"The /R flag requires an ITC1600\0"                                              // R_FLAG_REQUIRES_ITC1600
 
 	"Tried to access the default device, but the default device has not been set.\0" // THREAD_DEVICE_ID_NOT_SET
+	"Invalid logging template.\0"                                                    // INVALID_LOGGING_TEMPLATE
 
 	"\0"							// NOTE: NULL required to terminate the resource.
 END

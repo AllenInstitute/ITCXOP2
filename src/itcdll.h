@@ -1,8 +1,5 @@
 #pragma once
 
-#ifndef ITCDLL_H
-#define ITCDLL_H
-
 #include <vector>
 #include <Windows.h>
 
@@ -51,7 +48,7 @@ public:
                              DWORD Mode, HANDLE *DeviceHandle);
   static void ITC_ResetChannels(const DeviceIDHelper &DeviceID);
   static void ITC_SetChannels(const DeviceIDHelper &DeviceID,
-                              std::vector<ITCChannelInfo> Channels);
+                              std::vector<ITCChannelInfo> *Channels);
   static void ITC_SetSoftKey(const DeviceIDHelper &DeviceID, DWORD SoftKey);
   static void ITC_SetState(const DeviceIDHelper &DeviceID,
                            ITCStatus *lITCStatus);
@@ -60,11 +57,10 @@ public:
   static void ITC_UpdateChannels(const DeviceIDHelper &DeviceID);
   static void
   ITC_UpdateFIFOPosition(const DeviceIDHelper &DeviceID,
-                         std::vector<ITCChannelDataEx> channelDataEx);
-  static void ITC_ReadWriteFIFO(const DeviceIDHelper &DeviceID,
-                                std::vector<ITCChannelDataEx> channelDataExVec);
+                         std::vector<ITCChannelDataEx> *channelDataEx);
+  static void
+  ITC_ReadWriteFIFO(const DeviceIDHelper &DeviceID,
+                    std::vector<ITCChannelDataEx> *channelDataExVec);
 };
 
-void DebugOut(std::string caller, std::string msg);
-
-#endif // ITCDLL_H
+void DebugOut(const std::string &caller, const std::string &msg);

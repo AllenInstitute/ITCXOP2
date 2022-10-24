@@ -92,7 +92,7 @@ ExecuteITCConfigAllChannels2(ITCConfigAllChannels2RuntimeParamsPtr p)
 
   // The current ITC XOP takes care of reset, set and upload
   ITCDLL::ITC_ResetChannels(DeviceID);
-  ITCDLL::ITC_SetChannels(DeviceID, ChannelInfo);
+  ITCDLL::ITC_SetChannels(DeviceID, &ChannelInfo);
   ITCDLL::ITC_UpdateChannels(DeviceID);
 
   END_OUTER_CATCH

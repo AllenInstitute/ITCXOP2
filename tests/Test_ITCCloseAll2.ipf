@@ -18,6 +18,8 @@ Variable devNum
 Static Function TEST_CASE_BEGIN_OVERRIDE(name)
 	string name
 
+	ApplySafeGlobalDefaults()
+
 	// Close any devices left open
 	ITCCloseAll2
 
