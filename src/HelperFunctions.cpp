@@ -204,7 +204,7 @@ StrStrMap GetVersionInfo(const std::string &xopName)
   std::map<std::string, std::string> m;
 
   m["name"]    = xopName;
-  m["version"] = GIT_REVISION;
+  m["version"] = "unknown";
 
 #ifdef MACIGOR64
 #pragma clang diagnostic push

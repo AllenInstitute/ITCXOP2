@@ -13,19 +13,14 @@
       <UniqueIdentifier>{53844223-65be-4e7f-9e5a-2af877e54648}</UniqueIdentifier>
       <Extensions>ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe</Extensions>
     </Filter>
+    <Filter Include="fmt">
+      <UniqueIdentifier>{e66d437a-c3be-4be7-828e-8181acd53b58}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\itcXOP2.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <Library Include="..\XOPSupport\IGOR.lib" />
-    <Library Include="..\XOPSupport\IGOR64.lib" />
-    <Library Include="..\XOPSupport\VC\XOPSupport.lib" />
-    <Library Include="..\XOPSupport\VC\XOPSupport64.lib" />
-    <Library Include="..\..\itcmm\ITCMM32.lib" />
-    <Library Include="..\..\itcmm\ITCMM64.lib" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\itcXOP2.cpp">
@@ -160,6 +155,12 @@
     <ClCompile Include="..\HelperFunctions_ITC.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\fmt\src\format.cc">
+      <Filter>fmt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Logging.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\itcXOP2.h">
@@ -207,10 +208,21 @@
     <ClInclude Include="..\HelperFunctions_ITC.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\Logging.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\itcXOP2WinCustom.rc">
       <Filter>Resource Files</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="..\..\XOPSupport\IGOR.lib" />
+    <Library Include="..\..\XOPSupport\IGOR64.lib" />
+    <Library Include="..\..\XOPSupport\VC\XOPSupport.lib" />
+    <Library Include="..\..\XOPSupport\VC\XOPSupport64.lib" />
+    <Library Include="..\..\itcmm\ITCMM32.lib" />
+    <Library Include="..\..\itcmm\ITCMM64.lib" />
   </ItemGroup>
 </Project>

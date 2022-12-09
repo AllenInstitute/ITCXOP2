@@ -43,7 +43,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseOfMfc>false</UseOfMfc>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -145,7 +145,7 @@
     </Midl>
     <ClCompile>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
-      <AdditionalIncludeDirectories>..\fmt\include;..;..\XOPSupport;..\..\itcmm\Headers;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\fmt\include;..;..\..\XOPSupport;..\..\itcmm\Headers;..\json\single_include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>false</StringPooling>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
@@ -297,6 +297,7 @@
     <ClCompile Include="..\CustomExceptions.cpp" />
     <ClCompile Include="..\DeviceIDHelper.cpp" />
     <ClCompile Include="..\ErrorDisplayClass.cpp" />
+    <ClCompile Include="..\fmt\src\format.cc" />
     <ClCompile Include="..\HelperFunctions.cpp" />
     <ClCompile Include="..\HelperFunctions_ITC.cpp" />
     <ClCompile Include="..\ITCChannelTypeEnum.cpp" />
@@ -335,6 +336,7 @@
     <ClCompile Include="..\ITCUpdateFIFOPositionAll2.cpp" />
     <ClCompile Include="..\ITCWriteDigital2.cpp" />
     <ClCompile Include="..\itcXOP2.cpp" />
+    <ClCompile Include="..\Logging.cpp" />
     <ClCompile Include="..\RegisterOperations.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -345,36 +347,6 @@
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\..\XOPSupport</AdditionalIncludeDirectories>
     </ResourceCompile>
     <None Include="..\itcXOP2WinCustom.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <Library Include="..\XOPSupport\IGOR.lib">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-      <FileType>Document</FileType>
-    </Library>
-    <Library Include="..\XOPSupport\IGOR64.lib">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <FileType>Document</FileType>
-    </Library>
-    <Library Include="..\XOPSupport\VC\XOPSupport.lib">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-      <FileType>Document</FileType>
-    </Library>
-    <Library Include="..\XOPSupport\VC\XOPSupport64.lib">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <FileType>Document</FileType>
-    </Library>
-    <Library Include="..\..\itcmm\ITCMM32.lib">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </Library>
-    <Library Include="..\..\itcmm\ITCMM64.lib">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </Library>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\ChannelSelection.h" />
@@ -391,7 +363,25 @@
     <ClInclude Include="..\itcdll.h" />
     <ClInclude Include="..\itcXOP2.h" />
     <ClInclude Include="..\ITC_StandardHeaders.h" />
+    <ClInclude Include="..\Logging.h" />
     <ClInclude Include="..\RegisterOperations.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="..\..\itcmm\ITCMM32.lib">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </Library>
+    <Library Include="..\..\itcmm\ITCMM64.lib" />
+    <Library Include="..\..\XOPSupport\IGOR.lib">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </Library>
+    <Library Include="..\..\XOPSupport\IGOR64.lib" />
+    <Library Include="..\..\XOPSupport\VC\XOPSupport.lib">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </Library>
+    <Library Include="..\..\XOPSupport\VC\XOPSupport64.lib" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
