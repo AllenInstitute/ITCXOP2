@@ -13,9 +13,6 @@
       <UniqueIdentifier>{53844223-65be-4e7f-9e5a-2af877e54648}</UniqueIdentifier>
       <Extensions>ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe</Extensions>
     </Filter>
-    <Filter Include="fmt">
-      <UniqueIdentifier>{057ba53e-24e4-4d29-a2d5-9909b1e189e7}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\itcXOP2.rc">
@@ -160,12 +157,6 @@
     <ClCompile Include="..\ConcurrentXOPNotice.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\fmt\include\fmt\posix.cc">
-      <Filter>fmt</Filter>
-    </ClCompile>
-    <ClCompile Include="..\fmt\include\fmt\format.cc">
-      <Filter>fmt</Filter>
-    </ClCompile>
     <ClCompile Include="..\HelperFunctions_ITC.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -212,27 +203,6 @@
     </ClInclude>
     <ClInclude Include="..\ConcurrentXOPNotice.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\fmt\include\fmt\locale.h">
-      <Filter>fmt</Filter>
-    </ClInclude>
-    <ClInclude Include="..\fmt\include\fmt\ostream.h">
-      <Filter>fmt</Filter>
-    </ClInclude>
-    <ClInclude Include="..\fmt\include\fmt\posix.h">
-      <Filter>fmt</Filter>
-    </ClInclude>
-    <ClInclude Include="..\fmt\include\fmt\printf.h">
-      <Filter>fmt</Filter>
-    </ClInclude>
-    <ClInclude Include="..\fmt\include\fmt\time.h">
-      <Filter>fmt</Filter>
-    </ClInclude>
-    <ClInclude Include="..\fmt\include\fmt\core.h">
-      <Filter>fmt</Filter>
-    </ClInclude>
-    <ClInclude Include="..\fmt\include\fmt\format.h">
-      <Filter>fmt</Filter>
     </ClInclude>
     <ClInclude Include="..\HelperFunctions_ITC.h">
       <Filter>Header Files</Filter>

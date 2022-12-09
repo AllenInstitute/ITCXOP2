@@ -1,10 +1,12 @@
 #include "XOPStandardHeaders.h" // Include ANSI headers, Mac headers, IgorXOP.h, XOP.h and XOPSupport.h
 
-#include "cmake_config.h"
+// #include "cmake_config.h"
 #include "itcXOP2.h"
 #include "DeviceIDClass.h"
 #include "RegisterOperations.h"
 #include "ConcurrentXOPNotice.h"
+
+constexpr int XOP_MINIMUM_IGORVERSION = 8;
 
 // This file is part of the `ITCXOP2` project and licensed under BSD-3-Clause.
 
