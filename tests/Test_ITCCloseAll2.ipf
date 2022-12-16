@@ -29,15 +29,20 @@ Static Function TEST_CASE_BEGIN_OVERRIDE(name)
 End
 
 Static Function DoTest()
+	ITCGetCurrentDevice2
+	CHECK_GE_VAR(V_Value, 0)
+
 // Test with an open device
 	ITCCloseAll2
 	CHECK_EQUAL_VAR(V_ITCXOPError, 0)
 	CHECK_EQUAL_VAR(V_ITCError, 0)
+
+	ITCGetCurrentDevice2/Z=1
+	CHECK_EQUAL_VAR(V_Value, -1)
 
 // Should have closed all devices.
 // Test again now all devices are closed
 	ITCCloseAll2
 	CHECK_EQUAL_VAR(V_ITCXOPError, 0)
 	CHECK_EQUAL_VAR(V_ITCError, 0)
-
 End
