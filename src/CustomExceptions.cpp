@@ -33,10 +33,10 @@ const char *IgorException::what() const
 
 int IgorException::HandleException(ErrorDisplayClass &ErrorDisplay) const
 {
-  ErrorDisplay.WriteToCommandWindow(m_message);
-
   if(ErrorDisplay.shouldShowError())
   {
+    ErrorDisplay.WriteToCommandWindow(m_message);
+
     return m_errorCode;
   }
   else
@@ -101,10 +101,10 @@ ITCException::ITCException(DWORD errorCode, HANDLE deviceHandle,
 
 int ITCException::HandleException(ErrorDisplayClass &ErrorDisplay) const
 {
-  ErrorDisplay.WriteToCommandWindow(GetMessage());
-
   if(ErrorDisplay.shouldShowError())
   {
+    ErrorDisplay.WriteToCommandWindow(GetMessage());
+
     return ITC_DLL_ERROR;
   }
   else
