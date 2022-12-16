@@ -9,7 +9,7 @@
 // IgorException
 //--------------------------------------------------------------
 
-IgorException::IgorException(int errorCode) : ErrorCode(errorCode)
+IgorException::IgorException(int errorCode) : m_errorCode(errorCode)
 {
   if(debuggingEnabled)
   {
@@ -18,7 +18,7 @@ IgorException::IgorException(int errorCode) : ErrorCode(errorCode)
 }
 
 IgorException::IgorException(int errorCode, const std::string &errorMessage)
-    : ErrorCode(errorCode), Message(errorMessage)
+    : m_errorCode(errorCode), m_message(errorMessage)
 {
   if(debuggingEnabled)
   {
@@ -28,24 +28,34 @@ IgorException::IgorException(int errorCode, const std::string &errorMessage)
 
 const char *IgorException::what() const
 {
-  return Message.c_str();
+  return m_message.c_str();
 }
 
 int IgorException::HandleException(ErrorDisplayClass &ErrorDisplay) const
 {
-  if(Message.size() > 0)
+  if(m_message.size() > 0)
   {
-    ErrorDisplay.WriteToCommandWindow(Message);
+    ErrorDisplay.WriteToCommandWindow(m_message);
   }
 
   if(ErrorDisplay.shouldShowError())
   {
-    return ErrorCode;
+    return m_errorCode;
   }
   else
   {
     return 0;
   }
+}
+
+const DWORD IgorException::GetErrorCode() const
+{
+  return m_errorCode;
+}
+
+const std::string IgorException::GetMessage() const
+{
+  return m_message;
 }
 
 //--------------------------------------------------------------
@@ -83,9 +93,8 @@ std::string ITCException::GetITCErrorMessage(HANDLE deviceHandle,
 
 ITCException::ITCException(DWORD errorCode, HANDLE deviceHandle,
                            const std::string &functionName)
-    : ErrorCode(errorCode), DeviceHandle(deviceHandle),
-      FunctionName(functionName),
-      Message(GetITCErrorMessage(deviceHandle, ErrorCode, functionName))
+    : m_errorCode(errorCode), m_deviceHandle(deviceHandle),
+      m_functionName(functionName)
 {
   if(debuggingEnabled)
   {
@@ -95,7 +104,7 @@ ITCException::ITCException(DWORD errorCode, HANDLE deviceHandle,
 
 int ITCException::HandleException(ErrorDisplayClass &ErrorDisplay) const
 {
-  ErrorDisplay.WriteToCommandWindow(Message);
+  ErrorDisplay.WriteToCommandWindow(GetMessage());
 
   if(ErrorDisplay.shouldShowError())
   {
@@ -107,9 +116,29 @@ int ITCException::HandleException(ErrorDisplayClass &ErrorDisplay) const
   }
 }
 
+const DWORD ITCException::GetErrorCode() const
+{
+  return m_errorCode;
+}
+
+const std::string ITCException::GetFunctionName() const
+{
+  return m_functionName;
+}
+
+const HANDLE ITCException::GetDeviceHandle() const
+{
+  return m_deviceHandle;
+}
+
+const std::string ITCException::GetMessage() const
+{
+  return GetITCErrorMessage(m_deviceHandle, m_errorCode, m_functionName);
+}
+
 const char *ITCException::what() const
 {
-  return Message.c_str();
+  return GetMessage().c_str();
 }
 
 //--------------------------------------------------------------

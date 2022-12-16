@@ -12,10 +12,10 @@
 
 class IgorException : public std::exception
 {
-public:
-  const int ErrorCode;
-  const std::string Message;
+  const int m_errorCode;
+  const std::string m_message;
 
+public:
   /// Constructors
   IgorException(int errorCode);
   IgorException(int errorCode, const std::string &errorMessage);
@@ -24,6 +24,9 @@ public:
 
   /// Displays the exception if required; gets the return code.
   int HandleException(ErrorDisplayClass &ErrorDisplay) const;
+
+  const DWORD GetErrorCode() const;
+  const std::string GetMessage() const;
 };
 
 template <>
@@ -34,7 +37,7 @@ struct fmt::formatter<IgorException> : fmt::formatter<std::string>
   auto format(const IgorException &e, FormatContext &ctx)
   {
     return format_to(ctx.out(), FMT_STRING("error code: {:#X}, what: {}"),
-                     e.ErrorCode, e.Message);
+                     e.GetErrorCode(), e.GetMessage());
   }
 };
 
@@ -43,18 +46,22 @@ class ITCException : public std::exception
   static std::string GetITCErrorMessage(HANDLE deviceHandle, DWORD errorCode,
                                         const std::string &functionName);
 
-public:
-  const DWORD ErrorCode;
-  const HANDLE DeviceHandle;
-  const std::string FunctionName;
-  const std::string Message;
+  const DWORD m_errorCode;
+  const HANDLE m_deviceHandle;
+  const std::string m_functionName;
 
+public:
   ITCException(DWORD errorCode, HANDLE deviceHandle,
                const std::string &functionName);
 
   const char *what() const;
 
   int HandleException(ErrorDisplayClass &ErrorDisplay) const;
+
+  const DWORD GetErrorCode() const;
+  const std::string GetFunctionName() const;
+  const HANDLE GetDeviceHandle() const;
+  const std::string GetMessage() const;
 };
 
 template <>
@@ -68,7 +75,8 @@ struct fmt::formatter<ITCException> : fmt::formatter<std::string>
         ctx.out(),
         FMT_STRING(
             "error code: {:#X}, device handle: {}, function: {}, message: {}"),
-        e.ErrorCode, e.DeviceHandle, e.FunctionName, e.Message);
+        e.GetErrorCode(), e.GetDeviceHandle(), e.GetFunctionName(),
+        e.GetMessage());
   }
 };
 
@@ -93,12 +101,12 @@ int HandleException(const std::exception e, ErrorDisplayClass &ErrorDisplay);
   }                                                                            \
   catch(const IgorException &e)                                                \
   {                                                                            \
-    SetOperationNumVar(XOP_ERROR_VAR, (double) e.ErrorCode);                   \
+    SetOperationNumVar(XOP_ERROR_VAR, (double) e.GetErrorCode());              \
     return e.HandleException(ErrorDisplay);                                    \
   }                                                                            \
   catch(const ITCException &e)                                                 \
   {                                                                            \
-    SetOperationNumVar(ITC_ERROR_VAR, (double) e.ErrorCode);                   \
+    SetOperationNumVar(ITC_ERROR_VAR, (double) e.GetErrorCode());              \
     return e.HandleException(ErrorDisplay);                                    \
   }                                                                            \
   catch(const std::exception &e)                                               \

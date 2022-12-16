@@ -77,7 +77,7 @@ extern "C" int ExecuteITCOpenDevice2(ITCOpenDevice2RuntimeParamsPtr p)
       catch(const ITCException &e)
       {
         if(DeviceType == ITCDeviceTypeEnum::ITC1600 &&
-           e.ErrorCode == 0x8A513000 && i < NUM_INIT_TRIALS)
+           e.GetErrorCode() == 0x8A513000 && i < NUM_INIT_TRIALS)
         {
           DebugOut("ExecuteITCOpenDevice2",
                    "Redoing initialization: " + std::to_string(i));
