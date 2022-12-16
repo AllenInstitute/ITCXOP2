@@ -33,10 +33,7 @@ const char *IgorException::what() const
 
 int IgorException::HandleException(ErrorDisplayClass &ErrorDisplay) const
 {
-  if(m_message.size() > 0)
-  {
-    ErrorDisplay.WriteToCommandWindow(m_message);
-  }
+  ErrorDisplay.WriteToCommandWindow(m_message);
 
   if(ErrorDisplay.shouldShowError())
   {
@@ -149,10 +146,7 @@ int HandleException(const std::exception e, ErrorDisplayClass &ErrorDisplay)
 {
   ErrorDisplay.WriteToCommandWindow(
       "Encountered unhandled C++ exception during XOP execution.");
-  if(strlen(e.what()) > 0)
-  {
-    ErrorDisplay.WriteToCommandWindow(e.what());
-  }
+  ErrorDisplay.WriteToCommandWindow(e.what());
 
   return UNHANDLED_CPP_EXCEPTION;
 }

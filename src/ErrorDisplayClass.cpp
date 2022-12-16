@@ -36,7 +36,7 @@ bool ErrorDisplayClass::shouldShowError()
 /// This function appends a newline after the message
 void ErrorDisplayClass::WriteToCommandWindow(const std::string &message)
 {
-  if(shouldShowError())
+  if(shouldShowError() && !message.empty())
   {
     XOPNotice_ts((message + "\r"));
   }
