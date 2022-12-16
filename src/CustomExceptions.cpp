@@ -11,13 +11,19 @@
 
 IgorException::IgorException(int errorCode) : ErrorCode(errorCode)
 {
-  DebugOut("IgorException", fmt::to_string(*this));
+  if(debuggingEnabled)
+  {
+    DebugOut("IgorException", fmt::to_string(*this));
+  }
 }
 
 IgorException::IgorException(int errorCode, const std::string &errorMessage)
     : ErrorCode(errorCode), Message(errorMessage)
 {
-  DebugOut("IgorException", fmt::to_string(*this));
+  if(debuggingEnabled)
+  {
+    DebugOut("IgorException", fmt::to_string(*this));
+  }
 }
 
 const char *IgorException::what() const
@@ -81,7 +87,10 @@ ITCException::ITCException(DWORD errorCode, HANDLE deviceHandle,
       FunctionName(functionName),
       Message(GetITCErrorMessage(deviceHandle, ErrorCode, functionName))
 {
-  DebugOut("ITCException", fmt::to_string(*this));
+  if(debuggingEnabled)
+  {
+    DebugOut("ITCException", fmt::to_string(*this));
+  }
 }
 
 int ITCException::HandleException(ErrorDisplayClass &ErrorDisplay) const
