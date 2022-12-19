@@ -1,5 +1,6 @@
 #include "ITC_StandardHeaders.h"
 #include "DeviceIDClass.h"
+#include "HelperFunctions_ITC.h"
 
 // This file is part of the `ITCXOP2` project and licensed under BSD-3-Clause.
 
@@ -23,14 +24,9 @@ void CloseAllDevices()
 
     try
     {
-      // Turn off LED
-      ITCPublicConfig lITCPublicConfig;
-      ZeroMemory(&lITCPublicConfig, sizeof(lITCPublicConfig));
-
-      ITCDLL::ITC_ConfigDevice(currDeviceHandle, &lITCPublicConfig);
-
       // Close the device
-      ITCDLL::ITC_CloseDevice(currDeviceHandle);
+      CloseDeviceLowLevel(currDeviceHandle);
+
       DeviceIDs.forceRemove(currDeviceID);
     }
     catch(const IgorException &)
