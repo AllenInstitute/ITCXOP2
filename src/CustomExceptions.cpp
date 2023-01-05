@@ -9,37 +9,50 @@
 // IgorException
 //--------------------------------------------------------------
 
-IgorException::IgorException(int errorCode) : ErrorCode(errorCode)
+IgorException::IgorException(int errorCode) : m_errorCode(errorCode)
 {
-  DebugOut("IgorException", fmt::to_string(*this));
+  if(debuggingEnabled)
+  {
+    DebugOut("IgorException", fmt::to_string(*this));
+  }
 }
 
 IgorException::IgorException(int errorCode, const std::string &errorMessage)
-    : ErrorCode(errorCode), Message(errorMessage)
+    : m_errorCode(errorCode), m_message(errorMessage)
 {
-  DebugOut("IgorException", fmt::to_string(*this));
+  if(debuggingEnabled)
+  {
+    DebugOut("IgorException", fmt::to_string(*this));
+  }
 }
 
 const char *IgorException::what() const
 {
-  return Message.c_str();
+  return m_message.c_str();
 }
 
 int IgorException::HandleException(ErrorDisplayClass &ErrorDisplay) const
 {
-  if(Message.size() > 0)
-  {
-    ErrorDisplay.WriteToCommandWindow(Message);
-  }
-
   if(ErrorDisplay.shouldShowError())
   {
-    return ErrorCode;
+    ErrorDisplay.WriteToCommandWindow(m_message);
+
+    return m_errorCode;
   }
   else
   {
     return 0;
   }
+}
+
+const DWORD IgorException::GetErrorCode() const
+{
+  return m_errorCode;
+}
+
+const std::string IgorException::GetMessage() const
+{
+  return m_message;
 }
 
 //--------------------------------------------------------------
@@ -77,19 +90,21 @@ std::string ITCException::GetITCErrorMessage(HANDLE deviceHandle,
 
 ITCException::ITCException(DWORD errorCode, HANDLE deviceHandle,
                            const std::string &functionName)
-    : ErrorCode(errorCode), DeviceHandle(deviceHandle),
-      FunctionName(functionName),
-      Message(GetITCErrorMessage(deviceHandle, ErrorCode, functionName))
+    : m_errorCode(errorCode), m_deviceHandle(deviceHandle),
+      m_functionName(functionName)
 {
-  DebugOut("ITCException", fmt::to_string(*this));
+  if(debuggingEnabled)
+  {
+    DebugOut("ITCException", fmt::to_string(*this));
+  }
 }
 
 int ITCException::HandleException(ErrorDisplayClass &ErrorDisplay) const
 {
-  ErrorDisplay.WriteToCommandWindow(Message);
-
   if(ErrorDisplay.shouldShowError())
   {
+    ErrorDisplay.WriteToCommandWindow(GetMessage());
+
     return ITC_DLL_ERROR;
   }
   else
@@ -98,9 +113,29 @@ int ITCException::HandleException(ErrorDisplayClass &ErrorDisplay) const
   }
 }
 
+const DWORD ITCException::GetErrorCode() const
+{
+  return m_errorCode;
+}
+
+const std::string ITCException::GetFunctionName() const
+{
+  return m_functionName;
+}
+
+const HANDLE ITCException::GetDeviceHandle() const
+{
+  return m_deviceHandle;
+}
+
+const std::string ITCException::GetMessage() const
+{
+  return GetITCErrorMessage(m_deviceHandle, m_errorCode, m_functionName);
+}
+
 const char *ITCException::what() const
 {
-  return Message.c_str();
+  return GetMessage().c_str();
 }
 
 //--------------------------------------------------------------
@@ -111,10 +146,7 @@ int HandleException(const std::exception e, ErrorDisplayClass &ErrorDisplay)
 {
   ErrorDisplay.WriteToCommandWindow(
       "Encountered unhandled C++ exception during XOP execution.");
-  if(strlen(e.what()) > 0)
-  {
-    ErrorDisplay.WriteToCommandWindow(e.what());
-  }
+  ErrorDisplay.WriteToCommandWindow(e.what());
 
   return UNHANDLED_CPP_EXCEPTION;
 }

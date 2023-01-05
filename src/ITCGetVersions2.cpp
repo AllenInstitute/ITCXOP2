@@ -129,7 +129,7 @@ extern "C" int ExecuteITCGetVersions2(ITCGetVersions2RuntimeParamsPtr p)
   catch(const IgorException &e)
   {
     // ignore non connected ITC device
-    if(e.ErrorCode != SLOT_EMPTY)
+    if(e.GetErrorCode() != SLOT_EMPTY)
     {
       throw;
     }
