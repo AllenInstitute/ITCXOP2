@@ -62,7 +62,9 @@ End
 
 static Function noFlag()
 	ITCSetGlobals2
-	PASS()
+
+	CHECK_EQUAL_VAR(V_ITCError, 0)
+	CHECK_EQUAL_VAR(V_ITCXOPError, 0)
 End
 
 static Function zFlag()
@@ -70,7 +72,9 @@ static Function zFlag()
 	ITCSetGlobals2/Z
 	ITCSetGlobals2/Z=0
 	ITCSetGlobals2/Z=1
-	PASS()
+
+	CHECK_EQUAL_VAR(V_ITCError, 0)
+	CHECK_EQUAL_VAR(V_ITCXOPError, 0)
 End
 
 static Function dFlag()
@@ -78,7 +82,9 @@ static Function dFlag()
 	ITCSetGlobals2/D
 	ITCSetGlobals2/D=0
 	ITCSetGlobals2/D=1
-	PASS()
+
+	CHECK_EQUAL_VAR(V_ITCError, 0)
+	CHECK_EQUAL_VAR(V_ITCXOPError, 0)
 End
 
 static Function/WAVE InvalidLoggingTemplates()
@@ -97,9 +103,12 @@ static Function LTSFlagInvalidTemplate([string str])
 		ITCSetGlobals2/LTS=str; AbortONRTE
 		FAIL()
 	catch
-		err = GetRTError(1)
-		PASS()
+		CHECK_GT_VAR(GetRTError(1), 0)
 	endtry
+
+	ITCSetGlobals2/LTS=str/Z
+	CHECK_EQUAL_VAR(V_ITCError, 0)
+	CHECK_GT_VAR(V_ITCXOPError, 0)
 End
 
 static Function LTSFlagWorks()

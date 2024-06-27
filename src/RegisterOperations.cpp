@@ -454,7 +454,7 @@ int RegisterITCSetGlobals2(void)
   // ITCSetGlobals2RuntimeParams structure as well.
   cmdTemplate       = "ITCSetGlobals2/Z[=number:displayErrors]/"
                       "D[=number:debugOutput]/LTS=string:logTemplateString";
-  runtimeNumVarList = "";
+  runtimeNumVarList = EXCEPTION_VARS;
   runtimeStrVarList = "";
   return RegisterOperation(cmdTemplate, runtimeNumVarList, runtimeStrVarList,
                            sizeof(ITCSetGlobals2RuntimeParams),
