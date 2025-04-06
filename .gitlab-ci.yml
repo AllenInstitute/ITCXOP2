@@ -97,4 +97,4 @@ symbol_creation_and_upload:
   script:
     - mkdir symbols
     - symstore -z symbols output/win/*/*.pdb output/win/*/*.xop
-    - lftp -e "mirror --reverse -n symbols /; bye" -u $FTP_SYMBOLS_USER,$FTP_SYMBOLS_PASS ftp.byte-physics.de
+    - lftp -e "mirror --reverse -n symbols /; bye" -u $FTP_SYMBOLS_USER,$FTP_SYMBOLS_PASS $FTP_URL
